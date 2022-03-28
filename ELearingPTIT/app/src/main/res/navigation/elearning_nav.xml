@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/elearning_nav"
+    app:startDestination="@id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.example.elearningptit.home_fragment"
+        android:label="fragment_home_fragment"
+        tools:layout="@layout/fragment_home_fragment" />
+    <fragment
+        android:id="@+id/class_list_fragment"
+        android:name="com.example.elearningptit.class_list_fragment"
+        android:label="fragment_class_list_fragment"
+        tools:layout="@layout/fragment_class_list_fragment" />
+    <fragment
+        android:id="@+id/notification_fragment"
+        android:name="com.example.elearningptit.notification_fragment"
+        android:label="fragment_notification_fragment"
+        tools:layout="@layout/fragment_notification_fragment" />
+    <fragment
+        android:id="@+id/time_table_fragment"
+        android:name="com.example.elearningptit.time_table_fragment"
+        android:label="fragment_time_table_fragment"
+        tools:layout="@layout/fragment_time_table_fragment" />
+    <fragment
+        android:id="@+id/infor_fragment"
+        android:name="com.example.elearningptit.infor_fragment"
+        android:label="fragment_infor_fragment"
+        tools:layout="@layout/fragment_infor_fragment" />
+</navigation>
