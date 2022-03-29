@@ -52,7 +52,8 @@
             android:background="@drawable/style_edit"
             android:padding="5dp"
             android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"/>
+            android:backgroundTint="#FFFFFF"
+            android:inputType="textPassword"/>
         <TextView
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"

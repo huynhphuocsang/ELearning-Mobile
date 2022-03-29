@@ -4,13 +4,13 @@
     <item android:title="Trang chủ"
         android:icon="@drawable/ic_home"
         android:id="@+id/home_fragment"/>
-    <item android:title="Danh sách lớp tín chỉ"
+    <item android:title="Lớp học"
         android:icon="@drawable/ic_class_list"
         android:id="@+id/class_list_fragment"/>
     <item android:title="Thông báo"
         android:icon="@drawable/ic_notification"
         android:id="@+id/notification_fragment"/>
-    <item android:title="Thời khóa biểu"
+    <item android:title="Lịch học"
         android:icon="@drawable/ic_timetable"
         android:id="@+id/time_table_fragment"/>
     <item android:title="Cá nhân"

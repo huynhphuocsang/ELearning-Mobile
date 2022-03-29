@@ -9,6 +9,7 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
+    boolean checkLoginSuccess = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                checkLoginSuccess = true;
                 finish();
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intent);
