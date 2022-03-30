@@ -31,29 +31,49 @@
             android:layout_height="wrap_content"
             android:text="Tài khoản:"
             android:textStyle="bold"/>
-        <EditText
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="250dp"
             android:layout_height="40dp"
-            android:id="@+id/txtUsername"
-            android:background="@drawable/style_edit"
-            android:padding="5dp"
             android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"/>
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/style_edit"
+                android:backgroundTint="#FFFFFF"
+                android:padding="5dp"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
         <TextView
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mật khẩu"
             android:textStyle="bold"/>
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="250dp"
             android:layout_height="40dp"
-            android:id="@+id/txtPassword"
-            android:background="@drawable/style_edit"
-            android:padding="5dp"
+            app:passwordToggleEnabled="true"
             android:layout_gravity="center"
-            android:backgroundTint="#FFFFFF"
-            android:inputType="textPassword"/>
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/style_edit"
+                android:backgroundTint="#FFFFFF"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
         <TextView
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -70,6 +90,8 @@
             android:background="@drawable/style_edit"
             android:layout_gravity="center"
             android:id="@+id/btnLogin"/>
+
+
     </LinearLayout>
 
 </LinearLayout>

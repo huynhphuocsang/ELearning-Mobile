@@ -10,6 +10,7 @@ public class TokenManager {
     private static final String REFNAME = "JWTTOKEN";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_JWT_TOKEN = "jwttoken";
+    private static final String IS_LOGIN = "login";
     private Context context;
 
 
@@ -22,6 +23,7 @@ public class TokenManager {
     public void createSession(String username, String jwtValue) {
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_JWT_TOKEN, jwtValue);
+        editor.putString(IS_LOGIN,"true");
         editor.commit();
     }
 }

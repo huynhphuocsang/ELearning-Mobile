@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="custom_alert_dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+
+        <item name="android:windowBackground">@drawable/corner_background_dialog</item>
+    </style>
+
+</resources>
