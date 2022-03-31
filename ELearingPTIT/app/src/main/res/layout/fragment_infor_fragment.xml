@@ -1,39 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".infor_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="user info"
-        android:layout_weight="1"/>
+        android:weightSum="8">
+
+
+        <!--        avatar and username -->
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="50dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/logo_ptit" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/txtUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="sang" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <!-- end avatar and username -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:weightSum="2">
+
+            <!--        user code -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mã"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/txtCode"
+                    android:layout_width="150dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/style_edit"
+                    android:gravity="center"
+                    android:text="N18DCCN171"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+            <!--        class-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lớp"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:layout_width="150dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/txtClass"
+                    android:background="@drawable/style_edit"
+                    android:gravity="center"
+                    android:text="D18CQCP02-N"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--        họ và tên-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Họ và tên"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@drawable/style_edit"
+                    android:gravity="center"
+                    android:text="Huỳnh Phước Sang"
+                    android:textSize="16dp"
+                    android:id="@+id/txtFullname"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--    Email-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@drawable/style_edit"
+                    android:gravity="center"
+                    android:text="n18dccn171@student.ptithcm.edu.vn"
+                    android:textSize="16dp"
+                    android:id="@+id/txtEmail"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--    SDT-->
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số điện thoại"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="200dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/style_edit"
+                    android:paddingLeft="10dp"
+                    android:text="0933545121"
+                    android:textSize="16dp"
+                    android:id="@+id/txtPhone"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--    Địa chỉ-->
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:background="@drawable/style_edit"
+                    android:paddingLeft="10dp"
+                    android:text="Đồng Tháp"
+                    android:textSize="16dp"
+                    android:id="@+id/txtAddress"
+                    android:textStyle="bold"
+                    android:editable="false"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--   Mật khẩu-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mật khẩu"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    app:passwordToggleEnabled="true"
+                    android:layout_gravity="center"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtUpdatePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/style_edit"
+                        android:inputType="textPassword"
+                        android:padding="5dp"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <!--logout block-->
+        <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_logout"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_logout" />
+
             <TextView
                 android:id="@+id/tvLogout"
-                android:onClick="logoutAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="logoutAccount"
                 android:text="@string/sign_out"
-                android:textStyle="bold"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

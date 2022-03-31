@@ -2,6 +2,7 @@ package com.example.elearningptit.remote;
 
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
+import com.example.elearningptit.model.UserInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,4 +28,7 @@ public interface APICall {
 
     @GET("auth/get-account-info")
     Call<String> getAccountInfo(@Header("Authorization") String token);
+
+    @GET("user/get-user-info")
+    Call<UserInfo> getUserInfo(@Header("Authorization") String token);
 }
