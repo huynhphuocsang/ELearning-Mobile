@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".infor_fragment">
+    tools:context=".inforFragment.infor_fragment">
 
 
     <LinearLayout
@@ -28,24 +28,25 @@
                 android:gravity="center">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:elevation="10dp"
                     app:cardCornerRadius="50dp">
 
                     <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:src="@drawable/logo_ptit" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/txtUsername"
+                    android:textSize="18dp"
+                    android:id="@+id/tvUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="sang" />
+                    android:text="null" />
             </LinearLayout>
 
         </LinearLayout>
@@ -253,42 +254,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mật khẩu"
-                android:textSize="18dp" />
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_update" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvUpdatePassword"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
-                    app:passwordToggleEnabled="true"
-                    android:layout_gravity="center"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtUpdatePassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@drawable/style_edit"
-                        android:inputType="textPassword"
-                        android:padding="5dp"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
+                android:text="@string/update_password"
+                android:textSize="20dp"
+                android:textStyle="bold" />
         </LinearLayout>
         <!--logout block-->
         <LinearLayout
