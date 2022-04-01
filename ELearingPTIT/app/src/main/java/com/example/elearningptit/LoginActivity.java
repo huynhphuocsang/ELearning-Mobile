@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
-import com.example.elearningptit.remote.APICall;
+import com.example.elearningptit.remote.APICallSignin;
 import com.example.elearningptit.tokenManager.TokenManager;
 
 import retrofit2.Call;
@@ -26,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private static final String REFNAME = "JWTTOKEN";
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_JWT_TOKEN = "jwttoken";
     private static final String IS_LOGIN = "login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         addControl();
         setEvent();
 
-        //kiểm tra thông tin đã đăng nhập chưa? nên bổ sung thêm 'check token expire?'
+
         checkLogin();
     }
 
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 LoginRequest loginRequest = new LoginRequest(username,password);
-                Call<JwtResponse> jwtResponseCall = APICall.apiCall.userLogin(loginRequest);
+                Call<JwtResponse> jwtResponseCall = APICallSignin.apiCall.userLogin(loginRequest);
 
                 jwtResponseCall.enqueue(new Callback<JwtResponse>() {
                     @Override
