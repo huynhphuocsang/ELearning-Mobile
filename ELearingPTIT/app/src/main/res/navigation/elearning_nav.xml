@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_class_list_fragment" />
     <fragment
         android:id="@+id/notification_fragment"
-        android:name="com.example.elearningptit.notification_fragment"
+        android:name="com.example.elearningptit.notificationFragment.notification_fragment"
         android:label="fragment_notification_fragment"
         tools:layout="@layout/fragment_notification_fragment" />
     <fragment
