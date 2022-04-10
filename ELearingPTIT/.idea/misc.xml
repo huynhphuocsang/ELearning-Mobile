@@ -5,9 +5,16 @@
       <map>
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/corner_background_dialog.xml" value="0.1525" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/editTextBackground.xml" value="0.124" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_friday_foreground.xml" value="0.166" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_monday_foreground.xml" value="0.1795" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_notification.xml" value="0.2115" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_saturday_foreground.xml" value="0.166" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_thursday_foreground.xml" value="0.166" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_tuesday_foreground.xml" value="0.166" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_webnesday_foreground.xml" value="0.166" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/item_listview_corner.xml" value="0.2115" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.155" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/style_corner_circle.xml" value="0.1705" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/style_edit.xml" value="0.124" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/tesst.xml" value="0.206" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/test.xml" value="0.206" />
@@ -23,6 +30,7 @@
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.264" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.14023086789226166" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
       </map>
     </option>

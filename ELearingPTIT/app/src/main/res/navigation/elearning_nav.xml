@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_notification_fragment" />
     <fragment
         android:id="@+id/time_table_fragment"
-        android:name="com.example.elearningptit.time_table_fragment"
+        android:name="com.example.elearningptit.timetable.time_table_fragment"
         android:label="fragment_time_table_fragment"
         tools:layout="@layout/fragment_time_table_fragment" />
     <fragment
