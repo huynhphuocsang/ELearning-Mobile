@@ -55,7 +55,7 @@ public class time_table_fragment extends Fragment {
     TextView tvTimeByWeek, tvMessageTime;
     ImageView btnPreWeek, btnNextWeek;
     ListView lvTimetable;
-    private int currentWeek, pointerWeek;
+    boolean rightNow = false;
     TimetableCustomeAdapter adapter;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     DateTimeFormatter formatterForGetAPI = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -63,12 +63,12 @@ public class time_table_fragment extends Fragment {
     LocalDate saturdayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
-            .minusWeeks(1);
+           ;
 
     LocalDate sundayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
-            .minusWeeks(2);
+            .minusWeeks(1);
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -119,7 +119,6 @@ public class time_table_fragment extends Fragment {
     }
 
     private void setEvent() {
-        getCurrentWeek();
         setValueForWeek();
         //fill listview :
         getInfoForListview();
@@ -158,14 +157,15 @@ public class time_table_fragment extends Fragment {
     private void setValueForWeek() {
 
         long distance = getWeekBetweenTwoDates(convertLocalDateToCalendar(currentDate), convertLocalDateToCalendar(saturdayPointer));
-
         if (distance == 0 && getCurrentWeek() == getWeekOfDate(saturdayPointer)) {
             tvTimeByWeek.setTextColor(Color.rgb(200, 0, 0));
             tvMessageTime.setVisibility(View.INVISIBLE);
+            rightNow = true;
         } else {
             tvTimeByWeek.setTextColor(Color.rgb(0, 0, 200));
             tvMessageTime.setVisibility(View.VISIBLE);
             tvMessageTime.setText(distance <= 0 ? (Math.abs(distance - 1) + " tuần trước") : Math.abs(distance) + " tuần sau");
+            rightNow = false;
         }
         tvTimeByWeek.setText(formatter.format(sundayPointer) + "-" + formatter.format(saturdayPointer));
     }
@@ -173,16 +173,12 @@ public class time_table_fragment extends Fragment {
     private int getCurrentWeek() {
         LocalDate date = LocalDate.now();
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        currentWeek = date.get(weekFields.weekOfWeekBasedYear());
-        pointerWeek = currentWeek;
-        return currentWeek;
+        return date.get(weekFields.weekOfWeekBasedYear());
     }
 
     private int getWeekOfDate(LocalDate localDate) {
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        currentWeek = localDate.get(weekFields.weekOfWeekBasedYear());
-        pointerWeek = currentWeek;
-        return currentWeek;
+        return localDate.get(weekFields.weekOfWeekBasedYear());
     }
 
 
@@ -218,9 +214,7 @@ public class time_table_fragment extends Fragment {
                 if (response.code() == 200) {
                     List<TimelineDTO> timeline = response.body();
 
-                    adapter = new TimetableCustomeAdapter(getContext(), R.layout.item_timetable, timeline);
-                    lvTimetable.setAdapter(adapter);
-                    adapter = new TimetableCustomeAdapter(getContext(), R.layout.item_timetable, timeline);
+                    adapter = new TimetableCustomeAdapter(getContext(), R.layout.item_timetable, timeline,rightNow);
                     lvTimetable.setAdapter(adapter);
                 } else if (response.code() == 400) {
                     Toast.makeText(getContext(), "bad request", Toast.LENGTH_SHORT).show();

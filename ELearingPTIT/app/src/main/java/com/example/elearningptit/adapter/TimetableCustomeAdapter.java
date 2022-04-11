@@ -25,11 +25,12 @@ public class TimetableCustomeAdapter extends ArrayAdapter {
     int layoutID;
     List<TimelineDTO> timeline;
     boolean rightNow = false;
-    public TimetableCustomeAdapter(@NonNull Context context, int resource, List<TimelineDTO> timeline) {
+    public TimetableCustomeAdapter(@NonNull Context context, int resource, List<TimelineDTO> timeline, boolean rightNow) {
         super(context, resource);
         this.context = context;
         this.layoutID = resource;
         this.timeline = timeline;
+        this.rightNow = rightNow;
     }
 
     @Override
@@ -77,10 +78,14 @@ public class TimetableCustomeAdapter extends ArrayAdapter {
 
         }
         LocalDate date = LocalDate.now();
-        int dayOfweek = DayOfWeek.from(date).getValue();
-        if(dayOfweek>timeline.get(position).getDayOfWeek()){
-            imFinish.setVisibility(View.VISIBLE);
-        }else imFinish.setVisibility(View.INVISIBLE);
+
+        //nếu là đúng ngày tuần này thì cho hiện dấu tick bằng cách kiểm tra thêm ngày
+        if(rightNow){
+            int dayOfweek = DayOfWeek.from(date).getValue();
+            if(dayOfweek>timeline.get(position).getDayOfWeek()){
+                imFinish.setVisibility(View.VISIBLE);
+            }
+        }
 
         startLesson.setText(timeline.get(position).getStartLesson()+"");
         endLesson.setText(timeline.get(position).getEndLesson()+"");
