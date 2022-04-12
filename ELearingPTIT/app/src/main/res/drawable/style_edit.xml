@@ -2,14 +2,14 @@
 
     <stroke
         android:width="2dp"
-        android:color="#330707" />
+        android:color="#0073A5" />
     <corners
         android:bottomRightRadius="15dp"
         android:bottomLeftRadius="15dp"
         android:topLeftRadius="15dp"
         android:topRightRadius="15dp" />
     <solid
-        android:color="@color/black" />
+        android:color="#FFFFFF" />
 
 
 </shape>
