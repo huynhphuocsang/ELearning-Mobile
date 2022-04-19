@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/credit_class_nav"
+    app:startDestination="@id/homeCreditFragment">
+
+    <fragment
+        android:id="@+id/homeCreditFragment"
+        android:name="com.example.elearningptit.HomeCreditFragment"
+        android:label="fragment_home_credit"
+        tools:layout="@layout/fragment_home_credit" />
+    <fragment
+        android:id="@+id/excerciseFragment"
+        android:name="com.example.elearningptit.ExcerciseFragment"
+        android:label="fragment_excercise"
+        tools:layout="@layout/fragment_excercise" />
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="com.example.elearningptit.DocumentFragment"
+        android:label="fragment_document"
+        tools:layout="@layout/fragment_document" />
+</navigation>
