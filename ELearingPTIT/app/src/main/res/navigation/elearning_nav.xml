@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="com.example.elearningptit.home_fragment"
+        android:name="com.example.elearningptit.homeFragment.home_fragment"
         android:label="fragment_home_fragment"
         tools:layout="@layout/fragment_home_fragment" />
     <fragment

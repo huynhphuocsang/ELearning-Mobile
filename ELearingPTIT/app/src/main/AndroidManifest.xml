@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ELearningPTIT"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CreditClassActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
