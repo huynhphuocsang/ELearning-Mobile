@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home_fragment" />
     <fragment
         android:id="@+id/class_list_fragment"
-        android:name="com.example.elearningptit.class_list_fragment"
+        android:name="com.example.elearningptit.classListFragment.class_list_fragment"
         android:label="fragment_class_list_fragment"
         tools:layout="@layout/fragment_class_list_fragment" />
     <fragment
