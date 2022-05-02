@@ -24,7 +24,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface APICallUser {
-     String BASE_URL = "http://192.168.1.4:8080/api/";
+     String BASE_URL = "http://192.168.1.13:8080/api/";
 
     Gson gson = new GsonBuilder().setLenient().create();
     APICallUser apiCall = new Retrofit.Builder().baseUrl(BASE_URL)

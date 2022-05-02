@@ -20,4 +20,9 @@
         android:name="com.example.elearningptit.DocumentFragment"
         android:label="fragment_document"
         tools:layout="@layout/fragment_document" />
+    <fragment
+        android:id="@+id/memberFragment"
+        android:name="com.example.elearningptit.MemberFragment"
+        android:label="fragment_member"
+        tools:layout="@layout/fragment_member" />
 </navigation>
