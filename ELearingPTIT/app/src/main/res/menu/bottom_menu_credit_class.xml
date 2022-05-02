@@ -10,4 +10,8 @@
     <item android:id="@+id/documentFragment"
         android:title="Document"
         android:icon="@drawable/ic_document"/>
+
+    <item android:id="@+id/memberFragment"
+        android:title="Thành viên"
+        android:icon="@drawable/ic_member"/>
 </menu>
