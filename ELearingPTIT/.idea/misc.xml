@@ -38,6 +38,12 @@
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22826086956521738" />
+<<<<<<< HEAD
+=======
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.20863616930312098" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.264" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.14023086789226166" />
+>>>>>>> da2abfcaec35b04e9b51e2ef1a28248ad653adda
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
