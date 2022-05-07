@@ -1,5 +1,6 @@
 package com.example.elearningptit.remote;
 
+import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
@@ -24,10 +25,10 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface APICallUser {
-     String BASE_URL = "http://192.168.1.13:8080/api/";
+     //String BASE_URL = "http://192.168.7.109:8080/api/";
 
     Gson gson = new GsonBuilder().setLenient().create();
-    APICallUser apiCall = new Retrofit.Builder().baseUrl(BASE_URL)
+    APICallUser apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallUser.class);
 
 
@@ -42,4 +43,5 @@ public interface APICallUser {
 
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
+
 }
