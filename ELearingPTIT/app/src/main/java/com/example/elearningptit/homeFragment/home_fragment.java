@@ -31,6 +31,7 @@ import com.example.elearningptit.model.TimelineDTOList;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallUser;
 import com.example.elearningptit.timetable.time_table_fragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -125,20 +126,24 @@ public class home_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try{
-                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
+//                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
+                    Navigation.findNavController(view).navigate(R.id.time_table_fragment);
+                    //time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
 
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                    ft.replace(R.id.fragmentContainerView, timeTableFragment);
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    ft.addToBackStack(null);
-                    ft.commit();
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    FragmentTransaction ft = fragmentManager.beginTransaction();
+//                    ft.replace(R.id.fragmentContainerView, timeTableFragment);
+//                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+
 
 //                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                    fragmentTransaction.replace(R.id.fragmentContainerView, timeTableFragment);
 //                    fragmentTransaction.addToBackStack(null);
 //                    fragmentTransaction.commit();
+
                 }catch (Exception e){
                     Log.d("print",e.getMessage());
                 }

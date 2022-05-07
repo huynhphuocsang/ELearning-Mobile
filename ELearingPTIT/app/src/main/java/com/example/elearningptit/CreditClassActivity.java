@@ -26,6 +26,7 @@ public class CreditClassActivity extends AppCompatActivity {
         String subjectName=getDaTa.getStringExtra("SUBJECT_NAME");
         String semester=getDaTa.getStringExtra("SEMESTER");
         String teacher=getDaTa.getStringExtra("TEACHER");
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_credit_class  );
         NavController navController = Navigation.findNavController(this,  R.id.fragmentContainerCreditClass);
 
@@ -40,7 +41,7 @@ public class CreditClassActivity extends AppCompatActivity {
                         selectedFragment = HomeCreditFragment.newInstance(creditclass_id,subjectName,semester,teacher);
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-                        transaction.addToBackStack(null);
+                        //transaction.addToBackStack(null);
                         transaction.commit();
                         return true;
 
@@ -48,7 +49,7 @@ public class CreditClassActivity extends AppCompatActivity {
                         selectedFragment = ExcerciseFragment.newInstance(creditclass_id,subjectName);
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-                        transaction.addToBackStack(null);
+                        //transaction.addToBackStack(null);
                         transaction.commit();
                         return true;
 
@@ -56,7 +57,7 @@ public class CreditClassActivity extends AppCompatActivity {
                         selectedFragment = DocumentFragment.newInstance(creditclass_id,subjectName);
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-                        transaction.addToBackStack(null);
+                        //transaction.addToBackStack(null);
                         transaction.commit();
                         return true;
 
@@ -64,7 +65,7 @@ public class CreditClassActivity extends AppCompatActivity {
                         selectedFragment = MemberFragment.newInstance(creditclass_id,subjectName);
                         transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-                        transaction.addToBackStack(null);
+                        //transaction.addToBackStack(null);
                         transaction.commit();
                         return true;
 
