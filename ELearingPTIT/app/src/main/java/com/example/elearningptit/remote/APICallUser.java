@@ -1,6 +1,9 @@
 package com.example.elearningptit.remote;
 
+
 import com.example.elearningptit.model.ExerciseSubmit;
+import com.example.elearningptit.config.GlobalVariables;
+import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
@@ -25,11 +28,14 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface APICallUser {
-     String BASE_URL = "http://192.168.1.13:8080/api/";
+
+    String BASE_URL = "http://192.168.1.13:8080/api/";
 //    String BASE_URL = "http://192.168.1.6:8080/api/"; // Vu
+     //String BASE_URL = "http://192.168.7.109:8080/api/";
+
 
     Gson gson = new GsonBuilder().setLenient().create();
-    APICallUser apiCall = new Retrofit.Builder().baseUrl(BASE_URL)
+    APICallUser apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallUser.class);
 
 
@@ -47,4 +53,9 @@ public interface APICallUser {
 
     @GET("user/submit-info")
     Call<ExerciseSubmit> getExerciseSubmit(@Header("Authorization") String token, @Query("excercise-id") int excercise_id);
+
+    @GET("user/registration")
+    Call<List<CreditClass>> getUserRegistration(@Header("Authorization") String token);
+
+
 }
