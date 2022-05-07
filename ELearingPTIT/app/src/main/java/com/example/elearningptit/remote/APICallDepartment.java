@@ -1,5 +1,6 @@
 package com.example.elearningptit.remote;
 
+import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.Department;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,10 +14,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 
 public interface APICallDepartment {
-    String BASE_URL = "http://192.168.7.109:8080/api/";
+    //String BASE_URL = "http://192.168.7.109:8080/api/";
 
     Gson gson = new GsonBuilder().create();
-    APICallDepartment apiCall = new Retrofit.Builder().baseUrl(BASE_URL)
+    APICallDepartment apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallDepartment.class);
 
     @GET("department/all")
