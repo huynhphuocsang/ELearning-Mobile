@@ -12,5 +12,6 @@
     <string name="KEY_JWT_TOKEN">jwttoken</string>
     <string name="IS_LOGIN">login</string>
 
+    <string name="see_more_creditclass"><u>Xem thêm>></u></string>
     <string name="alert_dialog_two_buttons_title">0</string>
 </resources>

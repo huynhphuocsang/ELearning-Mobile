@@ -1,5 +1,9 @@
 package com.example.elearningptit.remote;
 
+
+import com.example.elearningptit.model.ExerciseSubmit;
+import com.example.elearningptit.config.GlobalVariables;
+import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
@@ -25,10 +29,12 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface APICallUser {
+
      String BASE_URL = "http://192.168.1.11:8080/api/";
 
+
     Gson gson = new GsonBuilder().setLenient().create();
-    APICallUser apiCall = new Retrofit.Builder().baseUrl(BASE_URL)
+    APICallUser apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallUser.class);
 
 
@@ -44,9 +50,19 @@ public interface APICallUser {
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
 
+
     @POST("user/join-class")
     Call<String> joinClass(@Header("Authorization") String token, @Body StudentJoinClassRequestDTO studentJoinClassRequestDTO);
 
     @POST("user/check-joined")
     Call<String> checkJoined(@Header("Authorization") String token,@Query("creditclass-id") long creditClassId );
+
+    @GET("user/submit-info")
+    Call<ExerciseSubmit> getExerciseSubmit(@Header("Authorization") String token, @Query("excercise-id") int excercise_id);
+
+    @GET("user/registration")
+    Call<List<CreditClass>> getUserRegistration(@Header("Authorization") String token);
+
+
+
 }
