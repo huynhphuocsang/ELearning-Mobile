@@ -1,17 +1,20 @@
 package com.example.elearningptit.classListFragment;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -19,12 +22,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.CreditClassActivity;
 import com.example.elearningptit.R;
 import com.example.elearningptit.adapter.CreditClassCustomeAdapter;
-import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.CreditClassPageForUser;
 import com.example.elearningptit.model.Department;
-import com.example.elearningptit.model.UserInfo;
+import com.example.elearningptit.model.StudentJoinClassRequestDTO;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallDepartment;
 import com.example.elearningptit.remote.APICallSchoolYear;
@@ -56,6 +59,7 @@ public class class_list_fragment extends Fragment {
     ImageView btnSearch;
     Switch swFilter;
     FloatingActionButton btnPre, btnNext;
+    CreditClassPageForUser creditClassesPage;
     private static final int FILER = 1;
     private static final int FILTER_WITH_NAME = 2;
     private static final int FILTER_WITH_NAME_ONLY = 3;
@@ -323,6 +327,36 @@ public class class_list_fragment extends Fragment {
                 }
             }
         });
+
+        lvCreditClass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+                String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+                long creditClassId = creditClassesPage.getCreditClassDTOS().get(i).getCreditClassId();
+                //check join the credit class:
+                Call<String> checkJoinedCall = APICallUser.apiCall.checkJoined("Bearer "+jwtToken,creditClassId);
+                checkJoinedCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.code()==200){
+                            Intent creditClassIntent = new Intent(getActivity(), CreditClassActivity.class);
+                            startActivity(creditClassIntent);
+                        }else if(response.code()==422){
+                            showVerifyDialog(creditClassId);
+                        }else{
+                            Toast.makeText(getContext(),"Error code: "+response.code(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(getContext(),"Error code: "+t.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+        });
     }
     private void getCreditClassFilter(){
         int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
@@ -420,7 +454,7 @@ public class class_list_fragment extends Fragment {
         btnNext = view.findViewById(R.id.btnNextPage);
     }
     private void showOnListView(Response<CreditClassPageForUser> response){
-        CreditClassPageForUser creditClassesPage = response.body();
+        creditClassesPage = response.body();
         adapterCreditClass = new CreditClassCustomeAdapter(getContext(),R.layout.item_credit_class,creditClassesPage.getCreditClassDTOS());
         lvCreditClass.setAdapter(adapterCreditClass);
         tvTotalPage.setText((creditClassesPage.getTotalPage() !=0 ? creditClassesPage.getTotalPage():1) +"");
@@ -460,5 +494,56 @@ public class class_list_fragment extends Fragment {
         }else if(status==FILTER_WITH_NAME_ONLY){
             getCreditClassFilterWithNameOnly();
         }
+    }
+    private void showVerifyDialog(long creditClassId){
+        Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.verify_join_credit_class_dialog);
+        EditText edtVerifyJoinPassword = dialog.findViewById(R.id.edtJoinedPassword);
+        Button btnVerify = dialog.findViewById(R.id.btnVerify);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnVerify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(edtVerifyJoinPassword.getText().toString().trim().equals("")){
+                    Toast.makeText(getContext(),"Mật khẩu không được để trống",Toast.LENGTH_SHORT).show();
+                }
+                StudentJoinClassRequestDTO dto = new StudentJoinClassRequestDTO(creditClassId,edtVerifyJoinPassword.getText().toString().trim());
+
+                SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+                String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+                Call<String> joinClassCall = APICallUser.apiCall.joinClass("Bearer " + jwtToken,dto);
+                joinClassCall.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.code()==200){
+                            dialog.dismiss();
+                            Toast.makeText(getContext(),"Tham gia lớp học thành công!!",Toast.LENGTH_SHORT).show();
+                            Intent creditClassIntent = new Intent(getActivity(),CreditClassActivity.class);
+                            startActivity(creditClassIntent);
+
+                        }else if(response.code()==400){
+                            Toast.makeText(getContext(),"Mật khẩu không chính xác!" ,Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(),"Failed: "+response.code(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(getContext(),"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        dialog.show();
     }
 }

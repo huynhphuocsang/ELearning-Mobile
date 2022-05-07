@@ -3,6 +3,7 @@ package com.example.elearningptit.remote;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
+import com.example.elearningptit.model.StudentJoinClassRequestDTO;
 import com.example.elearningptit.model.TimelineDTO;
 import com.example.elearningptit.model.UserInfo;
 import com.google.gson.Gson;
@@ -42,4 +43,10 @@ public interface APICallUser {
 
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
+
+    @POST("user/join-class")
+    Call<String> joinClass(@Header("Authorization") String token, @Body StudentJoinClassRequestDTO studentJoinClassRequestDTO);
+
+    @POST("user/check-joined")
+    Call<String> checkJoined(@Header("Authorization") String token,@Query("creditclass-id") long creditClassId );
 }
