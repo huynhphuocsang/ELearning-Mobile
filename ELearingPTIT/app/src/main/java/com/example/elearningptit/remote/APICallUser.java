@@ -1,6 +1,7 @@
 package com.example.elearningptit.remote;
 
 import com.example.elearningptit.config.GlobalVariables;
+import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
@@ -43,5 +44,8 @@ public interface APICallUser {
 
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
+
+    @GET("user/registration")
+    Call<List<CreditClass>> getUserRegistration(@Header("Authorization") String token);
 
 }
