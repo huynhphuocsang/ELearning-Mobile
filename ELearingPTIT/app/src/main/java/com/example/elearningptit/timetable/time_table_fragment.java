@@ -62,13 +62,11 @@ public class time_table_fragment extends Fragment {
     LocalDate currentDate = LocalDate.now();
     LocalDate saturdayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
-           ;
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).minusWeeks(1) ;
 
     LocalDate sundayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
-            .minusWeeks(1);
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(1);
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -158,10 +156,15 @@ public class time_table_fragment extends Fragment {
 
         long distance = getWeekBetweenTwoDates(convertLocalDateToCalendar(currentDate), convertLocalDateToCalendar(saturdayPointer));
         if (distance == 0 && getCurrentWeek() == getWeekOfDate(saturdayPointer)) {
+            Toast.makeText(getContext(),"DIstance : "+distance, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"current-pointer : "+getCurrentWeek() +"-"+ getWeekOfDate(saturdayPointer), Toast.LENGTH_SHORT).show();
+
             tvTimeByWeek.setTextColor(Color.rgb(200, 0, 0));
             tvMessageTime.setVisibility(View.INVISIBLE);
             rightNow = true;
         } else {
+            Toast.makeText(getContext(),"DIstance : vao day ne ", Toast.LENGTH_SHORT).show();
+
             tvTimeByWeek.setTextColor(Color.rgb(0, 0, 200));
             tvMessageTime.setVisibility(View.VISIBLE);
             tvMessageTime.setText(distance <= 0 ? (Math.abs(distance - 1) + " tuần trước") : Math.abs(distance) + " tuần sau");

@@ -18,10 +18,7 @@ import retrofit2.http.Query;
 
 public interface APICallNotification {
 
-    String BASE_URL = "http://192.168.1.13:8080/api/notification/";
-//    String BASE_URL = "http://192.168.1.6:8080/api/notification/"; // Vu
-    //String BASE_URL = "http://192.168.7.109:8080/api/notification/";
-
+    String BASE_URL = "http://192.168.1.11:8080/api/notification/";
 
     Gson gson = new GsonBuilder().setLenient().create();
     APICallNotification apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
