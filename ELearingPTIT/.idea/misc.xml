@@ -3,39 +3,53 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/corner_background_dialog.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_arrow_foward_right.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_class_list.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_document.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_excercise.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_home.xml" value="0.113" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_home_credit_class.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_launcher_background.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_morning_img.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_timetable.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_to.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_webnesday_foreground.xml" value="0.174" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/item_credit_class.xml" value="0.1895" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/item_listview_corner.xml" value="0.1895" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/item_schedule.xml" value="0.1895" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/style_edit.xml" value="0.206" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.2" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.264" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/corner_background_dialog.xml" value="0.1525" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/editTextBackground.xml" value="0.124" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_friday_foreground.xml" value="0.166" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_monday_foreground.xml" value="0.1795" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_notification.xml" value="0.2115" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_saturday_foreground.xml" value="0.166" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_thursday_foreground.xml" value="0.166" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_tuesday_foreground.xml" value="0.166" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/ic_webnesday_foreground.xml" value="0.166" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/item_listview_corner.xml" value="0.2115" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.155" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/style_corner_circle.xml" value="0.1705" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/style_edit.xml" value="0.124" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/tesst.xml" value="0.206" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/test.xml" value="0.206" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/text_color_red.xml" value="0.1525" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.20036264732547598" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.19581017528858485" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/custome_alert_dialog.xml" value="0.22192028985507245" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/custome_alert_layout.xml" value="0.22192028985507245" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.22826086956521738" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.20036264732547598" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.20036264732547598" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.20036264732547598" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22826086956521738" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.20863616930312098" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.264" />
-        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.14023086789226166" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.20863616930312098" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/drawable/comment_custom_shape.xml" value="0.115" />
