@@ -16,6 +16,7 @@ import retrofit2.http.POST;
 
 public interface APICallSignin {
      String BASE_URL = "http://192.168.1.13:8080/api/";
+//    String BASE_URL = "http://192.168.1.6:8080/api/"; // Vu
 
     Gson gson = new GsonBuilder().create();
     APICallSignin apiCall = new Retrofit.Builder().baseUrl(BASE_URL)

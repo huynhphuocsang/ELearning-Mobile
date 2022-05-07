@@ -1,5 +1,6 @@
 package com.example.elearningptit.remote;
 
+import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.NewPasswordModel;
@@ -25,6 +26,7 @@ import retrofit2.http.Query;
 
 public interface APICallUser {
      String BASE_URL = "http://192.168.1.13:8080/api/";
+//    String BASE_URL = "http://192.168.1.6:8080/api/"; // Vu
 
     Gson gson = new GsonBuilder().setLenient().create();
     APICallUser apiCall = new Retrofit.Builder().baseUrl(BASE_URL)
@@ -42,4 +44,7 @@ public interface APICallUser {
 
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
+
+    @GET("user/submit-info")
+    Call<ExerciseSubmit> getExerciseSubmit(@Header("Authorization") String token, @Query("excercise-id") int excercise_id);
 }
