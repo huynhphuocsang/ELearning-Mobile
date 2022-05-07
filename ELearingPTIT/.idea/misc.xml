@@ -3,6 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_arror_foward_left.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_arrow_foward_right.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_excercise.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_finish.xml" value="0.1125" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_friday_foreground.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_home.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_infor.xml" value="0.2065" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.264" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_member.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.25416666666666665" />
+=======
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/corner_background_dialog.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_arrow_foward_right.xml" value="0.174" />
@@ -37,6 +60,7 @@
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.264" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.25416666666666665" />
+>>>>>>> 4718b90297bddbdbc6d813e0e22d07b6a07bd95e
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/corner_background_dialog.xml" value="0.1525" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/editTextBackground.xml" value="0.124" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.155" />
