@@ -70,6 +70,7 @@
                 android:textSize="10dp"/>
         </LinearLayout>
         <ListView
+            android:id="@+id/lvPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="#ECECEC"
