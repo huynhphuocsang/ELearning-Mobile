@@ -26,12 +26,16 @@ public class HomeCreditFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String CREDITCLASS_ID = "CREDITCLASS_ID";
+    private static final String SUBJECT_NAME = "SUBJECT_NAME";
+    private static final String SEMESTER = "SEMESTER";
+    private static final String TEACHER = "TEACHER";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String creditclass_id;
+    private String subjectname;
+    private String semester;
+    private String teacher;
 
     public HomeCreditFragment() {
         // Required empty public constructor
@@ -46,11 +50,13 @@ public class HomeCreditFragment extends Fragment {
      * @return A new instance of fragment HomeCreditFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeCreditFragment newInstance(String param1, String param2) {
+    public static HomeCreditFragment newInstance(String param1, String param2,String param3, String param4) {
         HomeCreditFragment fragment = new HomeCreditFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(CREDITCLASS_ID, param1);
+        args.putString(SUBJECT_NAME, param2);
+        args.putString(SEMESTER, param3);
+        args.putString(TEACHER, param4);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +65,10 @@ public class HomeCreditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            creditclass_id = getArguments().getString(CREDITCLASS_ID);
+            subjectname = getArguments().getString(SUBJECT_NAME);
+            semester = getArguments().getString(SEMESTER);
+            teacher = getArguments().getString(TEACHER);
         }
     }
 

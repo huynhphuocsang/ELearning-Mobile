@@ -218,9 +218,8 @@ public class home_fragment extends Fragment {
                         }
                         creditClassList.add(item);
                     }
-                    listCreditClassAdapter=new ListCreditClassAdapter(getContext(), R.layout.list_credit_class, creditClassList);
+                    listCreditClassAdapter=new ListCreditClassAdapter(getContext(), R.layout.list_credit_class, creditClassList,getActivity());
                     lvListCreditClass.setAdapter(listCreditClassAdapter);
-
 
                 } else if (response.code() == 400) {
                     Toast.makeText(getContext(), "Dữ liệu yêu cầu không hợp lệ", Toast.LENGTH_SHORT).show();
