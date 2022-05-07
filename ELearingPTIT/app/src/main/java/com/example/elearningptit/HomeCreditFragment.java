@@ -9,12 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.elearningptit.adapter.NotificationCustomeAdapter;
+import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.model.CreditClassDetailDTO;
 import com.example.elearningptit.model.NotificationPageForUser;
+import com.example.elearningptit.model.PostDTO;
+import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallNotification;
 
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +32,8 @@ import retrofit2.Call;
  */
 public class HomeCreditFragment extends Fragment {
     ListView lvPost;
+    List<PostDTO> posts;
+    PostCustomeAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,12 +88,36 @@ public class HomeCreditFragment extends Fragment {
     private void getInforForPostListView () {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-//        Call<CreditClassDetailDTO> creditClassDetailDTOCall = APICallNotification.apiCall.getNotification("Bearer " + jwtToken, currentPage);
+        Call<CreditClassDetailDTO> creditClassDetailDTOCall = APICallCreditClassDetail.apiCall.getCreditClassDelta("Bearer " + jwtToken, 1);
+        creditClassDetailDTOCall.enqueue(new Callback<CreditClassDetailDTO>() {
+            @Override
+            public void onResponse(Call<CreditClassDetailDTO> call, Response<CreditClassDetailDTO> response) {
+                if (response.code() == 200) {
+                    CreditClassDetailDTO creditClassDetailDTO = response.body();
+                    posts = creditClassDetailDTO.getListPost();
+                    adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts);
+                    lvPost.setAdapter(adapter);
 
+//                    adapter.notifyDataSetChanged();
+//                    Toast.makeText(getContext(), adapter.getCount() + "", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditClassDetailDTO> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setEvent() {
-
+        getInforForPostListView();
     }
 
     private void addControl(View view) {
