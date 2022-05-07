@@ -51,6 +51,24 @@
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Study/LearnPTIT/Mobile/Exam/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.20863616930312098" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/drawable/comment_custom_shape.xml" value="0.115" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/drawable/post_custom_edit_text.xml" value="0.176" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/drawable/post_custom_shape.xml" value="0.183" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.2" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_comment.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.22083333333333333" />
       </map>
     </option>
   </component>
