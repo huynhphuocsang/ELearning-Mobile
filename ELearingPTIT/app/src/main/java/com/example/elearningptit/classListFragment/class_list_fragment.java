@@ -29,6 +29,7 @@ import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallDepartment;
 import com.example.elearningptit.remote.APICallSchoolYear;
 import com.example.elearningptit.remote.APICallUser;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,12 @@ public class class_list_fragment extends Fragment {
     TextView tvCurrentPage, tvTotalPage,tvCreditClassName;
     ImageView btnSearch;
     Switch swFilter;
+    FloatingActionButton btnPre, btnNext;
+    private static final int FILER = 1;
+    private static final int FILTER_WITH_NAME = 2;
+    private static final int FILTER_WITH_NAME_ONLY = 3;
+    private static final int WITHOUT_FILTER = 0;
+    int status = 0;
 
     int currentPage =1 ;
     ListView lvCreditClass ;
@@ -164,7 +171,7 @@ public class class_list_fragment extends Fragment {
         //add infor for credit class:
        getAllNoFilter();
 
-        tvCurrentPage.setText(currentPage+"/");
+        tvCurrentPage.setText(currentPage+"");
         spSchoolYear.setEnabled(false);
         spSemester.setEnabled(false);
         spDepartment.setEnabled(false);
@@ -175,18 +182,32 @@ public class class_list_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(swFilter.isChecked()){
+                    resetCurrentPage();
                     spSchoolYear.setEnabled(true);
                     spSemester.setEnabled(true);
                     spDepartment.setEnabled(true);
+                    if(tvCreditClassName.getText().toString().trim().equals("")){
+                        status = FILER;
+                        getCreditClassFilter();
+                    }else{
+                        status = FILTER_WITH_NAME;
+                        getCreditClassFilterWithName();
+                    }
                         spDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                int departmentId = departments.get(i).getDepartmentId();
-                                String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
-                                int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
-                                if(tvCreditClassName.getText().toString().trim().equals(""))
-                                    getCreditClassFilter(schoolyear, departmentId, semester);
-                                else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+
+                                resetCurrentPage();
+                                if(tvCreditClassName.getText().toString().trim().equals("")){
+                                    status = FILER;
+                                    getCreditClassFilter();
+                                }
+
+                                else{
+                                    status = FILTER_WITH_NAME ;
+                                    getCreditClassFilterWithName();
+                                }
                             }
 
                             @Override
@@ -197,12 +218,17 @@ public class class_list_fragment extends Fragment {
                     spSemester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
-                            String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
-                            int semester = Integer.parseInt(semesters.get(i));
-                            if(tvCreditClassName.getText().toString().trim().equals(""))
-                                getCreditClassFilter(schoolyear, departmentId, semester);
-                            else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+                            resetCurrentPage();
+
+                            if(tvCreditClassName.getText().toString().trim().equals("")){
+                                status = FILER;
+                                getCreditClassFilter();
+                            }
+
+                            else{
+                                status = FILTER_WITH_NAME;
+                                getCreditClassFilterWithName();
+                            }
                         }
 
                         @Override
@@ -213,12 +239,16 @@ public class class_list_fragment extends Fragment {
                     spSchoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
-                            String schoolyear = schoolYears.get(i);
-                            int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
-                            if(tvCreditClassName.getText().toString().trim().equals(""))
-                                getCreditClassFilter(schoolyear, departmentId, semester);
-                            else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+                            resetCurrentPage();
+                            if(tvCreditClassName.getText().toString().trim().equals("")){
+                                status = FILER;
+                                getCreditClassFilter();
+
+                            }
+                            else{
+                                status = FILTER_WITH_NAME;
+                                getCreditClassFilterWithName();
+                            }
                         }
 
                         @Override
@@ -228,37 +258,82 @@ public class class_list_fragment extends Fragment {
                     });
                 }
                 else{
+                    resetCurrentPage();
                     spSchoolYear.setEnabled(false);
                     spSemester.setEnabled(false);
                     spDepartment.setEnabled(false);
+                    //check trường hợp để gọi:
+                    if(tvCreditClassName.getText().toString().trim().equals("")){
+                        status = WITHOUT_FILTER;
+                        getAllNoFilter();
+                    }else{
+                        status = FILTER_WITH_NAME_ONLY;
+                        getCreditClassFilterWithName();
+                    }
+
                 }
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetCurrentPage();
                 if(swFilter.isChecked()){
-                    int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
-                    String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
-                    int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
-                     getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim() !=""? tvCreditClassName.getText().toString().trim() : " ");
+                    if(tvCreditClassName.getText().toString().trim().equals("")){
+                        status = FILER;
+                        getCreditClassFilter();
+                    }else{
+                        status = FILTER_WITH_NAME;
+                        getCreditClassFilterWithName();
+                    }
+
                 }else{
-                    if(tvCreditClassName.getText().toString().trim().equals(""))
+                    if(tvCreditClassName.getText().toString().trim().equals("")){
+                        status = WITHOUT_FILTER;
                         getAllNoFilter();
-                    else
-                        getCreditClassFilterWithNameOnly(tvCreditClassName.getText().toString().trim());
+                    }
+                    else{
+                        status = FILTER_WITH_NAME_ONLY;
+                        getCreditClassFilterWithNameOnly();
+                    }
                 }
             }
         });
 
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int totalPage = Integer.parseInt( tvTotalPage.getText().toString());
+                if(currentPage==totalPage) return;
+                else{
+                    currentPage++;
+                    tvCurrentPage.setText(currentPage+"");
+                    fetchData();
+                }
+            }
+        });
+        btnPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentPage==1) return ;
+                else{
+                    currentPage--;
+                    tvCurrentPage.setText(currentPage+"");
+                    fetchData();
+                }
+            }
+        });
     }
-    private void getCreditClassFilter(String schoolYear, int departmentId, int semester){
+    private void getCreditClassFilter(){
+        int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
+        String schoolYear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
+        int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
 
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
         //add infor for credit class:
-        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSem("Bearer "+jwtToken,1,schoolYear,departmentId,semester);
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSem("Bearer "+jwtToken,currentPage,schoolYear,departmentId,semester);
         creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
             @Override
             public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
@@ -279,13 +354,18 @@ public class class_list_fragment extends Fragment {
             }
         });
     }
-    private void getCreditClassFilterWithName(String schoolYear, int departmentId, int semester, String name){
+    private void getCreditClassFilterWithName(){
+        int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
+        String schoolYear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
+        int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
+        String name = tvCreditClassName.getText().toString().trim() !=""? tvCreditClassName.getText().toString().trim() : " ";
 
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
         //add infor for credit class:
-        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSemName("Bearer "+jwtToken,1,schoolYear,departmentId,semester,name);
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSemName("Bearer "+jwtToken,currentPage,schoolYear,departmentId,semester,name);
         creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
             @Override
             public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
@@ -302,13 +382,13 @@ public class class_list_fragment extends Fragment {
             }
         });
     }
-    private void getCreditClassFilterWithNameOnly(String name){
-
+    private void getCreditClassFilterWithNameOnly(){
+        String name = tvCreditClassName.getText().toString().trim();
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
         //add infor for credit class:
-        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassByName("Bearer "+jwtToken,1,name);
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassByName("Bearer "+jwtToken,currentPage,name);
         creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
             @Override
             public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
@@ -336,6 +416,8 @@ public class class_list_fragment extends Fragment {
         swFilter = view.findViewById(R.id.swFilter);
         tvCreditClassName = view.findViewById(R.id.tvCreditClassName);
         btnSearch  = view.findViewById(R.id.btnSearchCreditClass);
+        btnPre = view.findViewById(R.id.btnPrevPage);
+        btnNext = view.findViewById(R.id.btnNextPage);
     }
     private void showOnListView(Response<CreditClassPageForUser> response){
         CreditClassPageForUser creditClassesPage = response.body();
@@ -364,5 +446,19 @@ public class class_list_fragment extends Fragment {
                 Toast.makeText(getContext(),"failer : Could not load list credit class! ",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void resetCurrentPage(){
+        this.currentPage = 1;
+    }
+    private void fetchData(){
+        if(status==WITHOUT_FILTER){
+            getAllNoFilter();
+        }else if(status==FILER){
+            getCreditClassFilter();
+        }else if(status==FILTER_WITH_NAME){
+            getCreditClassFilterWithName();
+        }else if(status==FILTER_WITH_NAME_ONLY){
+            getCreditClassFilterWithNameOnly();
+        }
     }
 }
