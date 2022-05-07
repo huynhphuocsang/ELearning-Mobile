@@ -5,17 +5,24 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.R;
+import com.example.elearningptit.adapter.CreditClassCustomeAdapter;
 import com.example.elearningptit.model.CreditClass;
+import com.example.elearningptit.model.CreditClassPageForUser;
 import com.example.elearningptit.model.Department;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
@@ -42,8 +49,12 @@ public class class_list_fragment extends Fragment {
     ArrayAdapter adapterSemester;
     ArrayAdapter adapterShoolYear;
     ArrayAdapter adapterDepartment;
-    ArrayAdapter adapterCreditClass;
+    CreditClassCustomeAdapter adapterCreditClass;
     Spinner spSemester,spSchoolYear,spDepartment;
+    TextView tvCurrentPage, tvTotalPage,tvCreditClassName;
+    ImageView btnSearch;
+    Switch swFilter;
+
     int currentPage =1 ;
     ListView lvCreditClass ;
     // TODO: Rename parameter arguments, choose names that match
@@ -151,38 +162,207 @@ public class class_list_fragment extends Fragment {
         });
 
         //add infor for credit class:
-        Call<List<CreditClass>> creditClassesCall = APICallCreditClass.apiCall.getCreditClass("Bearer " + jwtToken,currentPage);
-        creditClassesCall.enqueue(new Callback<List<CreditClass>>() {
-            @Override
-            public void onResponse(Call<List<CreditClass>> call, Response<List<CreditClass>> response) {
-                if(response.code()==200){
-                    List<CreditClass> creditClasses = response.body();
-                    if(creditClasses.size()==0){
+       getAllNoFilter();
 
-                    }
-                    adapterCreditClass = new ArrayAdapter(getContext(),R.layout.item_credit_class,response.body());
+        tvCurrentPage.setText(currentPage+"/");
+        spSchoolYear.setEnabled(false);
+        spSemester.setEnabled(false);
+        spDepartment.setEnabled(false);
+    }
+
+    private void setEvent() {
+        swFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(swFilter.isChecked()){
+                    spSchoolYear.setEnabled(true);
+                    spSemester.setEnabled(true);
+                    spDepartment.setEnabled(true);
+                        spDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                int departmentId = departments.get(i).getDepartmentId();
+                                String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
+                                int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
+                                if(tvCreditClassName.getText().toString().trim().equals(""))
+                                    getCreditClassFilter(schoolyear, departmentId, semester);
+                                else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+                    spSemester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
+                            String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
+                            int semester = Integer.parseInt(semesters.get(i));
+                            if(tvCreditClassName.getText().toString().trim().equals(""))
+                                getCreditClassFilter(schoolyear, departmentId, semester);
+                            else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                    spSchoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
+                            String schoolyear = schoolYears.get(i);
+                            int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
+                            if(tvCreditClassName.getText().toString().trim().equals(""))
+                                getCreditClassFilter(schoolyear, departmentId, semester);
+                            else getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                }
+                else{
+                    spSchoolYear.setEnabled(false);
+                    spSemester.setEnabled(false);
+                    spDepartment.setEnabled(false);
+                }
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(swFilter.isChecked()){
+                    int departmentId = departments.get(spDepartment.getSelectedItemPosition()).getDepartmentId();
+                    String schoolyear = schoolYears.get(spSchoolYear.getSelectedItemPosition());
+                    int semester = Integer.parseInt(semesters.get(spSemester.getSelectedItemPosition()));
+                     getCreditClassFilterWithName(schoolyear, departmentId, semester,tvCreditClassName.getText().toString().trim() !=""? tvCreditClassName.getText().toString().trim() : " ");
+                }else{
+                    if(tvCreditClassName.getText().toString().trim().equals(""))
+                        getAllNoFilter();
+                    else
+                        getCreditClassFilterWithNameOnly(tvCreditClassName.getText().toString().trim());
+                }
+            }
+        });
+
+    }
+    private void getCreditClassFilter(String schoolYear, int departmentId, int semester){
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+        //add infor for credit class:
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSem("Bearer "+jwtToken,1,schoolYear,departmentId,semester);
+        creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
+            @Override
+            public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
+                if(response.code()==200){
+                    CreditClassPageForUser creditClassesPage = response.body();
+                    adapterCreditClass = new CreditClassCustomeAdapter(getContext(),R.layout.item_credit_class,creditClassesPage.getCreditClassDTOS());
+                    lvCreditClass.setAdapter(adapterCreditClass);
+                    tvTotalPage.setText((creditClassesPage.getTotalPage() !=0 ? creditClassesPage.getTotalPage():1) +"");
+                    adapterCreditClass.notifyDataSetChanged();
                 }else{
                     Toast.makeText(getContext(),"Could not load list credit class! "+response.code(),Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CreditClass>> call, Throwable t) {
-
+            public void onFailure(Call<CreditClassPageForUser> call, Throwable t) {
+                Toast.makeText(getContext(),"failer : Could not load list credit class! ",Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+    private void getCreditClassFilterWithName(String schoolYear, int departmentId, int semester, String name){
 
-    private void setEvent() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
+        //add infor for credit class:
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassBySChoolyearDepartSemName("Bearer "+jwtToken,1,schoolYear,departmentId,semester,name);
+        creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
+            @Override
+            public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
+                if(response.code()==200){
+                    showOnListView(response);
+                }else{
+                    Toast.makeText(getContext(),"Could not load list credit class! "+response.code(),Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<CreditClassPageForUser> call, Throwable t) {
+                Toast.makeText(getContext(),"failer : Could not load list credit class! ",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+    private void getCreditClassFilterWithNameOnly(String name){
 
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+        //add infor for credit class:
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClassByName("Bearer "+jwtToken,1,name);
+        creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
+            @Override
+            public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
+                if(response.code()==200){
+                    Toast.makeText(getContext()," load list credit class successfully! "+response.code(),Toast.LENGTH_SHORT).show();
+                    showOnListView(response);
+                }else{
+                    Toast.makeText(getContext(),"Could not load list credit class! "+response.code(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditClassPageForUser> call, Throwable t) {
+                Toast.makeText(getContext(),"failer : Could not load list credit class! ",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void addControl(View view) {
         spSemester = view.findViewById(R.id.spSemester);
         spSchoolYear = view.findViewById(R.id.spShoolYear);
         spDepartment = view.findViewById(R.id.spDepartment);
         lvCreditClass = view.findViewById(R.id.lvCreditClass);
+        tvCurrentPage = view.findViewById(R.id.tvCurrentPageCreditClass);
+        tvTotalPage = view.findViewById(R.id.tvTotalPageCreditClass);
+        swFilter = view.findViewById(R.id.swFilter);
+        tvCreditClassName = view.findViewById(R.id.tvCreditClassName);
+        btnSearch  = view.findViewById(R.id.btnSearchCreditClass);
+    }
+    private void showOnListView(Response<CreditClassPageForUser> response){
+        CreditClassPageForUser creditClassesPage = response.body();
+        adapterCreditClass = new CreditClassCustomeAdapter(getContext(),R.layout.item_credit_class,creditClassesPage.getCreditClassDTOS());
+        lvCreditClass.setAdapter(adapterCreditClass);
+        tvTotalPage.setText((creditClassesPage.getTotalPage() !=0 ? creditClassesPage.getTotalPage():1) +"");
+        adapterCreditClass.notifyDataSetChanged();
+    }
+    private void getAllNoFilter(){
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+        Call<CreditClassPageForUser> creditClassesCall = APICallCreditClass.apiCall.getCreditClass("Bearer " + jwtToken,currentPage);
+        creditClassesCall.enqueue(new Callback<CreditClassPageForUser>() {
+            @Override
+            public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
+                if(response.code()==200){
+                    showOnListView(response);
+                }else{
+                    Toast.makeText(getContext(),"Could not load list credit class! "+response.code(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditClassPageForUser> call, Throwable t) {
+                Toast.makeText(getContext(),"failer : Could not load list credit class! ",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

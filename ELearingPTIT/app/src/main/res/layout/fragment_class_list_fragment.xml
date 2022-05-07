@@ -19,12 +19,14 @@
             android:weightSum="5">
 
             <EditText
+                android:id="@+id/tvCreditClassName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:hint="Tìm lớp học" />
 
             <ImageView
+                android:id="@+id/btnSearchCreditClass"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -101,11 +103,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lvCreditClass"
-            />
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:id="@+id/lvCreditClass"
+                    />
+            </ScrollView>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,6 +130,15 @@
                 app:backgroundTint="#FF0000" />
 
             <TextView
+                android:id="@+id/tvCurrentPageCreditClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:text="10/10" />
+            <TextView
+                android:id="@+id/tvTotalPageCreditClass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
