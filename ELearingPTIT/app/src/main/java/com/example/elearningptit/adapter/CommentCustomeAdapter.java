@@ -19,6 +19,7 @@ import com.example.elearningptit.R;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostResponseDTO;
 import com.example.elearningptit.remote.APICallPost;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -62,10 +63,15 @@ public class CommentCustomeAdapter extends ArrayAdapter {
         ImageButton ibtDelete = convertView.findViewById(R.id.ibtCommentDelete);
 
         PostCommentDTO comment = comments.get(position);
-        ivAvatar.setImageURI(Uri.parse(comment.getAvatar()));
         tvFullname.setText(comment.getUserName());
         tvContent.setText(comment.getContent());
         tvTime.setText(comment.getCreatedAt().toString());
+
+        //set avatar
+        if (comment.getAvatar() != null && !comment.getAvatar().isEmpty())
+        {
+            Picasso.get().load(comment.getAvatar()).into(ivAvatar);
+        }
 
         if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
         {

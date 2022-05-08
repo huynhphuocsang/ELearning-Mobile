@@ -22,6 +22,7 @@ import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostCommentRequest;
 import com.example.elearningptit.remote.APICallPost;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,10 +188,15 @@ public class PostDeltaFragment extends Fragment {
     }
 
     private void setEvent() {
-        ivAvatar.setImageURI(Uri.parse(avartarPublisher));
         tvFullname.setText(fullname);
         tvTime.setText(postedTime);
         tvContent.setText(postContent);
+
+        //set avatar
+        if (avartarPublisher != null && !avartarPublisher.isEmpty())
+        {
+            Picasso.get().load(avartarPublisher).into(ivAvatar);
+        }
 
         ibtSendComment.setOnClickListener(new View.OnClickListener() {
             @Override
