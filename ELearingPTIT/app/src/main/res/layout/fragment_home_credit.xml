@@ -23,6 +23,7 @@
                 android:src="@drawable/post_cover">
             </ImageView>
             <TextView
+                android:id="@+id/tvHomeCreditHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
@@ -31,6 +32,7 @@
                 android:textSize="15dp">
             </TextView>
             <TextView
+                android:id="@+id/tvHomeCreditSemester"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
@@ -38,11 +40,12 @@
                 android:text="học kỳ: 1 - Năm học: 2022-2023"
                 android:textSize="10dp"></TextView>
             <TextView
+                android:id="@+id/tvHomeCreditTeacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:layout_marginTop="150px"
-                android:text="Buổi học: Tiết 1, Sáng thứ 6"
+                android:text="Trương Bá Thái"
                 android:textSize="10dp"></TextView>
         </FrameLayout>
         <LinearLayout
@@ -53,6 +56,7 @@
             android:orientation="horizontal"
             android:background="@drawable/post_custom_shape">
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivHomeCreditAvatar"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -62,12 +66,25 @@
                 android:layout_marginRight="6dp"
                 android:src="@drawable/post_default_avatar"
                 app:civ_border_width="2dp"/>
-            <EditText
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Tạo bài đăng với lớp học...."
-                android:textSize="10dp"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etHomeCreditPostContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:hint="Tạo bài đăng với lớp học...."
+                    android:textSize="10dp"/>
+                <ImageButton
+                    android:id="@+id/ibtHomeCreditPost"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/post_send_comment"
+                    android:background="#00FFFFFF"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center_vertical|right"/>
+            </FrameLayout>
         </LinearLayout>
         <ListView
             android:id="@+id/lvPost"

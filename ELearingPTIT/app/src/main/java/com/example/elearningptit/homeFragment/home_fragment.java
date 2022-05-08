@@ -109,25 +109,25 @@ public class home_fragment extends Fragment {
     private void setEvent() {
         getTimeline();
         getCreditClassRegistered();
-        tvSeeMoreCreditclass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               try{
-                   Intent intent = new Intent(getActivity(), CreditClassActivity.class);
-                   startActivity(intent);
-               }catch (Exception e){
-                   Log.d("print",e.getMessage());
-               }
-
-            }
-        });
+//        tvSeeMoreCreditclass.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//               try{
+//                   Intent intent = new Intent(getActivity(), CreditClassActivity.class);
+//                   startActivity(intent);
+//               }catch (Exception e){
+//                   Log.d("print",e.getMessage());
+//               }
+//
+//            }
+//        });
 
         llSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
 //                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
-                    Navigation.findNavController(view).navigate(R.id.time_table_fragment);
+                    //Navigation.findNavController(view).navigate(R.id.time_table_fragment);
                     //time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
 
 //                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

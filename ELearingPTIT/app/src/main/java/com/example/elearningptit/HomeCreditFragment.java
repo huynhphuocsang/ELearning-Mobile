@@ -1,14 +1,20 @@
 package com.example.elearningptit;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.adapter.NotificationCustomeAdapter;
@@ -17,6 +23,8 @@ import com.example.elearningptit.model.CreditClassDetailDTO;
 import com.example.elearningptit.model.NotificationPageForUser;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
+import com.example.elearningptit.model.PostRequestDTO;
+import com.example.elearningptit.model.PostResponseDTO;
 import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallPost;
@@ -35,6 +43,11 @@ import retrofit2.Response;
  */
 public class HomeCreditFragment extends Fragment {
     ListView lvPost;
+    TextView tvHeader, tvSemester, tvTeacher;
+    ImageButton ibtPost;
+    ImageView ivAvatar;
+    EditText etPostContent;
+
     List<PostDTO> posts;
     PostCustomeAdapter adapter;
 
@@ -72,6 +85,8 @@ public class HomeCreditFragment extends Fragment {
         args.putString(SEMESTER, param3);
         args.putString(TEACHER, param4);
         fragment.setArguments(args);
+        //Toast.makeText(, param1+" "+param2+" "+param3+" "+param4, Toast.LENGTH_SHORT).show();
+
         return fragment;
     }
 
@@ -91,8 +106,16 @@ public class HomeCreditFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_credit, container, false);
+
+        Intent getDaTa=getActivity().getIntent();
+        creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
+        subjectname=getDaTa.getStringExtra("SUBJECT_NAME");
+        semester=getDaTa.getStringExtra("SEMESTER");
+        teacher=getDaTa.getStringExtra("TEACHER");
+
         addControl(view);
         setEvent();
+
         return view;
     }
 
@@ -114,7 +137,14 @@ public class HomeCreditFragment extends Fragment {
                             //get avatar from api
 
                             //set adapter
-                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap);
+                            EventListener afterDeletePost = new EventListener() {
+                                @Override
+                                public void doSomething() {
+                                    getInforForPostListView();
+                                }
+                            };
+
+                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), token, afterDeletePost);
                             lvPost.setAdapter(adapter);
                         }
                     } else if (response.code() == 401) {
@@ -162,11 +192,66 @@ public class HomeCreditFragment extends Fragment {
         });
     }
 
+    private void sendPost ()
+    {
+        if (etPostContent.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(getContext(), "Bài đăng không được để trống", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.createNewPost("Bearer " + jwtToken, Long.valueOf(creditclass_id), new PostRequestDTO(etPostContent.getText().toString()));
+        postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
+            @Override
+            public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
+                if (response.code() == 200) {
+                    //update UI
+                    etPostContent.setText("");
+                    getInforForPostListView();
+                    Toast.makeText(getContext(), "Đã đăng thành công", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponseDTO> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void setEvent() {
+        tvHeader.setText(subjectname + " - " + creditclass_id);
+        tvSemester.setText(semester);
+        tvTeacher.setText(teacher);
         getInforForPostListView();
+
+        //set avatar
+
+        //set event
+        ibtPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPost();
+            }
+        });
     }
 
     private void addControl(View view) {
+        tvHeader = view.findViewById(R.id.tvHomeCreditHeader);
+        tvSemester = view.findViewById(R.id.tvHomeCreditSemester);
+        tvTeacher = view.findViewById(R.id.tvHomeCreditTeacher);
         lvPost = view.findViewById(R.id.lvPost);
+        ivAvatar = view.findViewById(R.id.ivHomeCreditAvatar);
+        ibtPost = view.findViewById(R.id.ibtHomeCreditPost);
+        etPostContent = view.findViewById(R.id.etHomeCreditPostContent);
     }
 }
