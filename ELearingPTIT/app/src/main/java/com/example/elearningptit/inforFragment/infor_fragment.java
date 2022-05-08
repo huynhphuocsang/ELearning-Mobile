@@ -1,5 +1,6 @@
 package com.example.elearningptit.inforFragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +101,35 @@ public class infor_fragment extends Fragment {
                 }
             }
         });
+        tvLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.verify_logout_dialog);
+
+                Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
+                Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                btnVerify.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME),0);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("login","false");
+                        editor.apply();
+                        getActivity().finish();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     private void addControl(View view) {
@@ -110,6 +142,7 @@ public class infor_fragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         tvUsername.setText("chicken");
         tvUpdatePassword = view.findViewById(R.id.tvUpdatePassword);
+        tvLogout = view.findViewById(R.id.tvLogout);
     }
 
     private void getUserInfo() {
