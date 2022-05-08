@@ -67,12 +67,12 @@ public class CommentCustomeAdapter extends ArrayAdapter {
         tvContent.setText(comment.getContent());
         tvTime.setText(comment.getCreatedAt().toString());
 
-//        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
-//        {
-//            ibtDelete.setVisibility(View.INVISIBLE);
-//        }
-//        else
-//        {
+        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
+        {
+            ibtDelete.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
             ibtDelete.setVisibility(View.VISIBLE);
 
             ibtDelete.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class CommentCustomeAdapter extends ArrayAdapter {
                     });
                 }
             });
-//        }
+        }
 
 
         return convertView;
