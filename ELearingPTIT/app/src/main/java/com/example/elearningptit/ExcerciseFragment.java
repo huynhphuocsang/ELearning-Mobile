@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.timetable.time_table_fragment;
 
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class ExcerciseFragment extends Fragment {
     ImageView imgView;
 
     private List<Exercise> listExercise;
+    FragmentActivity dsExercise;
     private Document submitFile;
     private Boolean flag = false;
 
@@ -149,6 +154,28 @@ public class ExcerciseFragment extends Fragment {
                             imgView.setImageResource(R.drawable.ic_cancel);
                         }
 
+                        tbRow.setId(exercise.getExcerciseId());
+                        tbRow.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                ExerciseDetailFrangment studentManagerFragment = ExerciseDetailFrangment.newInstance(exercise.getExcerciseId()+"", exercise.getExcerciseId()+"");
+//
+//                                FragmentManager fragmentManager = dsExercise.getSupportFragmentManager();
+//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                fragmentTransaction.replace(R.id.fragmentContainerView, studentManagerFragment);
+//                                fragmentTransaction.addToBackStack(null);
+//                                fragmentTransaction.commit();
+
+//                                ExerciseDetailFrangment exerciseManagerFragment = ExerciseDetailFrangment.newInstance("ss","ss");
+//
+//                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                                FragmentTransaction ft = fragmentManager.beginTransaction();
+//                                ft.replace(R.id.fragmentContainerView, exerciseManagerFragment);
+//                                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                                ft.addToBackStack(null);
+//                                ft.commit();
+                            }
+                        });
                         tbRow.addView(imgView);
                         tbBaiTap.addView(tbRow);
                     }
