@@ -1,12 +1,22 @@
 package com.example.elearningptit.inforFragment;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +24,26 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.R;
+import com.example.elearningptit.model.AvatarResponse;
+import com.example.elearningptit.model.RealPathUtil;
 import com.example.elearningptit.model.UserInfo;
+import com.example.elearningptit.remote.APICallAvatar;
 import com.example.elearningptit.remote.APICallSignin;
 import com.example.elearningptit.remote.APICallUser;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,12 +62,14 @@ public class infor_fragment extends Fragment {
 
     EditText txtCode, txtClass, txtFullname, txtEmail, txtPhone, txtAdress;
     TextView tvUsername, tvUpdatePassword;
-
+    ImageView imgAvatar;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     TextView tvLogout;
-
+    private static final int PICK_IMAGE = 100;
+    private static final int MY_REQUEST_CODE_PERMISSION = 99;
+    private ProgressDialog progressDialog;
     public infor_fragment() {
         // Required empty public constructor
     }
@@ -85,6 +109,8 @@ public class infor_fragment extends Fragment {
         addControl(view);
         setEvent();
         getUserInfo();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang cập nhật ảnh đại diện....");
         return view;
     }
 
@@ -130,6 +156,97 @@ public class infor_fragment extends Fragment {
                 dialog.show();
             }
         });
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermission();
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK && requestCode == PICK_IMAGE) {
+            Uri selectedImage = data.getData();
+            Bitmap bm = null;
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (bm == null)
+            {
+                Toast.makeText(getContext(), "image is null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //convert image to byte array
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.PNG, 100, out);
+            byte[] buffer = out.toByteArray();
+
+            //set image to user
+            if(selectedImage!=null){
+                //upload image
+                progressDialog.show();
+                String realPath = RealPathUtil.getRealPath(getContext(),selectedImage);
+                File file = new File(realPath);
+
+//                RequestBody bodyAvatar = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                RequestBody bodyAvatar = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),bodyAvatar);
+
+                SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+                String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+                Call<AvatarResponse> avatarCall = APICallAvatar.apiCall.uploadAvatar("application/json","Bearer "+jwtToken,multipartBody);
+                avatarCall.enqueue(new Callback<AvatarResponse>() {
+                    @Override
+                    public void onResponse(Call<AvatarResponse> call, Response<AvatarResponse> response) {
+                        if(response.code()==201){
+                            AvatarResponse avatarResponse = response.body();
+
+                            progressDialog.dismiss();
+                            Picasso.get().load(avatarResponse.getDowloadURL()).into(imgAvatar);
+                            Toast.makeText(getContext(), "Cập nhật ảnh đại diện thành công!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Cập nhật ảnh đại diện thất bại!"+response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AvatarResponse> call, Throwable t) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Cập nhật ảnh đại diện thất bại!"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //display the image into avatar
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+//                imgAvatar.setImageBitmap(bitmap);
+            }
+
+
+
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==MY_REQUEST_CODE_PERMISSION){
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, PICK_IMAGE);
+            }
+
+        }
     }
 
     private void addControl(View view) {
@@ -143,6 +260,7 @@ public class infor_fragment extends Fragment {
         tvUsername.setText("chicken");
         tvUpdatePassword = view.findViewById(R.id.tvUpdatePassword);
         tvLogout = view.findViewById(R.id.tvLogout);
+        imgAvatar = view.findViewById(R.id.imgAvatar);
     }
 
     private void getUserInfo() {
@@ -167,7 +285,7 @@ public class infor_fragment extends Fragment {
                     String tempUsername = preferences.getString(getResources().getString(R.string.KEY_USERNAME), "");
 
                     tvUsername.setText(tempUsername);
-
+                    Picasso.get().load(userInfo.getAvatar()).into(imgAvatar);
                 } else if (response.code() == 401) {
                     //token expire
                     //logout
@@ -183,7 +301,20 @@ public class infor_fragment extends Fragment {
             }
         });
     }
-
+    private void requestPermission(){
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
+            return;
+        }
+        if(getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+            //open galery:
+            Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            startActivityForResult(gallery, PICK_IMAGE);
+        }
+        else{
+            String [] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+            requestPermissions(permission,MY_REQUEST_CODE_PERMISSION);
+        }
+    }
     public void logout() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         SharedPreferences.Editor editor = preferences.edit();

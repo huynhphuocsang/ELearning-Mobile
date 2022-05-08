@@ -35,6 +35,7 @@
                     app:cardCornerRadius="50dp">
 
                     <ImageView
+                        android:id="@+id/imgAvatar"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
