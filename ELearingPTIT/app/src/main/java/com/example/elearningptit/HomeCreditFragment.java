@@ -106,14 +106,15 @@ public class HomeCreditFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_credit, container, false);
+
+        Intent getDaTa=getActivity().getIntent();
+        creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
+        subjectname=getDaTa.getStringExtra("SUBJECT_NAME");
+        semester=getDaTa.getStringExtra("SEMESTER");
+        teacher=getDaTa.getStringExtra("TEACHER");
+
         addControl(view);
         setEvent();
-        Intent getDaTa=getActivity().getIntent();
-        String creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
-        String subjectName=getDaTa.getStringExtra("SUBJECT_NAME");
-        String semester=getDaTa.getStringExtra("SEMESTER");
-        String teacher=getDaTa.getStringExtra("TEACHER");
-        Log.d("print",creditclass_id+" "+subjectName+" "+semester+" "+teacher);
 
         return view;
     }

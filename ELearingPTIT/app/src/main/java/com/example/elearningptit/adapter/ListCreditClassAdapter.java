@@ -77,7 +77,7 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                         //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
                         intent.putExtra("CREDITCLASS_ID",creditClasses.get(0).getCreditClassId()+"");
-                        intent.putExtra("SUBJECT_NAME",creditClasses.get(0).getCreditClassId()+"");
+                        intent.putExtra("SUBJECT_NAME",creditClasses.get(0).getSubjectName()+"");
                         intent.putExtra("SEMESTER",tvSemester1.getText().toString());
 
                         String teacherNames = creditClasses.get(0).getTeachers().stream()
@@ -111,7 +111,7 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                         //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
                         intent.putExtra("CREDITCLASS_ID",creditClasses.get(1).getCreditClassId());
-                        intent.putExtra("SUBJECT_NAME",creditClasses.get(1).getCreditClassId());
+                        intent.putExtra("SUBJECT_NAME",creditClasses.get(1).getSubjectName());
                         intent.putExtra("SEMESTER",tvSemester2.getText().toString());
 
                         String teacherNames = creditClasses.get(1).getTeachers().stream()
@@ -138,7 +138,7 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                         //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
                         intent.putExtra("CREDITCLASS_ID",creditClasses.get(2).getCreditClassId());
-                        intent.putExtra("SUBJECT_NAME",creditClasses.get(2).getCreditClassId());
+                        intent.putExtra("SUBJECT_NAME",creditClasses.get(2).getSubjectName());
                         intent.putExtra("SEMESTER",tvSemester3.getText().toString());
 
                         String teacherNames = creditClasses.get(2).getTeachers().stream()

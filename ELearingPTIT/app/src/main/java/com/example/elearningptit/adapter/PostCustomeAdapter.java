@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.elearningptit.CreditClassActivity;
 import com.example.elearningptit.EventListener;
@@ -87,9 +89,14 @@ public class PostCustomeAdapter extends ArrayAdapter {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(fragmentActivity, PostDeltaFragment.class);
-                intent.putExtra("POST_ID", posts.get(position).getPostId());
-                context.startActivity(intent);
+                PostDTO post = posts.get(position);
+                PostDeltaFragment postDeltaFragment = PostDeltaFragment.newInstance(post.getPostId(), post.getAvartarPublisher(), post.getFullname(), post.getPostContent(), post.getPostedTime());
+
+                FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentContainerCreditClass, postDeltaFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();;
             }
         });
 

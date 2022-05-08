@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -34,4 +35,7 @@ public interface APICallPost {
 
     @PUT("post/delete-post")
     Call<PostResponseDTO> deletePost(@Header("Authorization") String token, @Query("post-id") long postId);
+
+    @DELETE("post/delete-comment")
+    Call<String> deleteComment(@Header("Authorization") String token, @Query("post-comment-id") long commentId);
 }
