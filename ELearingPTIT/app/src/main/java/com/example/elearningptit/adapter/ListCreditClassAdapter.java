@@ -14,8 +14,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.elearningptit.CreditClassActivity;
+import com.example.elearningptit.HomeCreditFragment;
 import com.example.elearningptit.R;
 import com.example.elearningptit.model.CreditClass;
 
@@ -71,17 +74,24 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View view) {
                     try{
-                        Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
-                        intent.putExtra("CREDITCLASS_ID",creditClasses.get(0).getCreditClassId());
-                        intent.putExtra("SUBJECT_NAME",creditClasses.get(0).getCreditClassId());
+                        intent.putExtra("CREDITCLASS_ID",creditClasses.get(0).getCreditClassId()+"");
+                        intent.putExtra("SUBJECT_NAME",creditClasses.get(0).getCreditClassId()+"");
                         intent.putExtra("SEMESTER",tvSemester1.getText().toString());
 
                         String teacherNames = creditClasses.get(0).getTeachers().stream()
                                 .map(n -> String.valueOf(n))
                                 .collect(Collectors.joining(", "));
                         intent.putExtra("TEACHER",teacherNames);
+
                         context.startActivity(intent);
+//                        HomeCreditFragment homeCreditFragment= HomeCreditFragment.newInstance("ss","ss","sda","sdas");
+//                        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.fragmentContainerView, homeCreditFragment);
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
                     }catch (Exception e){
                         Log.d("print",e.getMessage());
                     }
@@ -98,7 +108,7 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View view) {
                     try{
-                        Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
                         intent.putExtra("CREDITCLASS_ID",creditClasses.get(1).getCreditClassId());
                         intent.putExtra("SUBJECT_NAME",creditClasses.get(1).getCreditClassId());
@@ -125,7 +135,7 @@ public class ListCreditClassAdapter extends ArrayAdapter {
                 @Override
                 public void onClick(View view) {
                     try{
-                        Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(fragmentActivity, CreditClassActivity.class);
                         intent.putExtra("CREDITCLASS_ID",creditClasses.get(2).getCreditClassId());
                         intent.putExtra("SUBJECT_NAME",creditClasses.get(2).getCreditClassId());
