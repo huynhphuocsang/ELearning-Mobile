@@ -156,8 +156,8 @@ public class time_table_fragment extends Fragment {
 
         long distance = getWeekBetweenTwoDates(convertLocalDateToCalendar(currentDate), convertLocalDateToCalendar(saturdayPointer));
         if (distance == 0 && getCurrentWeek() == getWeekOfDate(saturdayPointer)) {
-            Toast.makeText(getContext(),"DIstance : "+distance, Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(),"current-pointer : "+getCurrentWeek() +"-"+ getWeekOfDate(saturdayPointer), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(),"DIstance : "+distance, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(),"current-pointer : "+getCurrentWeek() +"-"+ getWeekOfDate(saturdayPointer), Toast.LENGTH_SHORT).show();
 
             tvTimeByWeek.setTextColor(Color.rgb(200, 0, 0));
             tvMessageTime.setVisibility(View.INVISIBLE);
