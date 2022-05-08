@@ -2,6 +2,7 @@ package com.example.elearningptit;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,9 +26,11 @@ import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.PostRequestDTO;
 import com.example.elearningptit.model.PostResponseDTO;
+import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallPost;
+import com.example.elearningptit.remote.APICallUser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +53,7 @@ public class HomeCreditFragment extends Fragment {
 
     List<PostDTO> posts;
     PostCustomeAdapter adapter;
+    UserInfo userInfo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -144,7 +148,7 @@ public class HomeCreditFragment extends Fragment {
                                 }
                             };
 
-                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), token, afterDeletePost);
+                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), token, afterDeletePost, userInfo.getRoles());
                             lvPost.setAdapter(adapter);
                         }
                     } else if (response.code() == 401) {
@@ -228,13 +232,41 @@ public class HomeCreditFragment extends Fragment {
 
     }
 
+    private void getUserInfo() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        Call<UserInfo> userInfoCall = APICallUser.apiCall.getUserInfo("Bearer " + jwtToken);
+        userInfoCall.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+
+                if (response.code() == 200) {
+                    userInfo = response.body();
+
+                    //set avatar
+                    ivAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
+
+                    getInforForPostListView();
+                } else if (response.code() == 401) {
+                    //token expire
+                    Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Toast.makeText(getContext(), "Load thất bại ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     private void setEvent() {
         tvHeader.setText(subjectname + " - " + creditclass_id);
         tvSemester.setText(semester);
         tvTeacher.setText(teacher);
-        getInforForPostListView();
 
-        //set avatar
+        getUserInfo();
 
         //set event
         ibtPost.setOnClickListener(new View.OnClickListener() {
