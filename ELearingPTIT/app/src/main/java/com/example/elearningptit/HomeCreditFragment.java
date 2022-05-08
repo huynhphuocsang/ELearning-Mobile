@@ -31,6 +31,7 @@ import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallPost;
 import com.example.elearningptit.remote.APICallUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -244,7 +245,10 @@ public class HomeCreditFragment extends Fragment {
                     userInfo = response.body();
 
                     //set avatar
-                    ivAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
+                    if (userInfo.getAvatar() != null && !userInfo.getAvatar().isEmpty())
+                    {
+                        Picasso.get().load(userInfo.getAvatar()).into(ivAvatar);
+                    }
 
                     getInforForPostListView();
                 } else if (response.code() == 401) {

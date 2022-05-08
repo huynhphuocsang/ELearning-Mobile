@@ -32,6 +32,7 @@ import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.PostResponseDTO;
 import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallPost;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +86,13 @@ public class PostCustomeAdapter extends ArrayAdapter {
         tvFullname.setText(posts.get(position).getFullname());
         tvTime.setText(posts.get(position).getPostedTime());
         tvContent.setText(posts.get(position).getPostContent());
-        imAvatar.setImageURI(Uri.parse(posts.get(position).getAvartarPublisher()));
+
+        //set avatar
+        if (posts.get(position).getAvartarPublisher() != null && !posts.get(position).getAvartarPublisher().isEmpty())
+        {
+            Picasso.get().load(posts.get(position).getAvartarPublisher()).into(imAvatar);
+        }
+
         tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
 
         //set event
