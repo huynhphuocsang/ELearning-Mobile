@@ -20,9 +20,12 @@ import android.widget.Toast;
 import com.example.elearningptit.adapter.CommentCustomeAdapter;
 import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.model.PostCommentDTO;
+import com.example.elearningptit.model.PostCommentRequest;
 import com.example.elearningptit.remote.APICallPost;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +42,7 @@ public class PostDeltaFragment extends Fragment {
     ListView lvComments;
     EditText etComment;
     ImageButton ibtSendComment;
+    ArrayList<String> roles;
 
     CommentCustomeAdapter adapter;
 
@@ -49,6 +53,7 @@ public class PostDeltaFragment extends Fragment {
     public static final String FULLNAME = "FULLNAME";
     public static final String POST_CONTENT = "POST_CONTENT";
     public static final String POSTED_TIME = "POSTED_TIME";
+    public static final String ROLES = "ROLES";
 
     // TODO: Rename and change types of parameters
     private Long postId;
@@ -66,7 +71,7 @@ public class PostDeltaFragment extends Fragment {
      * @return A new instance of fragment PostDeltaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PostDeltaFragment newInstance(Long postId, String avartarPublisher, String fullname, String postContent, String postedTime) {
+    public static PostDeltaFragment newInstance(Long postId, String avartarPublisher, String fullname, String postContent, String postedTime, List<String> roles) {
         PostDeltaFragment fragment = new PostDeltaFragment();
 
         Bundle args = new Bundle();
@@ -75,6 +80,7 @@ public class PostDeltaFragment extends Fragment {
         args.putString(FULLNAME, fullname);
         args.putString(POST_CONTENT, postContent);
         args.putString(POSTED_TIME, postedTime);
+        args.putStringArrayList(ROLES, new ArrayList<String>(roles));
 
         fragment.setArguments(args);
         return fragment;
@@ -89,6 +95,7 @@ public class PostDeltaFragment extends Fragment {
             fullname = getArguments().getString(FULLNAME);
             postContent = getArguments().getString(POST_CONTENT);
             postedTime = getArguments().getString(POSTED_TIME);
+            roles = getArguments().getStringArrayList(ROLES);
         }
     }
 
@@ -124,7 +131,7 @@ public class PostDeltaFragment extends Fragment {
                         }
                     };
 
-                    adapter = new CommentCustomeAdapter(getContext(), R.layout.item_comment, comments, "Bearer " + jwtToken, afterDeleteComment);
+                    adapter = new CommentCustomeAdapter(getContext(), R.layout.item_comment, comments, "Bearer " + jwtToken, afterDeleteComment, roles);
                     lvComments.setAdapter(adapter);
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Unauthorized ", Toast.LENGTH_SHORT).show();
@@ -148,6 +155,35 @@ public class PostDeltaFragment extends Fragment {
             Toast.makeText(getContext(), "Bình luận không được để trống", Toast.LENGTH_SHORT).show();
             return;
         }
+        else if (etComment.getText().toString().length() > 200)
+        {
+            Toast.makeText(getContext(), "Bình luận không quá 200 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        Call<PostCommentDTO> call = APICallPost.apiCall.comment("Bearer " + jwtToken, new PostCommentRequest(postId, etComment.getText().toString()));
+        call.enqueue(new Callback<PostCommentDTO>() {
+            @Override
+            public void onResponse(Call<PostCommentDTO> call, Response<PostCommentDTO> response) {
+                if (response.code() == 200) {
+                    Toast.makeText(getContext(), "Bình luận thành công", Toast.LENGTH_SHORT).show();
+
+                    //update UI
+                    getInforForCommentListView();
+                    etComment.setText("");
+                } else if (response.code() == 401) {
+                    //token expire
+                    Toast.makeText(getContext(), "Không có quyền để bình luận", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostCommentDTO> call, Throwable t) {
+                Toast.makeText(getContext(), "Bình luận thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setEvent() {

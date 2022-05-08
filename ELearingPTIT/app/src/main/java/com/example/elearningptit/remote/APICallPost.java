@@ -3,6 +3,7 @@ package com.example.elearningptit.remote;
 import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.CreditClassDetailDTO;
 import com.example.elearningptit.model.PostCommentDTO;
+import com.example.elearningptit.model.PostCommentRequest;
 import com.example.elearningptit.model.PostRequestDTO;
 import com.example.elearningptit.model.PostResponseDTO;
 import com.google.gson.Gson;
@@ -38,4 +39,7 @@ public interface APICallPost {
 
     @DELETE("post/delete-comment")
     Call<String> deleteComment(@Header("Authorization") String token, @Query("post-comment-id") long commentId);
+
+    @POST("post/comment")
+    Call<PostCommentDTO> comment(@Header("Authorization") String token, @Body PostCommentRequest comment);
 }

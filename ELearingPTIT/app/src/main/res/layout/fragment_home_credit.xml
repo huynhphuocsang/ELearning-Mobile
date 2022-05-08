@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
                     android:hint="Tạo bài đăng với lớp học...."
                     android:textSize="10dp"/>
                 <ImageButton
@@ -82,7 +83,6 @@
                     android:layout_height="30dp"
                     android:src="@drawable/post_send_comment"
                     android:background="#00FFFFFF"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical|right"/>
             </FrameLayout>
         </LinearLayout>
@@ -90,6 +90,7 @@
             android:id="@+id/lvPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
             android:divider="#ECECEC"
             android:dividerHeight="10dp"></ListView>
     </LinearLayout>

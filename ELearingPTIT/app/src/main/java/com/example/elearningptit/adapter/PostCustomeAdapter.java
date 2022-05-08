@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,9 @@ public class PostCustomeAdapter extends ArrayAdapter {
     FragmentActivity fragmentActivity;
     String token;
     EventListener onAfterDeletePost;
+    List<String> roles;
 
-    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTO> posts, HashMap<Long, Integer> commentAmounts, FragmentActivity fragmentActivity, String token, EventListener onAfterDeletePost) {
+    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTO> posts, HashMap<Long, Integer> commentAmounts, FragmentActivity fragmentActivity, String token, EventListener onAfterDeletePost, List<String> roles) {
         super(context, resource, posts);
         this.context = context;
         this.layoutID = resource;
@@ -58,6 +60,7 @@ public class PostCustomeAdapter extends ArrayAdapter {
         this.fragmentActivity=fragmentActivity;
         this.token = token;
         this.onAfterDeletePost = onAfterDeletePost;
+        this.roles = roles;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class PostCustomeAdapter extends ArrayAdapter {
             @Override
             public void onClick(View view) {
                 PostDTO post = posts.get(position);
-                PostDeltaFragment postDeltaFragment = PostDeltaFragment.newInstance(post.getPostId(), post.getAvartarPublisher(), post.getFullname(), post.getPostContent(), post.getPostedTime());
+                PostDeltaFragment postDeltaFragment = PostDeltaFragment.newInstance(post.getPostId(), post.getAvartarPublisher(), post.getFullname(), post.getPostContent(), post.getPostedTime(), roles);
 
                 FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -100,32 +103,41 @@ public class PostCustomeAdapter extends ArrayAdapter {
             }
         });
 
-        ibtDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost(token, posts.get(position).getPostId());
-                postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
-                    @Override
-                    public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
-                        if (response.code() == 200) {
-                            onAfterDeletePost.doSomething();
-                            Toast.makeText(getContext(), "Xóa bài đăng thành công", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 401) {
-                            Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 403) {
-                            Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 404) {
-                            Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
+        {
+            ibtDelete.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            ibtDelete.setVisibility(View.VISIBLE);
 
-                    @Override
-                    public void onFailure(Call<PostResponseDTO> call, Throwable t) {
-                        Toast.makeText(getContext(), "Xóa bài đăng thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+            ibtDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost(token, posts.get(position).getPostId());
+                    postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
+                        @Override
+                        public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
+                            if (response.code() == 200) {
+                                onAfterDeletePost.doSomething();
+                                Toast.makeText(getContext(), "Xóa bài đăng thành công", Toast.LENGTH_SHORT).show();
+                            } else if (response.code() == 401) {
+                                Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                            } else if (response.code() == 403) {
+                                Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                            } else if (response.code() == 404) {
+                                Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<PostResponseDTO> call, Throwable t) {
+                            Toast.makeText(getContext(), "Xóa bài đăng thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
 //        if(posts.get(position).isStatus())
 //            iconCheckSeen.setVisibility(View.INVISIBLE);
         return convertView;

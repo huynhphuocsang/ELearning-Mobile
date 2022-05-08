@@ -32,14 +32,16 @@ public class CommentCustomeAdapter extends ArrayAdapter {
     List<PostCommentDTO> comments;
     String token;
     EventListener onAfterDeleteComment;
+    List<String> roles;
 
-    public CommentCustomeAdapter(@NonNull Context context, int resource, List<PostCommentDTO> comments, String token, EventListener onAfterDeleteComment) {
+    public CommentCustomeAdapter(@NonNull Context context, int resource, List<PostCommentDTO> comments, String token, EventListener onAfterDeleteComment, List<String> roles) {
         super(context, resource, comments);
         this.context = context;
         this.layoutID = resource;
         this.comments = comments;
         this.token = token;
         this.onAfterDeleteComment = onAfterDeleteComment;
+        this.roles = roles;
     }
 
     @Override
@@ -65,29 +67,39 @@ public class CommentCustomeAdapter extends ArrayAdapter {
         tvContent.setText(comment.getContent());
         tvTime.setText(comment.getCreatedAt().toString());
 
-        ibtDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //delete comment
-                Call<String> call = APICallPost.apiCall.deleteComment(token, comment.getCommentId());
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            onAfterDeleteComment.doSomething();
-                            Toast.makeText(getContext(), "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), response.body(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
+//        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
+//        {
+//            ibtDelete.setVisibility(View.INVISIBLE);
+//        }
+//        else
+//        {
+            ibtDelete.setVisibility(View.VISIBLE);
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(getContext(), "Xóa bình luận thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+            ibtDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //delete comment
+                    Call<String> call = APICallPost.apiCall.deleteComment(token, comment.getCommentId());
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.code() == 200) {
+                                onAfterDeleteComment.doSomething();
+                                Toast.makeText(getContext(), "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(getContext(), "Xóa bình luận thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+//        }
+
 
         return convertView;
     }
