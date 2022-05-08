@@ -55,6 +55,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_gravity="right"
+            android:background="#00FFFFFF"
             android:src="@drawable/post_delete"/>
     </FrameLayout>
 
