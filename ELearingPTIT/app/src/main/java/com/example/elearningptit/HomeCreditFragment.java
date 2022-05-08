@@ -1,10 +1,12 @@
 package com.example.elearningptit;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +74,8 @@ public class HomeCreditFragment extends Fragment {
         args.putString(SEMESTER, param3);
         args.putString(TEACHER, param4);
         fragment.setArguments(args);
+        //Toast.makeText(, param1+" "+param2+" "+param3+" "+param4, Toast.LENGTH_SHORT).show();
+
         return fragment;
     }
 
@@ -93,6 +97,13 @@ public class HomeCreditFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_credit, container, false);
         addControl(view);
         setEvent();
+        Intent getDaTa=getActivity().getIntent();
+        String creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
+        String subjectName=getDaTa.getStringExtra("SUBJECT_NAME");
+        String semester=getDaTa.getStringExtra("SEMESTER");
+        String teacher=getDaTa.getStringExtra("TEACHER");
+        Log.d("print",creditclass_id+" "+subjectName+" "+semester+" "+teacher);
+
         return view;
     }
 
