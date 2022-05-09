@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.timetable.time_table_fragment;
 
 import java.util.List;
 
@@ -46,7 +50,6 @@ public class ExcerciseFragment extends Fragment {
     ImageView imgView;
 
     private List<Exercise> listExercise;
-    private Document submitFile;
     private Boolean flag = false;
 
     // TODO: Rename and change types of parameters
@@ -90,7 +93,6 @@ public class ExcerciseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_excercise, container, false);
         addControl(view);
         setEvent();
-        getExercise();
         return view;
     }
 
@@ -106,8 +108,6 @@ public class ExcerciseFragment extends Fragment {
                     CreditClassDetail ex = response.body();
                     listExercise = ex.getExcercises();
                     for (Exercise exercise: listExercise) {
-                        Log.e("Item: ", exercise.getTitle());
-                        Log.e("ID: " , exercise.getExcerciseId()+ "");
                         TableRow tbRow = new TableRow(getContext());
 
                         tv = new TextView(getContext());
@@ -133,7 +133,6 @@ public class ExcerciseFragment extends Fragment {
                                         imgView.setImageResource(R.drawable.ic_ok);
                                         flag = true;
                                     }
-
                                 }
                             }
 
@@ -149,6 +148,21 @@ public class ExcerciseFragment extends Fragment {
                             imgView.setImageResource(R.drawable.ic_cancel);
                         }
 
+                        tbRow.setId(exercise.getExcerciseId());
+                        tbRow.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ExerciseDetailFrangment exerciseManagerFragment = ExerciseDetailFrangment.newInstance(
+                                        exercise.getTitle(), exercise.getEndTime(), exercise.getExcerciseContent(),
+                                        1, exercise.getExcerciseId());
+
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.fragmentContainerCreditClass, exerciseManagerFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                            }
+                        });
                         tbRow.addView(imgView);
                         tbBaiTap.addView(tbRow);
                     }
@@ -162,7 +176,6 @@ public class ExcerciseFragment extends Fragment {
         });
 
         flag = false;
-
     }
 
     private void addControl(View view) {
@@ -171,5 +184,6 @@ public class ExcerciseFragment extends Fragment {
     }
 
     private void setEvent(){
+        getExercise();
     }
 }

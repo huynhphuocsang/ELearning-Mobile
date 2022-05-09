@@ -3,7 +3,11 @@ package com.example.elearningptit.model;
 import java.util.List;
 
 public class ExerciseSubmit {
-    private Exercise exercise;
+    private int excerciseId;
+    private String excerciseTitle;
+    private String excerciseContent;
+    private String startTime;
+    private String endTime;
     private String submitTime;
     private String submitContent;
     private List<Document> documents;
@@ -12,20 +16,56 @@ public class ExerciseSubmit {
     public ExerciseSubmit() {
     }
 
-    public ExerciseSubmit(Exercise exercise, String submitTime, String submitContent, List<Document> documents, Document submitFile) {
-        this.exercise = exercise;
+    public ExerciseSubmit(int excerciseId, String excerciseTitle, String excerciseContent, String startTime, String endTime, String submitTime, String submitContent, List<Document> documents, Document submitFile) {
+        this.excerciseId = excerciseId;
+        this.excerciseTitle = excerciseTitle;
+        this.excerciseContent = excerciseContent;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.submitTime = submitTime;
         this.submitContent = submitContent;
         this.documents = documents;
         this.submitFile = submitFile;
     }
 
-    public Exercise getExercise() {
-        return exercise;
+    public int getExcerciseId() {
+        return excerciseId;
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public void setExcerciseId(int excerciseId) {
+        this.excerciseId = excerciseId;
+    }
+
+    public String getExcerciseTitle() {
+        return excerciseTitle;
+    }
+
+    public void setExcerciseTitle(String excerciseTitle) {
+        this.excerciseTitle = excerciseTitle;
+    }
+
+    public String getExcerciseContent() {
+        return excerciseContent;
+    }
+
+    public void setExcerciseContent(String excerciseContent) {
+        this.excerciseContent = excerciseContent;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getSubmitTime() {
