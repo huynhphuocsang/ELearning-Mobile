@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,16 +32,19 @@ import com.example.elearningptit.model.AvatarResponse;
 import com.example.elearningptit.model.RealPathUtil;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallAvatar;
-import com.example.elearningptit.remote.APICallSignin;
 import com.example.elearningptit.remote.APICallUser;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -195,14 +197,13 @@ public class infor_fragment extends Fragment {
                 String realPath = RealPathUtil.getRealPath(getContext(),selectedImage);
                 File file = new File(realPath);
 
-//                RequestBody bodyAvatar = RequestBody.create(MediaType.parse("multipart/form-data"),file);
-                RequestBody bodyAvatar = RequestBody.create(MediaType.parse("image/*"), file);
+                RequestBody bodyAvatar = RequestBody.create(MediaType.parse("multipart/form-data"),file);
                 MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),bodyAvatar);
 
                 SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
                 String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
-                Call<AvatarResponse> avatarCall = APICallAvatar.apiCall.uploadAvatar("application/json","Bearer "+jwtToken,multipartBody);
+                Call<AvatarResponse> avatarCall = APICallAvatar.apiCall.uploadAvatar("Bearer "+jwtToken,multipartBody);
                 avatarCall.enqueue(new Callback<AvatarResponse>() {
                     @Override
                     public void onResponse(Call<AvatarResponse> call, Response<AvatarResponse> response) {
@@ -210,7 +211,13 @@ public class infor_fragment extends Fragment {
                             AvatarResponse avatarResponse = response.body();
 
                             progressDialog.dismiss();
-                            Picasso.get().load(avatarResponse.getDowloadURL()).into(imgAvatar);
+
+                            OkHttpClient client = getClient(jwtToken);
+                            Picasso picasso = new Picasso.Builder(getContext())
+                                    .downloader(new OkHttp3Downloader(client))
+                                    .build();
+
+                            picasso.get().load(avatarResponse.getDowloadURL()).resize(100,0).into(imgAvatar);
                             Toast.makeText(getContext(), "Cập nhật ảnh đại diện thành công!", Toast.LENGTH_SHORT).show();
                         }else{
                             progressDialog.dismiss();
@@ -221,7 +228,7 @@ public class infor_fragment extends Fragment {
                     @Override
                     public void onFailure(Call<AvatarResponse> call, Throwable t) {
                         progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Cập nhật ảnh đại diện thất bại!"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "failed: Cập nhật ảnh đại diện thất bại!"+t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -285,7 +292,14 @@ public class infor_fragment extends Fragment {
                     String tempUsername = preferences.getString(getResources().getString(R.string.KEY_USERNAME), "");
 
                     tvUsername.setText(tempUsername);
-                    Picasso.get().load(userInfo.getAvatar()).into(imgAvatar);
+
+
+                    OkHttpClient client = getClient(jwtToken);
+                   Picasso picasso = new Picasso.Builder(getContext())
+                            .downloader(new OkHttp3Downloader(client))
+                            .build();
+                   picasso.load(userInfo.getAvatar()).resize(100,0).into(imgAvatar);
+
                 } else if (response.code() == 401) {
                     //token expire
                     //logout
@@ -321,6 +335,20 @@ public class infor_fragment extends Fragment {
         editor.putString(getResources().getString(R.string.IS_LOGIN), "false");
         editor.apply();
         getActivity().finish();
+    }
+    public OkHttpClient getClient(String jwttoken){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer "+jwttoken)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        return client;
     }
 
 }
