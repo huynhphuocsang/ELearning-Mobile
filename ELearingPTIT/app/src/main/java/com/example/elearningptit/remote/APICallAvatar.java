@@ -9,7 +9,6 @@ import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -21,8 +20,9 @@ public interface APICallAvatar {
     APICallAvatar apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallAvatar.class);
 
+
     @Multipart
     @POST("avatar/upload")
-    Call<AvatarResponse> uploadAvatar(@Header("Accept") String json,@Header("Authorization") String token, @Part MultipartBody.Part file);
+    Call<AvatarResponse> uploadAvatar(@Header("Authorization") String token, @Part MultipartBody.Part file);
 
 }
