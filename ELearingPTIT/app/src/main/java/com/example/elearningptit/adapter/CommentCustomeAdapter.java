@@ -1,11 +1,15 @@
 package com.example.elearningptit.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,29 +88,55 @@ public class CommentCustomeAdapter extends ArrayAdapter {
             ibtDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //delete comment
-                    Call<String> call = APICallPost.apiCall.deleteComment(token, comment.getCommentId());
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            if (response.code() == 200) {
-                                onAfterDeleteComment.doSomething();
-                                Toast.makeText(getContext(), "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    Dialog dialog = new Dialog(getContext());
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.verify_logout_dialog);
 
+                    Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
+                    Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
+                    TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
+
+                    tvContent.setText("Bạn có chắc muốn xóa bình luận không?");
+
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(getContext(), "Xóa bình luận thất bại", Toast.LENGTH_SHORT).show();
+                        public void onClick(View view) {
+                            dialog.dismiss();
                         }
                     });
+                    btnVerify.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            deleteComment(comment);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
                 }
             });
         }
 
-
         return convertView;
+    }
+
+    void deleteComment (PostCommentDTO comment) {
+        //delete comment
+        Call<String> call = APICallPost.apiCall.deleteComment(token, comment.getCommentId());
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    onAfterDeleteComment.doSomething();
+                    Toast.makeText(getContext(), "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa bình luận thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
