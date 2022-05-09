@@ -15,9 +15,6 @@ import retrofit2.http.Header;
 
 public interface APICallDepartment {
 
-    String BASE_URL = "http://192.168.1.11:8080/api/";
-
-
     Gson gson = new GsonBuilder().create();
     APICallDepartment apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallDepartment.class);

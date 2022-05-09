@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:orientation="vertical"
     android:background="@drawable/post_custom_shape">
     <LinearLayout
+        android:id="@+id/llPostItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
         android:orientation="vertical">
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,34 +52,35 @@
                         android:textSize="10dp" />
                 </LinearLayout>
             </LinearLayout>
-            <ImageButton
-                android:id="@+id/ibtItemPostDelete"
-                android:layout_width="10dp"
-                android:layout_height="12dp"
-                android:layout_gravity="right"
-                android:src="@drawable/post_delete"/>
-        </FrameLayout>
+            <TextView
+                android:id="@+id/tvItemPostContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:text="Nhóm 6 làm bài xuất sắc, thầy cho cả nhóm 10 điểm"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/post_item_line"/>
         <TextView
-            android:id="@+id/tvItemPostContent"
+            android:id="@+id/tvItemPostCommentAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            android:text="Nhóm 6 làm bài xuất sắc, thầy cho cả nhóm 10 điểm"/>
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:textSize="10dp"
+            android:text="3 bình luận"/>
     </LinearLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_gravity="center"
-        android:src="@drawable/post_item_line"/>
-    <TextView
-        android:id="@+id/tvItemPostCommentAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:textSize="10dp"
-        android:text="3 bình luận"/>
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/ibtItemPostDelete"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="#00FFFFFF"
+        android:layout_gravity="right"
+        android:src="@drawable/post_delete"/>
+</FrameLayout>

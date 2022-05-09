@@ -18,8 +18,6 @@ import retrofit2.http.Query;
 
 public interface APICallNotification {
 
-    String BASE_URL = "http://192.168.1.11:8080/api/notification/";
-
     Gson gson = new GsonBuilder().setLenient().create();
     APICallNotification apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallNotification.class);
