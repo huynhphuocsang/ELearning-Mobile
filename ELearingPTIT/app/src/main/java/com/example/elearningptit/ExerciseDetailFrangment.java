@@ -157,11 +157,17 @@ public class ExerciseDetailFrangment extends Fragment {
     }
 
     public String subString(String time){
-        String[] data = time.substring(0,10).split("/");
-        String day = data[0];
-        String month = data[1];
-        String year = data[2];
-        return day+month+year;
+        if(!time.equals(""))
+        {
+            String[] data = time.substring(0,10).split("/");
+            String day = data[0];
+            String month = data[1];
+            String year = data[2];
+            return day+month+year;
+        }
+        else{
+            return "";
+        }
     }
 
 }
