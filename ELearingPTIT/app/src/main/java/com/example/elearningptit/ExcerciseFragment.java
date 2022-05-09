@@ -50,8 +50,6 @@ public class ExcerciseFragment extends Fragment {
     ImageView imgView;
 
     private List<Exercise> listExercise;
-    FragmentActivity dsExercise;
-    private Document submitFile;
     private Boolean flag = false;
 
     // TODO: Rename and change types of parameters
@@ -95,7 +93,6 @@ public class ExcerciseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_excercise, container, false);
         addControl(view);
         setEvent();
-        getExercise();
         return view;
     }
 
@@ -111,8 +108,6 @@ public class ExcerciseFragment extends Fragment {
                     CreditClassDetail ex = response.body();
                     listExercise = ex.getExcercises();
                     for (Exercise exercise: listExercise) {
-                        Log.e("Item: ", exercise.getTitle());
-                        Log.e("ID: " , exercise.getExcerciseId()+ "");
                         TableRow tbRow = new TableRow(getContext());
 
                         tv = new TextView(getContext());
@@ -138,7 +133,6 @@ public class ExcerciseFragment extends Fragment {
                                         imgView.setImageResource(R.drawable.ic_ok);
                                         flag = true;
                                     }
-
                                 }
                             }
 
@@ -158,22 +152,15 @@ public class ExcerciseFragment extends Fragment {
                         tbRow.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-//                                ExerciseDetailFrangment studentManagerFragment = ExerciseDetailFrangment.newInstance(exercise.getExcerciseId()+"", exercise.getExcerciseId()+"");
-//
-//                                FragmentManager fragmentManager = dsExercise.getSupportFragmentManager();
-//                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                fragmentTransaction.replace(R.id.fragmentContainerView, studentManagerFragment);
-//                                fragmentTransaction.addToBackStack(null);
-//                                fragmentTransaction.commit();
+                                ExerciseDetailFrangment exerciseManagerFragment = ExerciseDetailFrangment.newInstance(
+                                        exercise.getTitle(), exercise.getEndTime(), exercise.getExcerciseContent(),
+                                        1, exercise.getExcerciseId());
 
-//                                ExerciseDetailFrangment exerciseManagerFragment = ExerciseDetailFrangment.newInstance("ss","ss");
-//
-//                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                                FragmentTransaction ft = fragmentManager.beginTransaction();
-//                                ft.replace(R.id.fragmentContainerView, exerciseManagerFragment);
-//                                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//                                ft.addToBackStack(null);
-//                                ft.commit();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.fragmentContainerCreditClass, exerciseManagerFragment);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
                             }
                         });
                         tbRow.addView(imgView);
@@ -189,7 +176,6 @@ public class ExcerciseFragment extends Fragment {
         });
 
         flag = false;
-
     }
 
     private void addControl(View view) {
@@ -198,5 +184,6 @@ public class ExcerciseFragment extends Fragment {
     }
 
     private void setEvent(){
+        getExercise();
     }
 }
