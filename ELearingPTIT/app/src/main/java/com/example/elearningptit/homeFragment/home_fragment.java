@@ -1,18 +1,40 @@
 package com.example.elearningptit.homeFragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elearningptit.CreditClassActivity;
 import com.example.elearningptit.R;
+import com.example.elearningptit.adapter.NotificationCustomeAdapter;
+import com.example.elearningptit.model.NotificationPageForUser;
+import com.example.elearningptit.model.TimelineDTO;
+import com.example.elearningptit.model.TimelineDTOList;
+import com.example.elearningptit.remote.APICallNotification;
+import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.timetable.time_table_fragment;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +44,9 @@ import com.example.elearningptit.R;
 public class home_fragment extends Fragment {
 
     Button btnTemp ;
+    LinearLayout llSchedule;
+    TextView tvTodayMorningRoom, tvTodayMorningClass,tvTodayAfterRoom,tvTodayAfterClass,tvTomoMorningRoom, tvTomoMorningClass,tvTomoAfterRoom,tvTomoAfterClass;
+    ListView lvListCreditClass;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -73,6 +98,7 @@ public class home_fragment extends Fragment {
     }
 
     private void setEvent() {
+        getTimeline();
         btnTemp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,10 +111,90 @@ public class home_fragment extends Fragment {
 
             }
         });
-    }
 
+        llSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentContainerView, timeTableFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }catch (Exception e){
+                    Log.d("print",e.getMessage());
+                }
+
+            }
+        });
+    }
+    private void getTimeline() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        String today=dtf.format(now);
+        Call<List<TimelineDTO>> gettimetable = APICallUser.apiCall.getTimetable("Bearer " + jwtToken, today);
+        gettimetable.enqueue(new Callback<List<TimelineDTO>>() {
+
+            @Override
+            public void onResponse(Call<List<TimelineDTO>> call, Response<List<TimelineDTO>> response) {
+                if (response.code() == 200) {
+                    List<TimelineDTO> timelineDTOList = response.body();
+                    timelineDTOList.forEach((timelineDTO -> {
+                        if(now.getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
+                            if(timelineDTO.getEndLesson()<=5){
+                                tvTodayMorningRoom.setText(timelineDTO.getRoom());
+                                tvTodayMorningClass.setText(timelineDTO.getSubjectName());
+                            }
+                            else{
+                                tvTodayAfterRoom.setText(timelineDTO.getRoom());
+                                tvTodayAfterClass.setText(timelineDTO.getSubjectName());
+                            }
+                        }else if((now.plusDays(1)).getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
+                            if(timelineDTO.getEndLesson()<=5){
+                                tvTomoMorningRoom.setText(timelineDTO.getRoom());
+                                tvTomoMorningClass.setText(timelineDTO.getSubjectName());
+                            }
+                            else{
+                                tvTomoAfterRoom.setText(timelineDTO.getRoom());
+                                tvTomoAfterClass.setText(timelineDTO.getSubjectName());
+                            }
+                        }
+
+                    }));
+
+                } else if (response.code() == 400) {
+                    Toast.makeText(getContext(), "Dữ liệu yêu cầu không hợp lệ", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Đường dẫn không tồn tại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TimelineDTO>> call, Throwable t) {
+                Toast.makeText(getContext(), "Thất bại rồi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
     private void addControl(View view) {
 
         btnTemp = view.findViewById(R.id.tempButton);
+        llSchedule=view.findViewById(R.id.llSchedule);
+
+        tvTodayMorningRoom=view.findViewById(R.id.tvTodayMorningRoom);
+        tvTodayMorningClass=view.findViewById(R.id.tvTodayMorningClass);
+        tvTodayAfterRoom=view.findViewById(R.id.tvTodayAfterRoom);
+        tvTodayAfterClass=view.findViewById(R.id.tvTodayAfterClass);
+        tvTomoMorningRoom=view.findViewById(R.id.tvTomoMorningRoom);
+        tvTomoMorningClass=view.findViewById(R.id.tvTomoMorningClass);
+        tvTomoAfterRoom=view.findViewById(R.id.tvTomoAfterRoom);
+        tvTomoAfterClass=view.findViewById(R.id.tvTomoAfterClass);
+
+        lvListCreditClass=view.findViewById(R.id.lvListCreditClass);
     }
 }

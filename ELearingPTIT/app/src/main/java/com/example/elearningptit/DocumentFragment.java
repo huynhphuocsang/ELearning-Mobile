@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,9 @@ public class DocumentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView tenMon, tenGV;
+    ListView listTL;
 
     public DocumentFragment() {
         // Required empty public constructor
@@ -59,6 +64,23 @@ public class DocumentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_document, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_document, container, false);
+
+        setControl(view);
+        setEvent();
+        return view;
     }
+
+
+    private void setControl(View view) {
+        tenMon =view.findViewById(R.id.textTenMon);
+        tenGV = view.findViewById(R.id.textTenGV);
+        listTL = view.findViewById(R.id.listViewTL);
+    }
+
+    private void setEvent() {
+
+    }
+
 }
