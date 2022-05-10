@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/post_custom_shape">
+    <LinearLayout
+        android:id="@+id/llPostItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imItemPostAvatar"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/post_default_avatar"
+                    app:civ_border_width="2dp"/>
+
+                <LinearLayout
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvItemPostFullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Họ và tên"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvItemPostTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10:12 6/5/2022"
+                        android:textSize="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvItemPostContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:text="Nhóm 6 làm bài xuất sắc, thầy cho cả nhóm 10 điểm"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/post_item_line"/>
+        <TextView
+            android:id="@+id/tvItemPostCommentAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:textSize="10dp"
+            android:text="3 bình luận"/>
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/ibtItemPostDelete"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="#00FFFFFF"
+        android:layout_gravity="right"
+        android:src="@drawable/post_delete"/>
+</FrameLayout>

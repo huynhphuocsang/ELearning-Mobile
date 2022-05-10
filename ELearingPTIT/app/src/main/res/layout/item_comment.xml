@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:background="@drawable/comment_custom_shape">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivCommentAvatar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/post_default_avatar"
+        app:civ_border_width="2dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvCommentFullname"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Họ và tên"
+                    android:textStyle="bold"
+                    android:textSize="12dp"/>
+                <TextView
+                    android:id="@+id/tvCommentTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:12 6/5/2022"
+                    android:textSize="12dp"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvCommentContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="Dạ, là tất cả thành viền trong nhóm đều đăng ký lịch thực hành giống nhau phải không thầy"/>
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/ibtCommentDelete"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="right"
+            android:background="#00FFFFFF"
+            android:src="@drawable/post_delete"/>
+    </FrameLayout>
+
+</LinearLayout>

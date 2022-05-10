@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +22,20 @@ import android.widget.Toast;
 
 import com.example.elearningptit.CreditClassActivity;
 import com.example.elearningptit.R;
+import com.example.elearningptit.adapter.ListCreditClassAdapter;
 import com.example.elearningptit.adapter.NotificationCustomeAdapter;
+import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.NotificationPageForUser;
 import com.example.elearningptit.model.TimelineDTO;
 import com.example.elearningptit.model.TimelineDTOList;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallUser;
 import com.example.elearningptit.timetable.time_table_fragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,8 +51,11 @@ public class home_fragment extends Fragment {
 
     Button btnTemp ;
     LinearLayout llSchedule;
-    TextView tvTodayMorningRoom, tvTodayMorningClass,tvTodayAfterRoom,tvTodayAfterClass,tvTomoMorningRoom, tvTomoMorningClass,tvTomoAfterRoom,tvTomoAfterClass;
+    TextView tvTodayMorningRoom, tvTodayMorningClass,tvTodayAfterRoom,tvTodayAfterClass,
+            tvTomoMorningRoom, tvTomoMorningClass,tvTomoAfterRoom,tvTomoAfterClass,
+            tvSeeMoreCreditclass;
     ListView lvListCreditClass;
+    ListCreditClassAdapter listCreditClassAdapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -99,30 +108,42 @@ public class home_fragment extends Fragment {
 
     private void setEvent() {
         getTimeline();
-        btnTemp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               try{
-                   Intent intent = new Intent(getActivity(), CreditClassActivity.class);
-                   startActivity(intent);
-               }catch (Exception e){
-                   Log.d("print",e.getMessage());
-               }
-
-            }
-        });
+        getCreditClassRegistered();
+//        tvSeeMoreCreditclass.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//               try{
+//                   Intent intent = new Intent(getActivity(), CreditClassActivity.class);
+//                   startActivity(intent);
+//               }catch (Exception e){
+//                   Log.d("print",e.getMessage());
+//               }
+//
+//            }
+//        });
 
         llSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
-                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
+//                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
+                    //Navigation.findNavController(view).navigate(R.id.time_table_fragment);
+                    //time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
 
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragmentContainerView, timeTableFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    FragmentTransaction ft = fragmentManager.beginTransaction();
+//                    ft.replace(R.id.fragmentContainerView, timeTableFragment);
+//                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
+
+
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.fragmentContainerView, timeTableFragment);
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+
                 }catch (Exception e){
                     Log.d("print",e.getMessage());
                 }
@@ -178,12 +199,51 @@ public class home_fragment extends Fragment {
                 Toast.makeText(getContext(), "Thất bại rồi", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getCreditClassRegistered() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        Call<List<CreditClass>> getUserRegistration = APICallUser.apiCall.getUserRegistration("Bearer " + jwtToken);
+        getUserRegistration.enqueue(new Callback<List<CreditClass>>() {
+
+            @Override
+            public void onResponse(Call<List<CreditClass>> call, Response<List<CreditClass>> response) {
+                if (response.code() == 200) {
+                    List<CreditClass> creditClasss = response.body();
+                    List<List<CreditClass>> creditClassList = new ArrayList<>();
+                    for(int i=0;i<creditClasss.size();i+=3){
+                        List<CreditClass> item= new ArrayList<>();
+                        item.add(creditClasss.get(i));
+                        if(i+1<creditClasss.size()){
+                            item.add(creditClasss.get(i+1));
+                        }
+                        if(i+2<creditClasss.size()){
+                            item.add(creditClasss.get(i+2));
+                        }
+                        creditClassList.add(item);
+                    }
+                    listCreditClassAdapter=new ListCreditClassAdapter(getContext(), R.layout.list_credit_class, creditClassList,getActivity());
+                    lvListCreditClass.setAdapter(listCreditClassAdapter);
+
+                } else if (response.code() == 400) {
+                    Toast.makeText(getContext(), "Dữ liệu yêu cầu không hợp lệ", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Đường dẫn không tồn tại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CreditClass>> call, Throwable t) {
+                Toast.makeText(getContext(), "Thất bại rồi", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
     private void addControl(View view) {
 
-        btnTemp = view.findViewById(R.id.tempButton);
+        //btnTemp = view.findViewById(R.id.tempButton);
         llSchedule=view.findViewById(R.id.llSchedule);
 
         tvTodayMorningRoom=view.findViewById(R.id.tvTodayMorningRoom);
@@ -196,5 +256,7 @@ public class home_fragment extends Fragment {
         tvTomoAfterClass=view.findViewById(R.id.tvTomoAfterClass);
 
         lvListCreditClass=view.findViewById(R.id.lvListCreditClass);
+
+        tvSeeMoreCreditclass=view.findViewById(R.id.tvSeeMoreCreditclass);
     }
 }

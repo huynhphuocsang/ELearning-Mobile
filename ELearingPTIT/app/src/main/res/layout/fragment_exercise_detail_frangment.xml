@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExerciseDetailFrangment"
+    android:orientation="vertical"
+    android:background="#ECECEC"
+    android:padding="20dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="#2980B9"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:id="@+id/txtTitle"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đến hạn: "
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EndTime"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/txtEndTime"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="#fff">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:text="Content"
+            android:id="@+id/txtContent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phần này làm sao ta?" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="#fff">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bài tập của bạn"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:paddingRight="10dp"
+                    android:textColor="#00A3FF"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:id="@+id/txtStatus"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#00A3FF"
+                    android:layout_gravity="end"
+                    android:text="SubmitTime"
+                    android:id="@+id/txtSubmitTime"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="phần này làm sao ta?" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#5EC788"
+            android:text="Thêm file"
+            android:textAllCaps="false"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btnAddFile"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

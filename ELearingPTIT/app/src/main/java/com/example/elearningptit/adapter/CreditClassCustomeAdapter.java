@@ -45,7 +45,7 @@ public class CreditClassCustomeAdapter extends ArrayAdapter {
         for(String n: creditClassList.get(position).getTeachers()){
             teacherNames += n +"\n";
         }
-        tvClassName.setText(teacherNames);
+        tvTeacher.setText(teacherNames);
         return convertView;
     }
 }

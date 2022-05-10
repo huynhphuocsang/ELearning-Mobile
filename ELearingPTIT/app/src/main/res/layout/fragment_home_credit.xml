@@ -3,12 +3,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ECECEC"
     tools:context=".HomeCreditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Home for credit class" />
+        android:layout_marginLeft="52px"
+        android:layout_marginRight="52px"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="99px">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/post_cover">
+            </ImageView>
+            <TextView
+                android:id="@+id/tvHomeCreditHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="10px"
+                android:text="Lập trình mobile - 1434"
+                android:textSize="15dp">
+            </TextView>
+            <TextView
+                android:id="@+id/tvHomeCreditSemester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="120px"
+                android:text="học kỳ: 1 - Năm học: 2022-2023"
+                android:textSize="10dp"></TextView>
+            <TextView
+                android:id="@+id/tvHomeCreditTeacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="150px"
+                android:text="Trương Bá Thái"
+                android:textSize="10dp"></TextView>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15px"
+            android:layout_marginBottom="15px"
+            android:orientation="horizontal"
+            android:background="@drawable/post_custom_shape">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivHomeCreditAvatar"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/post_default_avatar"
+                app:civ_border_width="2dp"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etHomeCreditPostContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dp"
+                    android:hint="Tạo bài đăng với lớp học...."
+                    android:textSize="10dp"/>
+                <ImageButton
+                    android:id="@+id/ibtHomeCreditPost"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/post_send_comment"
+                    android:background="#00FFFFFF"
+                    android:layout_gravity="center_vertical|right"/>
+            </FrameLayout>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/lvPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:divider="#ECECEC"
+            android:dividerHeight="10dp"></ListView>
+    </LinearLayout>
 
 </LinearLayout>

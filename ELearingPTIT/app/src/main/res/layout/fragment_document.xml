@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="20dp"
-    android:background="#F3E1DE"
     android:orientation="vertical"
     android:padding="15px"
+    android:background="#ECECEC"
     tools:context=".DocumentFragment">
 
     <!-- TODO: Update blank fragment layout -->
