@@ -2,10 +2,6 @@ package com.example.elearningptit.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,23 +20,22 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.elearningptit.CreditClassActivity;
 import com.example.elearningptit.EventListener;
 import com.example.elearningptit.PostDeltaFragment;
 import com.example.elearningptit.R;
-import com.example.elearningptit.model.CreditClassDetailDTO;
-import com.example.elearningptit.model.NotificationDTO;
-import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.PostResponseDTO;
-import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallPost;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.OkHttp3Downloader;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,18 +46,18 @@ public class PostCustomeAdapter extends ArrayAdapter {
     List<PostDTO> posts;
     HashMap<Long, Integer> commentAmounts;
     FragmentActivity fragmentActivity;
-    String token;
+    String jwtToken;
     EventListener onAfterDeletePost;
     List<String> roles;
 
-    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTO> posts, HashMap<Long, Integer> commentAmounts, FragmentActivity fragmentActivity, String token, EventListener onAfterDeletePost, List<String> roles) {
+    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTO> posts, HashMap<Long, Integer> commentAmounts, FragmentActivity fragmentActivity, String jwtToken, EventListener onAfterDeletePost, List<String> roles) {
         super(context, resource, posts);
         this.context = context;
         this.layoutID = resource;
         this.posts = posts;
         this.commentAmounts = commentAmounts;
         this.fragmentActivity=fragmentActivity;
-        this.token = token;
+        this.jwtToken = jwtToken;
         this.onAfterDeletePost = onAfterDeletePost;
         this.roles = roles;
     }
@@ -93,7 +88,13 @@ public class PostCustomeAdapter extends ArrayAdapter {
         //set avatar
         if (posts.get(position).getAvartarPublisher() != null && !posts.get(position).getAvartarPublisher().isEmpty())
         {
-            Picasso.get().load(posts.get(position).getAvartarPublisher()).into(imAvatar);
+            OkHttpClient client = getClient(jwtToken);
+            Picasso picasso = new Picasso.Builder(getContext())
+                    .downloader(new OkHttp3Downloader(client))
+                    .build();
+            picasso.load(posts.get(position).getAvartarPublisher()).resize(24,24).into(imAvatar);
+
+//            Picasso.get().load(posts.get(position).getAvartarPublisher()).into(imAvatar);
         }
 
         tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
@@ -109,7 +110,7 @@ public class PostCustomeAdapter extends ArrayAdapter {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainerCreditClass, postDeltaFragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();;
+                fragmentTransaction.commit();
             }
         });
 
@@ -156,8 +157,23 @@ public class PostCustomeAdapter extends ArrayAdapter {
         return convertView;
     }
 
+    public OkHttpClient getClient(String jwttoken) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + jwttoken)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        return client;
+    }
+
     void deletePost (int position) {
-        Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost(token, posts.get(position).getPostId());
+        Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost(jwtToken, posts.get(position).getPostId());
         postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
             @Override
             public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
