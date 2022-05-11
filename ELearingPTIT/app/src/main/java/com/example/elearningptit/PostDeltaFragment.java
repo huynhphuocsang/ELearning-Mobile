@@ -1,12 +1,9 @@
 package com.example.elearningptit;
 
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.adapter.CommentCustomeAdapter;
-import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostCommentRequest;
 import com.example.elearningptit.remote.APICallPost;
@@ -30,7 +27,6 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -51,8 +47,10 @@ public class PostDeltaFragment extends Fragment {
     EditText etComment;
     ImageButton ibtSendComment;
     ArrayList<String> roles;
+    LinearLayout test;
 
     CommentCustomeAdapter adapter;
+    List<PostCommentDTO> comments;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +60,8 @@ public class PostDeltaFragment extends Fragment {
     public static final String POST_CONTENT = "POST_CONTENT";
     public static final String POSTED_TIME = "POSTED_TIME";
     public static final String ROLES = "ROLES";
+
+    public  EventListener onDetach;
 
     // TODO: Rename and change types of parameters
     private Long postId;
@@ -96,15 +96,7 @@ public class PostDeltaFragment extends Fragment {
 
     @Override
     public void onDetach() {
-//        Toast.makeText(getContext(), "Unauthorized1", Toast.LENGTH_SHORT).show();
-//
-//        HomeCreditFragment homeCreditFragment = HomeCreditFragment.newInstance();
-//
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fragmentContainerCreditClass, homeCreditFragment);
-//        fragmentTransaction.commit();
-
+        onDetach.doSomething(comments.size());
 
         super.onDetach();
     }
@@ -139,18 +131,24 @@ public class PostDeltaFragment extends Fragment {
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
 
         //get comments
-        Call<List<PostCommentDTO>> comments = APICallPost.apiCall.getAllComments("Bearer " + jwtToken, postId);
-        comments.enqueue(new Callback<List<PostCommentDTO>>() {
+        Call<List<PostCommentDTO>> callAllComments = APICallPost.apiCall.getAllComments("Bearer " + jwtToken, postId);
+        callAllComments.enqueue(new Callback<List<PostCommentDTO>>() {
             @Override
             public void onResponse(Call<List<PostCommentDTO>> call, Response<List<PostCommentDTO>> response) {
                 if (response.code() == 200) {
-                    List<PostCommentDTO> comments = response.body();
+                    comments = response.body();
+                    onDetach.doSomething(comments.size());
 
                     //set adapter
                     EventListener afterDeleteComment = new EventListener() {
                         @Override
                         public void doSomething() {
                             getInforForCommentListView();
+                        }
+
+                        @Override
+                        public void doSomething(int i) {
+
                         }
                     };
 
@@ -252,9 +250,17 @@ public class PostDeltaFragment extends Fragment {
         });
 
         getInforForCommentListView();
+
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //to handle event
+            }
+        });
     }
 
     private void addControl(View view) {
+        test = view.findViewById(R.id.postDeltaTest);
         ivAvatar = view.findViewById(R.id.ivPostDeltaAvatar);
         tvFullname = view.findViewById(R.id.tvPostDeltaFullname);
         tvTime = view.findViewById(R.id.tvPostDeltaTime);
