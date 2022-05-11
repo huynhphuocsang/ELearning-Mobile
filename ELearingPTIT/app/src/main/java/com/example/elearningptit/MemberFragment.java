@@ -77,6 +77,8 @@ public class MemberFragment extends Fragment {
         tenGv = view.findViewById(R.id.textTenGV);
         hinhGV = view.findViewById(R.id.ImageGV);
         listSV = view.findViewById(R.id.listViewDSSV);
+
+//        hinhGV.setVisibility(View.INVISIBLE); ẩn
     }
 
     private void setEvent() {

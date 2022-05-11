@@ -15,10 +15,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface APICallCreditClass {
-    Gson gson = new GsonBuilder().create();
+    Gson gson = new GsonBuilimport retrofit2.http.Query;
+    der().create();
     APICallCreditClass apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallCreditClass.class);
 
@@ -43,5 +43,6 @@ public interface APICallCreditClass {
 
     @GET("credit-class/creditclass-detail?")
     Call<CreditClassDetail> getCreditClassDetail(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
+
 
 }

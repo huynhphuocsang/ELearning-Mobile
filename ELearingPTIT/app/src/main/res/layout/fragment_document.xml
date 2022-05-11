@@ -94,8 +94,55 @@
     <ListView
         android:id="@+id/listViewTL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="347dp"
         android:orientation="horizontal"></ListView>
+
+    <LinearLayout
+        android:id="@+id/ThemThuMuc"
+        android:layout_width="130dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/anhfoder" />
+
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Thư Mục Mới "
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/TaiTepLen"
+        android:layout_width="130dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/anhfoder" />
+
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Tải Tệp Lên "
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </LinearLayout>
