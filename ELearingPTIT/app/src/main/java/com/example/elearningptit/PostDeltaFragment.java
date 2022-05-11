@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +24,17 @@ import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostCommentRequest;
 import com.example.elearningptit.remote.APICallPost;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,6 +95,21 @@ public class PostDeltaFragment extends Fragment {
     }
 
     @Override
+    public void onDetach() {
+//        Toast.makeText(getContext(), "Unauthorized1", Toast.LENGTH_SHORT).show();
+//
+//        HomeCreditFragment homeCreditFragment = HomeCreditFragment.newInstance();
+//
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragmentContainerCreditClass, homeCreditFragment);
+//        fragmentTransaction.commit();
+
+
+        super.onDetach();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -132,7 +154,7 @@ public class PostDeltaFragment extends Fragment {
                         }
                     };
 
-                    adapter = new CommentCustomeAdapter(getContext(), R.layout.item_comment, comments, "Bearer " + jwtToken, afterDeleteComment, roles);
+                    adapter = new CommentCustomeAdapter(getContext(), R.layout.item_comment, comments, jwtToken, afterDeleteComment, roles);
                     lvComments.setAdapter(adapter);
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Unauthorized ", Toast.LENGTH_SHORT).show();
@@ -187,6 +209,21 @@ public class PostDeltaFragment extends Fragment {
         });
     }
 
+    public OkHttpClient getClient(String jwttoken) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer " + jwttoken)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        return client;
+    }
+
     private void setEvent() {
         tvFullname.setText(fullname);
         tvTime.setText(postedTime);
@@ -195,7 +232,16 @@ public class PostDeltaFragment extends Fragment {
         //set avatar
         if (avartarPublisher != null && !avartarPublisher.isEmpty())
         {
-            Picasso.get().load(avartarPublisher).into(ivAvatar);
+            SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+            String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
+            OkHttpClient client = getClient(jwtToken);
+            Picasso picasso = new Picasso.Builder(getContext())
+                    .downloader(new OkHttp3Downloader(client))
+                    .build();
+            picasso.load(avartarPublisher).resize(24,24).into(ivAvatar);
+
+//            Picasso.get().load(avartarPublisher).into(ivAvatar);
         }
 
         ibtSendComment.setOnClickListener(new View.OnClickListener() {

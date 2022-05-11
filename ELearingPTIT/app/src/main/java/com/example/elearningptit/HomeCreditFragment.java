@@ -31,11 +31,16 @@ import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallNotification;
 import com.example.elearningptit.remote.APICallPost;
 import com.example.elearningptit.remote.APICallUser;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,18 +82,16 @@ public class HomeCreditFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment HomeCreditFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeCreditFragment newInstance(String param1, String param2,String param3, String param4) {
+    public static HomeCreditFragment newInstance() {
         HomeCreditFragment fragment = new HomeCreditFragment();
         Bundle args = new Bundle();
-        args.putString(CREDITCLASS_ID, param1);
-        args.putString(SUBJECT_NAME, param2);
-        args.putString(SEMESTER, param3);
-        args.putString(TEACHER, param4);
+//        args.putString(CREDITCLASS_ID, param1);
+//        args.putString(SUBJECT_NAME, param2);
+//        args.putString(SEMESTER, param3);
+//        args.putString(TEACHER, param4);
         fragment.setArguments(args);
         //Toast.makeText(, param1+" "+param2+" "+param3+" "+param4, Toast.LENGTH_SHORT).show();
 
@@ -124,12 +127,12 @@ public class HomeCreditFragment extends Fragment {
         return view;
     }
 
-    void getCommentAmountsForPost (String token)
+    void getCommentAmountsForPost (String jwtToken)
     {
         HashMap<Long, Integer> hashMap = new HashMap<Long, Integer>();
         posts.forEach(postDTO -> {
             //get comment amount
-            Call<List<PostCommentDTO>> comments = APICallPost.apiCall.getAllComments(token, postDTO.getPostId());
+            Call<List<PostCommentDTO>> comments = APICallPost.apiCall.getAllComments("Bearer " + jwtToken, postDTO.getPostId());
             comments.enqueue(new Callback<List<PostCommentDTO>>() {
                 @Override
                 public void onResponse(Call<List<PostCommentDTO>> call, Response<List<PostCommentDTO>> response) {
@@ -139,8 +142,6 @@ public class HomeCreditFragment extends Fragment {
                         //if this is the last post
                         if (hashMap.size() == posts.size())
                         {
-                            //get avatar from api
-
                             //set adapter
                             EventListener afterDeletePost = new EventListener() {
                                 @Override
@@ -149,7 +150,7 @@ public class HomeCreditFragment extends Fragment {
                                 }
                             };
 
-                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), token, afterDeletePost, userInfo.getRoles());
+                            adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), jwtToken, afterDeletePost, userInfo.getRoles());
                             lvPost.setAdapter(adapter);
                         }
                     } else if (response.code() == 401) {
@@ -172,7 +173,7 @@ public class HomeCreditFragment extends Fragment {
     private void getInforForPostListView () {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-        Call<CreditClassDetailDTO> creditClassDetailDTOCall = APICallCreditClassDetail.apiCall.getCreditClassDelta("Bearer " + jwtToken, 1);
+        Call<CreditClassDetailDTO> creditClassDetailDTOCall = APICallCreditClassDetail.apiCall.getCreditClassDelta("Bearer " + jwtToken,  Long.valueOf(creditclass_id));
         creditClassDetailDTOCall.enqueue(new Callback<CreditClassDetailDTO>() {
             @Override
             public void onResponse(Call<CreditClassDetailDTO> call, Response<CreditClassDetailDTO> response) {
@@ -180,7 +181,7 @@ public class HomeCreditFragment extends Fragment {
                     CreditClassDetailDTO creditClassDetailDTO = response.body();
                     posts = creditClassDetailDTO.getListPost();
 
-                    getCommentAmountsForPost("Bearer " + jwtToken);
+                    getCommentAmountsForPost(jwtToken);
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 403) {
@@ -233,6 +234,21 @@ public class HomeCreditFragment extends Fragment {
 
     }
 
+    public OkHttpClient getClient(String jwttoken){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request newRequest = chain.request().newBuilder()
+                                .addHeader("Authorization", "Bearer "+jwttoken)
+                                .build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        return client;
+    }
+
     private void getUserInfo() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
@@ -247,7 +263,11 @@ public class HomeCreditFragment extends Fragment {
                     //set avatar
                     if (userInfo.getAvatar() != null && !userInfo.getAvatar().isEmpty())
                     {
-                        Picasso.get().load(userInfo.getAvatar()).into(ivAvatar);
+                        OkHttpClient client = getClient(jwtToken);
+                        Picasso picasso = new Picasso.Builder(getContext())
+                                .downloader(new OkHttp3Downloader(client))
+                                .build();
+                        picasso.load(userInfo.getAvatar()).resize(24,24).into(ivAvatar);
                     }
 
                     getInforForPostListView();
