@@ -2,6 +2,7 @@ package com.example.elearningptit.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,11 +106,25 @@ public class PostCustomeAdapter extends ArrayAdapter {
             public void onClick(View view) {
                 PostDTO post = posts.get(position);
                 PostDeltaFragment postDeltaFragment = PostDeltaFragment.newInstance(post.getPostId(), post.getAvartarPublisher(), post.getFullname(), post.getPostContent(), post.getPostedTime(), roles);
+                postDeltaFragment.onDetach = new EventListener() {
+                    @Override
+                    public void doSomething() {
+
+                    }
+
+                    @Override
+                    public void doSomething(int i) {
+                        commentAmounts.put(posts.get(position).getPostId(), i);
+                        tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
+                    }
+                };
 
                 FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainerCreditClass, postDeltaFragment);
                 fragmentTransaction.addToBackStack(null);
+
                 fragmentTransaction.commit();
             }
         });

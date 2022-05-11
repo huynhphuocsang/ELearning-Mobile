@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,12 +89,7 @@ public class HomeCreditFragment extends Fragment {
     public static HomeCreditFragment newInstance() {
         HomeCreditFragment fragment = new HomeCreditFragment();
         Bundle args = new Bundle();
-//        args.putString(CREDITCLASS_ID, param1);
-//        args.putString(SUBJECT_NAME, param2);
-//        args.putString(SEMESTER, param3);
-//        args.putString(TEACHER, param4);
         fragment.setArguments(args);
-        //Toast.makeText(, param1+" "+param2+" "+param3+" "+param4, Toast.LENGTH_SHORT).show();
 
         return fragment;
     }
@@ -148,7 +144,20 @@ public class HomeCreditFragment extends Fragment {
                                 public void doSomething() {
                                     getInforForPostListView();
                                 }
+
+                                @Override
+                                public void doSomething(int i) {
+
+                                }
                             };
+
+//                            EventListener onComeback = new EventListener() {
+//                                @Override
+//                                public void doSomething() {
+//                                    getCommentAmountsForPost(jwtToken);
+////                                    getInforForPostListView();
+//                                }
+//                            };
 
                             adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), jwtToken, afterDeletePost, userInfo.getRoles());
                             lvPost.setAdapter(adapter);
