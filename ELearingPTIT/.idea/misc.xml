@@ -3,19 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.36666666666666664" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.36666666666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.33" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.36666666666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_frangment.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.17451874366767983" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.35885416666666664" />
-        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_member.xml" value="0.17451874366767983" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_member.xml" value="0.33" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/item_comment.xml" value="0.35885416666666664" />
         <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.17451874366767983" />
-        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/list_member_ds.xml" value="0.17451874366767983" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.36666666666666664" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.2859375" />
+        <entry key="..\:/LTApp/ELearning-mobile/ELearingPTIT/app/src/main/res/layout/list_member_ds.xml" value="0.33" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_question.xml" value="0.1375" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />

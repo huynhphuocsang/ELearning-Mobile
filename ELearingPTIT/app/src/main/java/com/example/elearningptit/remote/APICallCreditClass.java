@@ -3,6 +3,7 @@ package com.example.elearningptit.remote;
 import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.CreditClassDetail;
+import com.example.elearningptit.model.CreditClassListMemberDTO;
 import com.example.elearningptit.model.CreditClassPageForUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,10 +16,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface APICallCreditClass {
-    Gson gson = new GsonBuilimport retrofit2.http.Query;
-    der().create();
+    Gson gson = new GsonBuilder().create();
     APICallCreditClass apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallCreditClass.class);
 
@@ -44,5 +45,7 @@ public interface APICallCreditClass {
     @GET("credit-class/creditclass-detail?")
     Call<CreditClassDetail> getCreditClassDetail(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
 
+    @GET("credit-class/ccreditclass-all-members?")
+    Call<CreditClassListMemberDTO> getCreditClassListMember(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
 
 }
