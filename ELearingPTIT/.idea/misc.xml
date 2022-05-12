@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_item.xml" value="0.138" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_radius_item.xml" value="0.138" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_question.xml" value="0.1375" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
@@ -19,7 +21,14 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document.xml" value="0.264" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document_full_width.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.264" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_join_credit_class_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_logout_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.25416666666666665" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.206" />

@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -47,11 +49,14 @@ public class ExerciseDetailFrangment extends Fragment {
     private String submitTitle;
     private String submitEndTime;
     private String submitContent;
+    private String submitFileName;
     private int documentID;
     private int exerciseID;
 
+
     TextView txtTitle, txtEndTime, txtContent, txtStatus, txtSubmitTime;
     Button btnAddFile;
+    LinearLayout submitFile;
 
     public ExerciseDetailFrangment() {
         // Required empty public constructor
@@ -110,6 +115,7 @@ public class ExerciseDetailFrangment extends Fragment {
         txtStatus = view.findViewById(R.id.txtStatus);
         txtSubmitTime = view.findViewById(R.id.txtSubmitTime);
         btnAddFile = view.findViewById(R.id.btnAddFile);
+        submitFile = view.findViewById(R.id.submitFile);
     }
 
     private void setEvent()
@@ -135,9 +141,18 @@ public class ExerciseDetailFrangment extends Fragment {
                     ExerciseSubmit exerSub = response.body();
                     if(!exerSub.getSubmitFile().equals(""))
                     {
+                        submitFileName = exerSub.getSubmitFile().getDocumentName();
                         txtSubmitTime.setText(subString(exerSub.getSubmitFile().getCreateAt()));
                         txtStatus.setText("Đã nộp");
                         txtStatus.setTextColor(Color.GREEN);
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        View convertView = inflater.inflate(R.layout.item_document_full_width, null);
+                        TextView submitName = convertView.findViewById(R.id.submitName);
+                        ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
+                        submitName.setText(submitFileName);
+                        submitFileTye.setImageResource(R.drawable.ic_word);
+                        submitFile.addView(convertView);
+
                     }
                 }
                 else if(response.code() == 404)
@@ -159,11 +174,11 @@ public class ExerciseDetailFrangment extends Fragment {
     public String subString(String time){
         if(!time.equals(""))
         {
-            String[] data = time.substring(0,10).split("/");
-            String day = data[0];
+            String[] data = time.substring(0,10).split("-");
+            String year = data[0];
             String month = data[1];
-            String year = data[2];
-            return day+month+year;
+            String day = data[2];
+            return day+ "/" + month + "/" + year;
         }
         else{
             return "";
