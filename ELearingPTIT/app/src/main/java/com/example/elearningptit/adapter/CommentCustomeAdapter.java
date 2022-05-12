@@ -85,12 +85,12 @@ public class CommentCustomeAdapter extends ArrayAdapter {
 //            Picasso.get().load(comment.getAvatar()).into(ivAvatar);
         }
 
-//        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
-//        {
-//            ibtDelete.setVisibility(View.INVISIBLE);
-//        }
-//        else
-//        {
+        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
+        {
+            ibtDelete.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
             ibtDelete.setVisibility(View.VISIBLE);
 
             ibtDelete.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,7 @@ public class CommentCustomeAdapter extends ArrayAdapter {
                     dialog.show();
                 }
             });
-//        }
+        }
 
         return convertView;
     }
