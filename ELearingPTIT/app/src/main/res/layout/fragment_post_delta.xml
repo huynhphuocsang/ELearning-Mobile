@@ -6,7 +6,9 @@
     android:orientation="vertical"
     android:background="#FFFFFF"
     tools:context=".PostDeltaFragment">
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/postDeltaTest"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
