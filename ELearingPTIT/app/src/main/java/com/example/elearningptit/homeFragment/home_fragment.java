@@ -55,7 +55,11 @@ public class home_fragment extends Fragment {
             tvTomoMorningRoom, tvTomoMorningClass,tvTomoAfterRoom,tvTomoAfterClass,
             tvSeeMoreCreditclass;
     ListView lvListCreditClass;
+
     ListCreditClassAdapter listCreditClassAdapter;
+
+    List<TimelineDTO> timelineDTOList;
+    List<CreditClass> creditClasss;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -163,7 +167,8 @@ public class home_fragment extends Fragment {
             @Override
             public void onResponse(Call<List<TimelineDTO>> call, Response<List<TimelineDTO>> response) {
                 if (response.code() == 200) {
-                    List<TimelineDTO> timelineDTOList = response.body();
+                    timelineDTOList = response.body();
+                    Toast.makeText(getContext(), timelineDTOList.size()+"", Toast.LENGTH_SHORT).show();
                     timelineDTOList.forEach((timelineDTO -> {
                         if(now.getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
                             if(timelineDTO.getEndLesson()<=5){
@@ -210,7 +215,7 @@ public class home_fragment extends Fragment {
             @Override
             public void onResponse(Call<List<CreditClass>> call, Response<List<CreditClass>> response) {
                 if (response.code() == 200) {
-                    List<CreditClass> creditClasss = response.body();
+                    creditClasss = response.body();
                     List<List<CreditClass>> creditClassList = new ArrayList<>();
                     for(int i=0;i<creditClasss.size();i+=3){
                         List<CreditClass> item= new ArrayList<>();

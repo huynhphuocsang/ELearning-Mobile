@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.forgotPassword.VerifyUserCodeActivity;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.remote.APICallSignin;
 import com.example.elearningptit.tokenManager.TokenManager;
+
+import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtUsername, txtPassword;
     Button btnLogin;
     TokenManager tokenManager;
+    TextView tvForgotPass;
 
 
     private static final String REFNAME = "JWTTOKEN";
@@ -85,6 +90,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+        tvForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this, VerifyUserCodeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addControl() {
@@ -92,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         txtUsername = findViewById(R.id.txtUsername);
         txtPassword = findViewById(R.id.txtPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        tvForgotPass=findViewById(R.id.tvForgotPass);
     }
     private void showToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

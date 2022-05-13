@@ -1,5 +1,6 @@
 package com.example.elearningptit;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class ExcerciseFragment extends Fragment {
     private List<Exercise> listExercise;
     private Boolean flag = false;
 
+    private String creditClassId="";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -99,7 +101,7 @@ public class ExcerciseFragment extends Fragment {
     private void getExercise() {
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
         String jwtToken = preferences.getString("jwttoken", "");
-        Call<CreditClassDetail> listExerciseCall = APICallCreditClass.apiCall.getCreditClassDetail("Bearer " + jwtToken, 1);
+        Call<CreditClassDetail> listExerciseCall = APICallCreditClass.apiCall.getCreditClassDetail("Bearer " + jwtToken, Integer.valueOf(creditClassId));
         listExerciseCall.enqueue(new Callback<CreditClassDetail>() {
             @Override
             public void onResponse(Call<CreditClassDetail> call, Response<CreditClassDetail> response) {
@@ -184,6 +186,8 @@ public class ExcerciseFragment extends Fragment {
     }
 
     private void setEvent(){
+        Intent getDaTa=getActivity().getIntent();
+        creditClassId=getDaTa.getStringExtra("CREDITCLASS_ID");
         getExercise();
     }
 }
