@@ -15,26 +15,40 @@
         android:orientation="vertical"
         android:layout_margin="20dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Bài tập đã giao"
                 android:textColor="#2980B9"
                 android:textStyle="bold"
-                android:textSize="20dp"/>
-            <Button
-                android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Thêm bài tập"
-                android:visibility="visible"/>
+                android:layout_weight="1"
+                android:gravity="end">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textSize="12dp"
+                    android:text="Thêm bài tập"
+                    android:visibility="invisible"
+                    android:drawableLeft="@drawable/ic_add"
+                    android:backgroundTint="#18AF55"/>
+            </LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -70,10 +84,6 @@
             </TableLayout>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/error"/>
         </LinearLayout>
     </LinearLayout>
 
