@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_radius_item">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_drive"
+            android:padding="6dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_item"
+            android:id="@+id/submitFileType"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="1dp"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:textColor="#000"
+            android:text="Chương 2"
+            android:id="@+id/submitName"/>
+    </LinearLayout>
+
+</LinearLayout>
