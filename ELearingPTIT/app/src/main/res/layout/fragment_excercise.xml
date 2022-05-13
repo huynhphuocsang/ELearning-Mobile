@@ -14,46 +14,69 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="20dp">
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="5"
-            android:id="@+id/tbBaiTap">
-            <TableRow
-                android:layout_width="match_parent"
-                android:padding="10dp"
-                android:background="#C7D9FD"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text="BÀI TẬP"
-                    android:paddingLeft="50dp"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:layout_weight="4"
-                    android:id="@+id/txtBaiTap"
-
-                    />
-                <TextView
-                    android:layout_width="0dp"
-                    android:text="ĐÃ NỘP"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:layout_weight="1"
-                    />
-            </TableRow>
-
-        </TableLayout>
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/error"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bài tập đã giao"
+                android:textColor="#2980B9"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thêm bài tập"
+                android:visibility="visible"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="5"
+                android:id="@+id/tbBaiTap">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:background="#C7D9FD"
+                    >
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="BÀI TẬP"
+                        android:paddingLeft="50dp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:layout_weight="4"
+                        android:id="@+id/txtBaiTap"
+
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="ĐÃ NỘP"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:layout_weight="1"
+                        />
+                </TableRow>
+
+            </TableLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/error"/>
+        </LinearLayout>
     </LinearLayout>
+
 
 
 
