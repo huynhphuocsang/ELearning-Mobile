@@ -27,16 +27,22 @@
 =======
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_item.xml" value="0.138" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_radius_item.xml" value="0.138" />
+<<<<<<< HEAD
 >>>>>>> 2464503e4a2061cf1ccd09fc66e3eb87b18459e0
+=======
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/custom_button.xml" value="0.138" />
+>>>>>>> b08e6f0ed8803bd5234c94ed00ac85a9e2d41fb9
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_question.xml" value="0.1375" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_exercise_detail_teacher_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.21203703703703702" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.2" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_frangment.xml" value="0.25" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_teacher.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.21203703703703702" />
@@ -44,6 +50,7 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.264" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document.xml" value="0.264" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document_full_width.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.25416666666666665" />
@@ -119,7 +126,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="jbr-11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

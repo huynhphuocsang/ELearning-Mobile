@@ -3,11 +3,13 @@ package com.example.elearningptit.model;
 public class Document {
     private int documentId;
     private String documentName;
+    private String fileType;
     private String createAt;
 
-    public Document(int documentId, String documentName, String createAt) {
+    public Document(int documentId, String documentName, String fileType, String createAt) {
         this.documentId = documentId;
         this.documentName = documentName;
+        this.fileType = fileType;
         this.createAt = createAt;
     }
 
@@ -25,6 +27,14 @@ public class Document {
 
     public void setDocumentName(String documentName) {
         this.documentName = documentName;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     public String getCreateAt() {
