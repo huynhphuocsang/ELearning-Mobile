@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="120dp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="94dp"
+            android:layout_height="25dp"
+            android:text="Mã SV:"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextNhapHo"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonHUY"
+            android:layout_width="95dp"
+            android:layout_height="40dp"
+            android:textSize="10dp"
+            android:drawableRight="@android:drawable/ic_delete"
+            android:text="HỦY" />
+
+        <Button
+            android:id="@+id/buttonLUU"
+            android:layout_width="105dp"
+            android:layout_height="40dp"
+            android:textSize="10dp"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@android:drawable/ic_menu_save"
+            android:text="THEM" />
+
+    </LinearLayout>
+
+</LinearLayout>
