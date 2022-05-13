@@ -26,4 +26,9 @@ public class TokenManager {
         editor.putString(IS_LOGIN,"true");
         editor.commit();
     }
+
+    public void newSession(String sessionName, String value) {
+        editor.putString(KEY_USERNAME, value);
+        editor.commit();
+    }
 }

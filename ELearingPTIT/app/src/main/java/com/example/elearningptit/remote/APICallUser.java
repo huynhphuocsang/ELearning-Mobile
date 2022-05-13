@@ -60,6 +60,6 @@ public interface APICallUser {
     @GET("user/registration")
     Call<List<CreditClass>> getUserRegistration(@Header("Authorization") String token);
 
-
-
+    @GET("/timetable-by-time-teacher")
+    Call<List<TimelineDTO>> getTimetableTeacher(@Header("Authorization") String token, @Query("date")String date);
 }

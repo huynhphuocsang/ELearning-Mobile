@@ -50,9 +50,13 @@
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/style_edit.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_forgot_password.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_new_password.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_email_code.xml" value="0.22826086956521738" />
+        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_usercode.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.22826086956521738" />
