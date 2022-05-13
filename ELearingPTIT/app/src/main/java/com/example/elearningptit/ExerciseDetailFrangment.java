@@ -19,12 +19,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.elearningptit.model.CreditClassDetail;
+import com.example.elearningptit.model.Document;
 import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.remote.APICallCreditClass;
+import com.example.elearningptit.remote.APICallExercise;
 import com.example.elearningptit.remote.APICallUser;
 
 import java.io.Serializable;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +59,7 @@ public class ExerciseDetailFrangment extends Fragment {
 
     TextView txtTitle, txtEndTime, txtContent, txtStatus, txtSubmitTime;
     Button btnAddFile;
-    LinearLayout submitFile;
+    LinearLayout submitFile, listDocument;
 
     public ExerciseDetailFrangment() {
         // Required empty public constructor
@@ -116,16 +119,74 @@ public class ExerciseDetailFrangment extends Fragment {
         txtSubmitTime = view.findViewById(R.id.txtSubmitTime);
         btnAddFile = view.findViewById(R.id.btnAddFile);
         submitFile = view.findViewById(R.id.submitFile);
+        listDocument = view.findViewById(R.id.listDocument);
     }
 
     private void setEvent()
     {
-        getExerciseDetail();
+        getExerciseDocument();
+        getExerciseSubmit();
     }
 
-    public void getExerciseDetail(){
+    public void getExerciseDocument(){
+        SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
+        String jwtToken = preferences.getString("jwttoken", "");
+        Call<List<Document>> listExerciseDocument = APICallExercise.apiCall.getExerciseDocument("Bearer " + jwtToken, exerciseID);
+        listExerciseDocument.enqueue(new Callback<List<Document>>() {
+            @Override
+            public void onResponse(Call<List<Document>> call, Response<List<Document>> response) {
+                if(response.code() == 200)
+                {
+                    List<Document> listDoc = response.body();
+                    for(Document doc : listDoc)
+                    {
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        View convertView = inflater.inflate(R.layout.item_document_full_width, null);
+                        TextView submitName = convertView.findViewById(R.id.submitName);
+                        ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
+                        submitName.setText(doc.getDocumentName());
+
+                        String fileType = doc.getFileType();
+
+                        if(fileType.equals("docx"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_word);
+                        }
+                        else if(fileType.equals("pdf"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_pdf);
+                        }
+                        else if(fileType.equals("excel"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_excel);
+                        }
+                        else if(fileType.equals("txt"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_text);
+                        }
+                        else if(fileType.equals("drive"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_drive);
+                        }
+
+                        listDocument.addView(convertView);
+                    }
+                }
+                else if(response.code() == 404)
+                {
+                    Log.e("", "Không có tài liệu đính kèm");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Document>> call, Throwable t) {
+                Log.e("Load Exercise Document: ", "Fail");
+            }
+        });
+    }
 
 
+    public void getExerciseSubmit(){
         txtTitle.setText(submitTitle);
         txtEndTime.setText(subString(submitEndTime));
         txtContent.setText(submitContent);
@@ -145,12 +206,37 @@ public class ExerciseDetailFrangment extends Fragment {
                         txtSubmitTime.setText(subString(exerSub.getSubmitFile().getCreateAt()));
                         txtStatus.setText("Đã nộp");
                         txtStatus.setTextColor(Color.GREEN);
+
+
                         LayoutInflater inflater = LayoutInflater.from(getContext());
                         View convertView = inflater.inflate(R.layout.item_document_full_width, null);
                         TextView submitName = convertView.findViewById(R.id.submitName);
                         ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
                         submitName.setText(submitFileName);
-                        submitFileTye.setImageResource(R.drawable.ic_word);
+
+                        String fileType = exerSub.getSubmitFile().getFileType();
+
+                        if(fileType.equals("docx"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_word);
+                        }
+                        else if(fileType.equals("pdf"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_pdf);
+                        }
+                        else if(fileType.equals("excel"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_excel);
+                        }
+                        else if(fileType.equals("txt"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_text);
+                        }
+                        else if(fileType.equals("drive"))
+                        {
+                            submitFileTye.setImageResource(R.drawable.ic_drive);
+                        }
+
                         submitFile.addView(convertView);
 
                     }

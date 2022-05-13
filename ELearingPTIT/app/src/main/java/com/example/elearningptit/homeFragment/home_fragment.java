@@ -168,6 +168,7 @@ public class home_fragment extends Fragment {
             public void onResponse(Call<List<TimelineDTO>> call, Response<List<TimelineDTO>> response) {
                 if (response.code() == 200) {
                     timelineDTOList = response.body();
+                    Toast.makeText(getContext(), timelineDTOList.size()+"", Toast.LENGTH_SHORT).show();
                     timelineDTOList.forEach((timelineDTO -> {
                         if(now.getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
                             if(timelineDTO.getEndLesson()<=5){
