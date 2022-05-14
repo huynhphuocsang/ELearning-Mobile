@@ -3,23 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_item.xml" value="0.138" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/border_radius_item.xml" value="0.138" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/custom_button.xml" value="0.138" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/drawable/ic_question.xml" value="0.1375" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_exercise_detail_teacher_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.21203703703703702" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_new_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_email_code.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_usercode.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.2" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_frangment.xml" value="0.25" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_teacher.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.21203703703703702" />
@@ -27,18 +19,7 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_comment.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.264" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document.xml" value="0.264" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document_full_width.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.264" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_add_exercise_dialog.xml" value="0.264" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_add_mark_dialog.xml" value="0.2" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_join_credit_class_dialog.xml" value="0.25416666666666665" />
-        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_logout_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu_credit_class.xml" value="0.25416666666666665" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.206" />
@@ -60,13 +41,9 @@
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/login_main_background.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/drawable/style_edit.xml" value="0.206" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_credit_class.xml" value="0.22826086956521738" />
-        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_forgot_password.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
-        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_new_password.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.22826086956521738" />
-        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_email_code.xml" value="0.22826086956521738" />
-        <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_usercode.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.22826086956521738" />
         <entry key="..\:/MyCode/multi-platform/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.22826086956521738" />
@@ -139,6 +116,8 @@
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_comment.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_document.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_document_full_width.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_listview_infomation.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/Admin/Desktop/Code/Mobile_Subject/ELearning-Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.22447916666666667" />
@@ -148,7 +127,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
