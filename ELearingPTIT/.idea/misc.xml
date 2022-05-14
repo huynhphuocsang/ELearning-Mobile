@@ -11,7 +11,10 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_exercise_detail_teacher_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_main.xml" value="0.21203703703703702" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_new_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_update_password.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_email_code.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/activity_verify_usercode.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_class_list_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.2" />
@@ -24,6 +27,7 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_time_table_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_comment.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_credit_class.xml" value="0.264" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document.xml" value="0.264" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_document_full_width.xml" value="0.25416666666666665" />
@@ -31,6 +35,8 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_post.xml" value="0.264" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/item_timetable.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/list_credit_class.xml" value="0.25416666666666665" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_add_exercise_dialog.xml" value="0.264" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_add_mark_dialog.xml" value="0.2" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_join_credit_class_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/verify_logout_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
