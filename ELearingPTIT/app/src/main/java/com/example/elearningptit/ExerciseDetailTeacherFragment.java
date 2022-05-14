@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,6 +65,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     TextView  tvSTT, tvMaSV, tvHoTen, tvDiem;
     LinearLayout listDocument;
     TableLayout tbSVSubmit;
+    Button btnChart;
 
     public ExerciseDetailTeacherFragment() {
         // Required empty public constructor
@@ -117,6 +120,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         txtContent = view.findViewById(R.id.txtContentTeacher);
         listDocument = view.findViewById(R.id.listDocumentTeacher);
         tbSVSubmit = view.findViewById(R.id.tbSVSubmit);
+        btnChart = view.findViewById(R.id.btnInventory);
     }
 
     private void setEvent(){
@@ -195,7 +199,6 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             public void onResponse(Call<List<StudentSubmitExercise>> call, Response<List<StudentSubmitExercise>> response) {
                 if (response.code() == 200)
                 {
-                    Log.e("Status:", "Success");
                     List<StudentSubmitExercise> list = response.body();
                     if(!list.equals(null)){
                         for(StudentSubmitExercise sv : list)
@@ -244,6 +247,11 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tbRow.addView(tvDiem);
 
                             tbSVSubmit.addView(tbRow);
+                        }
+
+                        if(list.size() > 0)
+                        {
+                            setButtonInvetory();
                         }
                     }
 
@@ -324,7 +332,6 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     {
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
         String jwtToken = preferences.getString("jwttoken", "");
-        Log.e("Info: ",exerciseID + " - " + diemMoi + " - " + userID);
         MarkDTO markDTO = new MarkDTO(exerciseID, diemMoi, userID);
         Call<String> call = APICallSubmit.apiCall.putSubmitMark("Bearer "+ jwtToken, markDTO);
         call.enqueue(new Callback<String>() {
@@ -337,7 +344,22 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.e("Status: ", "Call api nhập điểm Fail");
-                Log.e("Why: " , t.getMessage());
+            }
+        });
+    }
+
+    private void setButtonInvetory(){
+        btnChart.setVisibility(View.VISIBLE);
+        btnChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InventoryFragment inventoryFragment = InventoryFragment.newInstance(exerciseID, "");
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentContainerCreditClass, inventoryFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
