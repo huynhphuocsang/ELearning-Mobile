@@ -97,6 +97,7 @@ public class ExerciseDetailFrangment extends Fragment {
             documentID = getArguments().getInt(ARG_PARAM4);
             exerciseID = getArguments().getInt(ARG_PARAM5);
 
+            //Bài tập 1: Cơ sở dữ liệu phân tán-2022-03-23T17:00:00.000+00:00-Viết chương trình in ra các kiểu phân tán của cơ sở dữ liệu-1-1
         }
     }
 
@@ -257,7 +258,7 @@ public class ExerciseDetailFrangment extends Fragment {
         });
     }
 
-    public String subString(String time){
+    private String subString(String time){
         if(!time.equals(""))
         {
             String[] data = time.substring(0,10).split("-");
