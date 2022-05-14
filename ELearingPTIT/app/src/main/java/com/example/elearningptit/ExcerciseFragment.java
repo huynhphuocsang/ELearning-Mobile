@@ -1,5 +1,6 @@
 package com.example.elearningptit;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -61,6 +63,7 @@ public class ExcerciseFragment extends Fragment {
     Button btnAddExercise;
 
     UserInfo userInfo;
+    long userID;
     List<String> listRoles;
 
     private List<Exercise> listExercise;
@@ -118,6 +121,13 @@ public class ExcerciseFragment extends Fragment {
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
     }
 
+    private void setEvent(){
+        Intent getDaTa=getActivity().getIntent();
+        creditClassId=getDaTa.getStringExtra("CREDITCLASS_ID");
+        getUserInfo();
+        getExercise();
+    }
+
 
     private void getUserInfo() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
@@ -133,6 +143,7 @@ public class ExcerciseFragment extends Fragment {
                     if(userInfo.getRoles().size() > 0)
                     {
                         listRoles = userInfo.getRoles();
+                        userID = userInfo.getUserId();
                     }
                     else
                     {
@@ -182,7 +193,7 @@ public class ExcerciseFragment extends Fragment {
 
                         if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
                         {
-                            btnAddExercise.setVisibility(View.VISIBLE);
+                            setButtonExercise();
                             Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exercise.getExcerciseId());
                             listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
                                 @Override
@@ -266,7 +277,7 @@ public class ExcerciseFragment extends Fragment {
                                 {
                                     ExerciseDetailTeacherFragment exerciseDetailTeacherFragment = ExerciseDetailTeacherFragment.newInstance(
                                             exercise.getTitle(), exercise.getEndTime(), exercise.getExcerciseContent(),
-                                            1, exercise.getExcerciseId());
+                                            userID, exercise.getExcerciseId());
 
                                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -279,7 +290,7 @@ public class ExcerciseFragment extends Fragment {
                                 {
                                     ExerciseDetailFrangment exerciseDetailFrangment = ExerciseDetailFrangment.newInstance(
                                             exercise.getTitle(), exercise.getEndTime(), exercise.getExcerciseContent(),
-                                            1, exercise.getExcerciseId());
+                                            userID, exercise.getExcerciseId());
 
                                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -305,9 +316,35 @@ public class ExcerciseFragment extends Fragment {
         flagSubmits1Class = false;
     }
 
-    private void setEvent(){
-        Intent getDaTa=getActivity().getIntent();
-        creditClassId=getDaTa.getStringExtra("CREDITCLASS_ID");
-        getExercise();
+    private void setButtonExercise(){
+        btnAddExercise.setVisibility(View.VISIBLE);
+        btnAddExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.verify_add_exercise_dialog);
+
+                Button btnVerifyAddExercise = dialog.findViewById(R.id.btnVerifyAddExercise);
+                Button btnCancelAddExercise = dialog.findViewById(R.id.btnCancelAddExercise);
+
+                btnCancelAddExercise.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                btnVerifyAddExercise.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(), "Add success", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
     }
+
 }

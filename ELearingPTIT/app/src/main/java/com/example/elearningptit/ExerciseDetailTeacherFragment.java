@@ -1,27 +1,35 @@
 package com.example.elearningptit;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elearningptit.model.Document;
+import com.example.elearningptit.model.MarkDTO;
+import com.example.elearningptit.model.NewPasswordModel;
 import com.example.elearningptit.model.StudentSubmitExercise;
 import com.example.elearningptit.remote.APICallExercise;
 import com.example.elearningptit.remote.APICallSubmit;
+import com.example.elearningptit.remote.APICallUser;
 
 import java.util.List;
 
@@ -48,7 +56,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     private String submitTitle;
     private String submitEndTime;
     private String submitContent;
-    private int documentID;
+    private long userID;
     private int exerciseID;
 
     TextView txtTitle, txtEndTime, txtContent;
@@ -69,14 +77,14 @@ public class ExerciseDetailTeacherFragment extends Fragment {
      * @return A new instance of fragment ExerciseDetailTeacherFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExerciseDetailTeacherFragment newInstance(String param1, String param2, String param3, int param4,
+    public static ExerciseDetailTeacherFragment newInstance(String param1, String param2, String param3, long param4,
                                                             int param5) {
         ExerciseDetailTeacherFragment fragment = new ExerciseDetailTeacherFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_PARAM3, param3);
-        args.putInt(ARG_PARAM4, param4);
+        args.putLong(ARG_PARAM4, param4);
         args.putInt(ARG_PARAM5, param5);
         fragment.setArguments(args);
         return fragment;
@@ -89,7 +97,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             submitTitle = getArguments().getString(ARG_PARAM1);
             submitEndTime = getArguments().getString(ARG_PARAM2);
             submitContent = getArguments().getString(ARG_PARAM3);
-            documentID = getArguments().getInt(ARG_PARAM4);
+            userID = getArguments().getLong(ARG_PARAM4);
             exerciseID = getArguments().getInt(ARG_PARAM5);
         }
     }
@@ -179,7 +187,6 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     }
 
     public void getListStudentSubmit(){
-
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
         String jwtToken = preferences.getString("jwttoken", "");
         Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exerciseID);
@@ -225,6 +232,15 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvDiem.setGravity(Gravity.CENTER);
                             tvDiem.setTextSize(15);
                             tvDiem.setPadding(85,10,0,0);
+
+                            tvDiem.setId(sv.getUserId());
+                            tvDiem.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(View view) {
+                                    dialogNhapDiem(sv.getMark(), list.size());
+                                    return false;
+                                }
+                            });
                             tbRow.addView(tvDiem);
 
                             tbSVSubmit.addView(tbRow);
@@ -251,6 +267,99 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                 Log.e("Status:", "Failure");
             }
         });
+    }
+
+    private void dialogNhapDiem(float diemCu, int tongSVSubmit)
+    {
+        Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.verify_add_mark_dialog);
+
+        EditText edtNhapDiem = (EditText) dialog.findViewById(R.id.edtNhapDiem);
+        Button btnThem = (Button) dialog.findViewById(R.id.btnAddMark);
+        Button btnHuy = (Button) dialog.findViewById(R.id.btnCancelMark);
+
+        edtNhapDiem.setText(diemCu + "");
+
+        btnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String diemMoi = edtNhapDiem.getText().toString().trim();
+                if(TextUtils.isEmpty(diemMoi))
+                {
+                    Toast.makeText(getContext(), "Vui lòng nhập điểm cho môn học", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Float diemMoiFloat = isFloat(diemMoi);
+                    if(diemMoiFloat == -1)
+                    {
+                        Toast.makeText(getContext(), "Điểm nhập phải thuộc khoảng từ 0 đến 10", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (diemMoiFloat == -2)
+                    {
+                        Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng điểm", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        updateDiem(diemMoiFloat, tongSVSubmit);
+                        Toast.makeText(getContext(), "Sửa điểm thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+            }
+        });
+
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void updateDiem(float diemMoi, int tongSVSubmit)
+    {
+        SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
+        String jwtToken = preferences.getString("jwttoken", "");
+        Log.e("Info: ",exerciseID + " - " + diemMoi + " - " + userID);
+        MarkDTO markDTO = new MarkDTO(exerciseID, diemMoi, userID);
+        Call<String> call = APICallSubmit.apiCall.putSubmitMark("Bearer "+ jwtToken, markDTO);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tbSVSubmit.removeViewsInLayout(1, tongSVSubmit);
+                getListStudentSubmit();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("Status: ", "Call api nhập điểm Fail");
+                Log.e("Why: " , t.getMessage());
+            }
+        });
+    }
+
+    private float isFloat(String diemString)
+    {
+        try {
+            float diemFloat = Float.parseFloat(diemString);
+            if(diemFloat >= 0 && diemFloat <=10 )
+            {
+                return diemFloat;
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        catch (NumberFormatException e)
+        {
+        }
+        return -2;
     }
 
     private String subString(String time){
