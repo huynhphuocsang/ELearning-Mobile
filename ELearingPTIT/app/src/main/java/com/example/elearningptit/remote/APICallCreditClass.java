@@ -44,4 +44,6 @@ public interface APICallCreditClass {
     @GET("credit-class/creditclass-detail?")
     Call<CreditClassDetail> getCreditClassDetail(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
 
+
+
 }
