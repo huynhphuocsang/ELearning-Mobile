@@ -16,6 +16,18 @@
         android:theme="@style/Theme.ELearningPTIT"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".forgotPassword.NewPasswordActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".forgotPassword.VerifyEmailCodeActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".forgotPassword.VerifyUserCodeActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".CreditClassActivity"
             android:exported="false" />
         <activity
