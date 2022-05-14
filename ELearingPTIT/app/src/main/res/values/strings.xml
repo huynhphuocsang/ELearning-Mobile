@@ -11,6 +11,7 @@
     <string name="KEY_USERNAME">username</string>
     <string name="KEY_JWT_TOKEN">jwttoken</string>
     <string name="IS_LOGIN">login</string>
+    <string name="USER_ROLES">userroles</string>
 
     <string name="see_more_creditclass"><u>Xem thêm>></u></string>
     <string name="resend_mail_verify"><u>Gửi lại mã xác thực</u></string>
