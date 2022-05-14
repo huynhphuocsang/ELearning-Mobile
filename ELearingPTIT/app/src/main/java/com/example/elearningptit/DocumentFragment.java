@@ -1,5 +1,7 @@
 package com.example.elearningptit;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.ListView;
+
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
 import android.widget.TextView;
 
 /**
@@ -16,6 +24,7 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class DocumentFragment extends Fragment {
+    TableLayout tbDocument;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,18 +74,56 @@ public class DocumentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
         View view = inflater.inflate(R.layout.fragment_document, container, false);
 
         setControl(view);
         setEvent();
+
+        createTableRow();
+
         return view;
     }
 
+    private void createTableRow() {
+        TableRow tbRow = new TableRow(getContext());
+
+        tbRow.setPadding(6,6,6,6);
+        tbRow.setBackgroundColor(Color.WHITE);
+
+        ImageView im = new ImageView(getContext());
+        im.setMaxWidth(20);
+        im.setMaxHeight(15);
+        im.setImageResource(R.drawable.post_default_avatar);
+
+        TextView tvName = new TextView(getContext());
+        tvName.setTextSize(10);
+        tvName.setText("Slide bai giang");
+
+        TextView tvEditPerson = new TextView(getContext());
+        tvEditPerson.setTextSize(10);
+        tvEditPerson.setText("Luu Nguyen Ky Thu");
+
+        TextView tvLastEdited = new TextView(getContext());
+        tvLastEdited.setTextSize(10);
+        tvLastEdited.setText("18/8/2021");
+
+        tbRow.addView(im);
+        tbRow.addView(tvName);
+        tbRow.addView(tvEditPerson);
+        tbRow.addView(tvLastEdited);
+    }
+
+
+    private void addControl(View view) {
+        tbDocument = view.findViewById(R.id.tbDocument);
+
+    }
 
     private void setControl(View view) {
-        tenMon =view.findViewById(R.id.textTenMon);
+
         tenGV = view.findViewById(R.id.textTenGV);
-        listTL = view.findViewById(R.id.listViewTL);
+
     }
 
     private void setEvent() {

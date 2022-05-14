@@ -1,6 +1,8 @@
 package com.example.elearningptit;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -65,9 +67,7 @@ public class MemberFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView tenGV;
     LinearLayout listGV, listSV;
-    ImageView hinhGV, hinhSV, deleteSV;
     Button xuatPDF, themSv;
 
     long userID;
@@ -126,16 +126,11 @@ public class MemberFragment extends Fragment {
 
     private void setControl(View view) {
         listGV = view.findViewById(R.id.listGV);
-        tenGV = view.findViewById(R.id.textTenGV);
-        hinhGV = view.findViewById(R.id.imageGV);
-        hinhSV = view.findViewById(R.id.imageSV);
         listSV = view.findViewById(R.id.listViewDSSV);
 
-
         xuatPDF = view.findViewById(R.id.buttonXuatPDF);
-//        xuatPDF.setVisibility(View.INVISIBLE);
         themSv = view.findViewById(R.id.buttonThemSV);
-//        themSv.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -179,7 +174,6 @@ public class MemberFragment extends Fragment {
 
                         View convertView = inflater.inflate(R.layout.list_member_ds_gv, null);
                         TextView nameGV = convertView.findViewById(R.id.textTenGV);
-//                        ImageView anhGV = convertView.findViewById(R.id.imageSV);
                         Log.e("TeacherName:", gv.getFullname());
                         nameGV.setText(gv.getFullname());
 
@@ -192,15 +186,20 @@ public class MemberFragment extends Fragment {
                         View convertView = inflater.inflate(R.layout.list_member_ds, null);
                         TextView nameSV = convertView.findViewById(R.id.textTenSV);
                         TextView maSV = convertView.findViewById(R.id.textMSV);
-//                        ImageView anhSV = convertView.findViewById(R.id.imageSV);
 
                         nameSV.setText(sv.getFullnanme());
                         maSV.setText(sv.getStudentCode());
-//
+
                         listSV.addView(convertView);
                     }
                     Log.e("Status:" , "Success");
 
+                    if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
+                    {
+                        setButtonThemSV();
+                        setButtonPDF();
+
+                    }
 //                    getCommentAmountsForPost(jwtToken);
                 } else if (response.code() == 401) {
                     //token expire
@@ -240,7 +239,6 @@ public class MemberFragment extends Fragment {
                     }
 
                 } else if (response.code() == 401) {
-                    //token expire
                     Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -283,35 +281,38 @@ public class MemberFragment extends Fragment {
             }
         });
     }
-//    private void setButtonPDF(){
-//        xuatPDF.setVisibility(View.VISIBLE);
-//        xuatPDF.setOnClickListener(new View.OnClickListener() {
+
+    private void setButtonPDF(){
+        xuatPDF.setVisibility(View.VISIBLE);
+        xuatPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                dialog.show();
+            }
+        });
+    }
+
+
+//    public void setButtonXoaSV(String ten, String MaSV){
+//        AlertDialog.Builder dialogXoa = new AlertDialog.Builder(getContext());
+//        dialogXoa.setMessage("Bạn có muốn xóa học sinh " + ten + " không?");
+//        dialogXoa.setPositiveButton("Có", new DialogInterface.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
-//                Dialog dialog = new Dialog(getContext());
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                dialog.setContentView(R.layout.item_them_sv);
+//            public void onClick(DialogInterface dialogInterface, int i) {
 //
-//                Button btnHuy = dialog.findViewById(R.id.buttonHUY);
-//                Button btnLuu = dialog.findViewById(R.id.buttonLUU);
-//
-//                btnHuy.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                btnLuu.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(getContext(), "Add success", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//                dialog.show();
+//                getInforForPostListView();
 //            }
 //        });
+//        dialogXoa.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//            }
+//        });
+//        dialogXoa.show();
 //    }
 
 }

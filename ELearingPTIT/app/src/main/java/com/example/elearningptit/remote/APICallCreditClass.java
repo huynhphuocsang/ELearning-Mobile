@@ -50,7 +50,5 @@ public interface APICallCreditClass {
     @GET("credit-class/creditclass-all-members?")
     Call<CreditClassListMemberDTO> getCreditClassListMember(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
 
-//    @GET("creditclass/add-student-to-credit-class?")
-//    Call<Student> getStudentCall (@Header("Authorization") String token, @Query("credit-class-id") int credit_class_id, @Body("listStudentID") String listStudentID);
 
 }
