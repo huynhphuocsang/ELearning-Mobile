@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -212,13 +213,14 @@ public class infor_fragment extends Fragment {
 
                             progressDialog.dismiss();
 
+
+                            Toast.makeText(getContext(), "Cập nhật ảnh đại diện thành công!", Toast.LENGTH_SHORT).show();
                             OkHttpClient client = getClient(jwtToken);
                             Picasso picasso = new Picasso.Builder(getContext())
                                     .downloader(new OkHttp3Downloader(client))
                                     .build();
 
                             picasso.get().load(avatarResponse.getDowloadURL()).resize(100,0).into(imgAvatar);
-                            Toast.makeText(getContext(), "Cập nhật ảnh đại diện thành công!", Toast.LENGTH_SHORT).show();
                         }else{
                             progressDialog.dismiss();
                             Toast.makeText(getContext(), "Cập nhật ảnh đại diện thất bại!"+response.code(), Toast.LENGTH_SHORT).show();
@@ -233,8 +235,8 @@ public class infor_fragment extends Fragment {
                 });
 
                 //display the image into avatar
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
-//                imgAvatar.setImageBitmap(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+                imgAvatar.setImageBitmap(bitmap);
             }
 
 
