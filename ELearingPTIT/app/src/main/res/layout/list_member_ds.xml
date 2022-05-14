@@ -4,49 +4,53 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="5dp"
-    android:layout_marginLeft="25dp"
-    android:background="@drawable/item_list_document">
+    android:layout_marginLeft="30dp"
+    android:background="@drawable/border_radius_item">
 
-    <ImageView
-        android:id="@+id/imageSV"
-        android:src="@drawable/ic_infor"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:paddingVertical="4dp"/>
-
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:id="@+id/textMSV"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="N18DCCN236"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:layout_height="30dp">
+        <ImageView
+            android:id="@+id/imageSV"
+            android:src="@drawable/ic_infor"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text=" - "
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/textMSV"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="N18DCCN236"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textTenSV"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="Lù Vĩnh Trường"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textSize="17dp"
+            android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/xoaSV"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="70dp"
-        android:paddingVertical="4dp"
-        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+        <TextView
+            android:id="@+id/textTenSV"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Lù Vĩnh Trường"
+            android:textAlignment="center"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/deleteSV"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="55dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+    </LinearLayout>
 
 </LinearLayout>

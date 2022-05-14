@@ -45,6 +45,9 @@ private List<Student> studentList;
         ImageView AvatarSV = convertView.findViewById(R.id.imageSV);
         TextView maSV = convertView.findViewById(R.id.textMSV);
         TextView tenSV = convertView.findViewById(R.id.textTenSV);
+        ImageView deleteSV = convertView.findViewById(R.id.deleteSV);
+        deleteSV.setVisibility(View.INVISIBLE);
+
 
         Student student = studentList.get(position);
         return convertView;

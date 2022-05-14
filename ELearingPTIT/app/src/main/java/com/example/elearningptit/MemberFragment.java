@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.example.elearningptit.model.CreditClassListMemberDTO;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.Student;
+import com.example.elearningptit.model.Teacher;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallCreditClassDetail;
@@ -59,14 +61,15 @@ public class MemberFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView tenGv, xoaSV;
-    ImageView hinhGV, hinhSV;
-    ListView listSV;
+    TextView tenGV;
+    LinearLayout listGV, listSV;
+    ImageView hinhGV, hinhSV, deleteSV;
     Button xuatPDF, themSv;
 
     List<PostDTO> posts;
     PostCustomeAdapter adapter;
-    UserInfo userInfo;
+//    Teacher teacherInfo;
+//    Student studentInfo;
 
     private static final String CREDITCLASS_ID = "CREDITCLASS_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
@@ -109,10 +112,6 @@ public class MemberFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_member, container, false);
 
         Intent getDaTa=getActivity().getIntent();
-//        String creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
-//        String subjectName=getDaTa.getStringExtra("SUBJECT_NAME");
-//        String semester=getDaTa.getStringExtra("SEMESTER");
-//        String teacher=getDaTa.getStringExtra("TEACHER");
 
         setControl(view);
         setEvent();
@@ -121,8 +120,9 @@ public class MemberFragment extends Fragment {
 
 
     private void setControl(View view) {
-        tenGv = view.findViewById(R.id.textTenGV);
-        hinhGV = view.findViewById(R.id.ImageGV);
+        listGV = view.findViewById(R.id.listGV);
+        tenGV = view.findViewById(R.id.textTenGV);
+        hinhGV = view.findViewById(R.id.imageGV);
         hinhSV = view.findViewById(R.id.imageSV);
         listSV = view.findViewById(R.id.listViewDSSV);
 
@@ -131,13 +131,13 @@ public class MemberFragment extends Fragment {
         xuatPDF.setVisibility(View.INVISIBLE);
         themSv = view.findViewById(R.id.buttonThemSV);
         themSv.setVisibility(View.INVISIBLE);
-
+//        deleteSV = view.findViewById(R.id.deleteSV);
+//        deleteSV.setVisibility(View.INVISIBLE);
     }
 
     private void setEvent() {
-        getUserInfo();
-        tenGv.setText(teacher);
 
+        getInforForPostListView();
 
         xuatPDF.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,64 +153,6 @@ public class MemberFragment extends Fragment {
             }
         });
     }
-
-
-    void getCommentAmountsForPost (String jwtToken)
-    {
-        HashMap<Long, Integer> hashMap = new HashMap<Long, Integer>();
-        posts.forEach(postDTO -> {
-            //get comment amount
-            Call<List<PostCommentDTO>> comments = APICallPost.apiCall.getAllComments("Bearer " + jwtToken, postDTO.getPostId());
-            comments.enqueue(new Callback<List<PostCommentDTO>>() {
-                @Override
-                public void onResponse(Call<List<PostCommentDTO>> call, Response<List<PostCommentDTO>> response) {
-                    if (response.code() == 200) {
-                        hashMap.put(postDTO.getPostId(), response.body().size());
-
-                        //if this is the last post
-                        if (hashMap.size() == posts.size())
-                        {
-                            //set adapter
-                            EventListener afterDeletePost = new EventListener() {
-                                @Override
-                                public void doSomething() {
-                                    getInforForPostListView();
-                                }
-
-                                @Override
-                                public void doSomething(int i) {
-
-                                }
-                            };
-
-//                            EventListener onComeback = new EventListener() {
-//                                @Override
-//                                public void doSomething() {
-//                                    getCommentAmountsForPost(jwtToken);
-////                                    getInforForPostListView();
-//                                }
-//                            };
-
-                            adapter = new PostCustomeAdapter(getContext(), R.layout.list_member_ds, posts, hashMap, getActivity(), jwtToken, afterDeletePost, userInfo.getRoles());
-                            listSV.setAdapter(adapter);
-                        }
-                    } else if (response.code() == 401) {
-                        Toast.makeText(getContext(), "Unauthorized " + postDTO.getPostId(), Toast.LENGTH_SHORT).show();
-                    } else if (response.code() == 403) {
-                        Toast.makeText(getContext(), "Forbidden " + postDTO.getPostId(), Toast.LENGTH_SHORT).show();
-                    } else if (response.code() == 404) {
-                        Toast.makeText(getContext(), "Not Found " + postDTO.getPostId(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<PostCommentDTO>> call, Throwable t) {
-                    Toast.makeText(getContext(), "Failed " + postDTO.getPostId(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-    }
-
 
 
     public OkHttpClient getClient(String jwttoken){
@@ -238,17 +180,17 @@ public class MemberFragment extends Fragment {
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
 
                 if (response.code() == 200) {
-                    userInfo = response.body();
+//                    userInfo = response.body();
 
                     //set avatar
-                    if (userInfo.getAvatar() != null && !userInfo.getAvatar().isEmpty())
-                    {
+//                    if (userInfo.getAvatar() != null && !userInfo.getAvatar().isEmpty())
+//                    {
 //                        OkHttpClient client = getClient(jwtToken);
 //                        Picasso picasso = new Picasso.Builder(getContext())
 //                                .downloader(new OkHttp3Downloader(client))
 //                                .build();
-//                        picasso.load(userInfo.getAvatar()).resize(24,24).into(hinhSV);
-                    }
+//                        picasso.load(userInfo.getAvatar()).resize(24,24).into(hinhGV);
+//                    }
 
                     getInforForPostListView();
                 } else if (response.code() == 401) {
@@ -273,9 +215,44 @@ public class MemberFragment extends Fragment {
             @Override
             public void onResponse(Call<CreditClassListMemberDTO> call, Response<CreditClassListMemberDTO> response) {
                 if (response.code() == 200) {
-                    CreditClassListMemberDTO creditClassListMemberDTO = response.body().get;
-//                    creditClassListMemberDTO.getStudents()
+
+                    List<Teacher> teacherList =  response.body().getTeacherInfos();
+                    for(Teacher gv : teacherList){
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+//                        //set avatar
+//                    if (teacherList.getAvatar() != null && !teacherList.getAvatar().isEmpty())
+//                    {
+//                        OkHttpClient client = getClient(jwtToken);
+//                        Picasso picasso = new Picasso.Builder(getContext())
+//                                .downloader(new OkHttp3Downloader(client))
+//                                .build();
+//                        picasso.load(teacherList.getAvatar()).resize(24,24).into(hinhGV);
+//                    }
+                        View convertView = inflater.inflate(R.layout.list_member_ds_gv, null);
+                        TextView nameGV = convertView.findViewById(R.id.textTenGV);
+//                        ImageView anhGV = convertView.findViewById(R.id.imageSV);
+                        Log.e("TeacherName:", gv.getFullname());
+                        nameGV.setText(gv.getFullname());
+
+                        listGV.addView(convertView);
+                    }
+
+                    List<Student> studentList =  response.body().getStudents();
+                    for(Student sv : studentList){
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        View convertView = inflater.inflate(R.layout.list_member_ds, null);
+                        TextView nameSV = convertView.findViewById(R.id.textTenSV);
+                        TextView maSV = convertView.findViewById(R.id.textMSV);
+//                        ImageView anhSV = convertView.findViewById(R.id.imageSV);
+
+                        nameSV.setText(sv.getFullnanme());
+                        maSV.setText(sv.getStudentCode());
+//
+                        listSV.addView(convertView);
+                    }
                     Log.e("Status:" , "Success");
+
+
 
 //                    getCommentAmountsForPost(jwtToken);
                 } else if (response.code() == 401) {
