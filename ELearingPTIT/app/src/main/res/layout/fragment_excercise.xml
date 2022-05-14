@@ -40,7 +40,9 @@
                     android:text="Thêm bài tập"
                     android:visibility="invisible"
                     android:drawableLeft="@drawable/ic_add"
-                    android:backgroundTint="#18AF55"/>
+                    android:backgroundTint="#18AF55"
+                    android:id="@+id/btnAddExercise"
+                    />
             </LinearLayout>
 
         </LinearLayout>
@@ -68,8 +70,6 @@
                         android:textStyle="bold"
                         android:textColor="#000"
                         android:layout_weight="4"
-                        android:id="@+id/txtBaiTap"
-
                         />
                     <TextView
                         android:layout_width="0dp"

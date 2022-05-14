@@ -54,7 +54,7 @@
             android:textSize="10dp"
             android:layout_marginLeft="10dp"
             android:drawableRight="@android:drawable/ic_menu_save"
-            android:text="THEM" />
+            android:text="THÊM" />
 
     </LinearLayout>
 

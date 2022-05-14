@@ -5,6 +5,7 @@ import com.example.elearningptit.model.CreditClass;
 import com.example.elearningptit.model.CreditClassDetail;
 import com.example.elearningptit.model.CreditClassListMemberDTO;
 import com.example.elearningptit.model.CreditClassPageForUser;
+import com.example.elearningptit.model.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -47,5 +49,8 @@ public interface APICallCreditClass {
 
     @GET("credit-class/creditclass-all-members?")
     Call<CreditClassListMemberDTO> getCreditClassListMember(@Header("Authorization") String token, @Query("creditclass_id") int creditclass_id);
+
+//    @GET("creditclass/add-student-to-credit-class?")
+//    Call<Student> getStudentCall (@Header("Authorization") String token, @Query("credit-class-id") int credit_class_id, @Body("listStudentID") String listStudentID);
 
 }

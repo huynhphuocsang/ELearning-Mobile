@@ -20,7 +20,7 @@
             android:textColor="#2980B9"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:id="@+id/txtTitle"/>
+            android:id="@+id/txtTitleTeacher"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:textColor="@color/black"
                 android:textSize="15dp"
                 android:layout_marginTop="5dp"
-                android:id="@+id/txtEndTime"
+                android:id="@+id/txtEndTimeTeacher"
                 />
         </LinearLayout>
 
@@ -55,11 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Content"
-                android:id="@+id/txtContent" />
+                android:id="@+id/txtContentTeacher" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listDocument"
+                android:id="@+id/listDocumentTeacher"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
             </LinearLayout>
@@ -102,7 +102,7 @@
                         android:drawableLeft="@drawable/ic_download"
                         android:textColor="#000"
                         android:backgroundTint="#AFECFF"
-
+                        android:id="@+id/btnDownloadAll"
                         />
                 </LinearLayout>
 
@@ -111,18 +111,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/submitFile"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="10"
+                    android:weightSum="20"
                     android:id="@+id/tbSVSubmit">
                     <TableRow
                         android:layout_width="match_parent"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:background="#C7D9FD"
                         >
                         <TextView
@@ -131,9 +130,7 @@
                             android:text="STT"
                             android:textStyle="bold"
                             android:textColor="#000"
-                            android:layout_weight="1"
-                            android:id="@+id/txtBaiTap"
-
+                            android:layout_weight="2"
                             />
                         <TextView
                             android:layout_width="0dp"
@@ -141,7 +138,7 @@
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="#000"
-                            android:layout_weight="3"
+                            android:layout_weight="7"
                             />
                         <TextView
                             android:layout_width="0dp"
@@ -149,7 +146,7 @@
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="#000"
-                            android:layout_weight="5"
+                            android:layout_weight="8"
                             />
                         <TextView
                             android:layout_width="0dp"
@@ -157,21 +154,13 @@
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="#000"
-                            android:layout_weight="2"
+                            android:layout_weight="3"
                             />
                     </TableRow>
 
+
                 </TableLayout>
             </LinearLayout>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#5EC788"
-                android:text="Thêm file"
-                android:textAllCaps="false"
-                android:layout_marginTop="10dp"
-                android:id="@+id/btnAddFile"
-                />
         </LinearLayout>
     </LinearLayout>
 

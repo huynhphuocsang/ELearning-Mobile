@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập điểm"
+        android:textSize="30dp"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textAllCaps="true"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Điểm"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:id="@+id/edtNhapDiem"
+        android:layout_marginTop="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="Thêm"
+            android:layout_marginRight="5dp"
+            android:textSize="16dp"
+            android:id="@+id/btnAddMark"
+            android:drawableRight="@drawable/ic_ok"
+            android:backgroundTint="#D0D0"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:text="Hủy"
+            android:layout_marginLeft="5dp"
+            android:textSize="16dp"
+            android:drawableRight="@drawable/ic_cancel"
+            android:id="@+id/btnCancelMark"/>
+
+    </LinearLayout>
+</LinearLayout>
