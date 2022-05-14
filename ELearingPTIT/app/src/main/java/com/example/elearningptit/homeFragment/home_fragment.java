@@ -29,6 +29,7 @@ import com.example.elearningptit.model.NotificationPageForUser;
 import com.example.elearningptit.model.TimelineDTO;
 import com.example.elearningptit.model.TimelineDTOList;
 import com.example.elearningptit.remote.APICallNotification;
+import com.example.elearningptit.remote.APICallTeacher;
 import com.example.elearningptit.remote.APICallUser;
 import com.example.elearningptit.timetable.time_table_fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,7 +37,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +63,9 @@ public class home_fragment extends Fragment {
 
     List<TimelineDTO> timelineDTOList;
     List<CreditClass> creditClasss;
+
+    Set<String> userRoles;
+    String token;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -111,42 +117,16 @@ public class home_fragment extends Fragment {
     }
 
     private void setEvent() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        token = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        userRoles=preferences.getStringSet(getResources().getString(R.string.USER_ROLES), new HashSet<>());
         getTimeline();
         getCreditClassRegistered();
-//        tvSeeMoreCreditclass.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//               try{
-//                   Intent intent = new Intent(getActivity(), CreditClassActivity.class);
-//                   startActivity(intent);
-//               }catch (Exception e){
-//                   Log.d("print",e.getMessage());
-//               }
-//
-//            }
-//        });
 
         llSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
-//                    time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
-                    //Navigation.findNavController(view).navigate(R.id.time_table_fragment);
-                    //time_table_fragment timeTableFragment= time_table_fragment.newInstance("ss","ss");
-
-//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                    FragmentTransaction ft = fragmentManager.beginTransaction();
-//                    ft.replace(R.id.fragmentContainerView, timeTableFragment);
-//                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//                    ft.addToBackStack(null);
-//                    ft.commit();
-
-
-//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.fragmentContainerView, timeTableFragment);
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
 
                 }catch (Exception e){
                     Log.d("print",e.getMessage());
@@ -156,19 +136,24 @@ public class home_fragment extends Fragment {
         });
     }
     private void getTimeline() {
-        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
-        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDateTime now = LocalDateTime.now();
         String today=dtf.format(now);
-        Call<List<TimelineDTO>> gettimetable = APICallUser.apiCall.getTimetable("Bearer " + jwtToken, today);
+        Call<List<TimelineDTO>> gettimetable;
+        if(userRoles.contains("ROLE_TEACHER")){
+            gettimetable= APICallTeacher.apiCall.getTimetableTeacher("Bearer " + token, today);
+        }
+        else{
+            gettimetable= APICallUser.apiCall.getTimetable("Bearer " + token, today);
+        }
         gettimetable.enqueue(new Callback<List<TimelineDTO>>() {
 
             @Override
             public void onResponse(Call<List<TimelineDTO>> call, Response<List<TimelineDTO>> response) {
                 if (response.code() == 200) {
                     timelineDTOList = response.body();
-                    Toast.makeText(getContext(), timelineDTOList.size()+"", Toast.LENGTH_SHORT).show();
+
                     timelineDTOList.forEach((timelineDTO -> {
                         if(now.getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
                             if(timelineDTO.getEndLesson()<=5){
@@ -207,9 +192,13 @@ public class home_fragment extends Fragment {
     }
 
     private void getCreditClassRegistered() {
-        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
-        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-        Call<List<CreditClass>> getUserRegistration = APICallUser.apiCall.getUserRegistration("Bearer " + jwtToken);
+        Call<List<CreditClass>> getUserRegistration ;
+        if(userRoles.contains("ROLE_TEACHER")){
+            getUserRegistration = APICallTeacher.apiCall.getTeacherCreditClass("Bearer " + token);
+        }
+        else{
+            getUserRegistration = APICallUser.apiCall.getUserRegistration("Bearer " + token);
+        }
         getUserRegistration.enqueue(new Callback<List<CreditClass>>() {
 
             @Override

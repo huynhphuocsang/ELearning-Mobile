@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<JwtResponse> call, Response<JwtResponse> response) {
                         if(response.code()==200){
                             JwtResponse responseToken = response.body();
-                            tokenManager.createSession(username,responseToken.getToken());
+                            tokenManager.createSession(username,responseToken.getToken(),responseToken.getRoles());
                             finish();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
