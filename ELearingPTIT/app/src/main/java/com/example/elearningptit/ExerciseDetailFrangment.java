@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -53,7 +54,7 @@ public class ExerciseDetailFrangment extends Fragment {
     private String submitEndTime;
     private String submitContent;
     private String submitFileName;
-    private int documentID;
+    private long userID;
     private int exerciseID;
 
 
@@ -74,14 +75,14 @@ public class ExerciseDetailFrangment extends Fragment {
      * @return A new instance of fragment ExerciseDetailFrangment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExerciseDetailFrangment newInstance(String param1, String param2, String param3, int param4,
+    public static ExerciseDetailFrangment newInstance(String param1, String param2, String param3, long param4,
                                                     int param5) {
         ExerciseDetailFrangment fragment = new ExerciseDetailFrangment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         args.putString(ARG_PARAM3, param3);
-        args.putInt(ARG_PARAM4, param4);
+        args.putLong(ARG_PARAM4, param4);
         args.putInt(ARG_PARAM5, param5);
         fragment.setArguments(args);
         return fragment;
@@ -94,9 +95,10 @@ public class ExerciseDetailFrangment extends Fragment {
             submitTitle = getArguments().getString(ARG_PARAM1);
             submitEndTime = getArguments().getString(ARG_PARAM2);
             submitContent = getArguments().getString(ARG_PARAM3);
-            documentID = getArguments().getInt(ARG_PARAM4);
+            userID = getArguments().getLong(ARG_PARAM4);
             exerciseID = getArguments().getInt(ARG_PARAM5);
 
+            //Bài tập 1: Cơ sở dữ liệu phân tán-2022-03-23T17:00:00.000+00:00-Viết chương trình in ra các kiểu phân tán của cơ sở dữ liệu-1-1
         }
     }
 
@@ -212,7 +214,9 @@ public class ExerciseDetailFrangment extends Fragment {
                         View convertView = inflater.inflate(R.layout.item_document_full_width, null);
                         TextView submitName = convertView.findViewById(R.id.submitName);
                         ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
+                        ImageButton ibtDeleteSubmit = convertView.findViewById(R.id.ibtSubmitExerciseDelete);
                         submitName.setText(submitFileName);
+                        ibtDeleteSubmit.setVisibility(View.VISIBLE);
 
                         String fileType = exerSub.getSubmitFile().getFileType();
 
@@ -257,7 +261,7 @@ public class ExerciseDetailFrangment extends Fragment {
         });
     }
 
-    public String subString(String time){
+    private String subString(String time){
         if(!time.equals(""))
         {
             String[] data = time.substring(0,10).split("-");
