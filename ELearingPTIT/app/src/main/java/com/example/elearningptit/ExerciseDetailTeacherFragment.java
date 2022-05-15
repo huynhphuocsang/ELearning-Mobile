@@ -364,7 +364,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         btnChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InventoryFragment inventoryFragment = InventoryFragment.newInstance(exerciseID, "");
+                InventoryFragment inventoryFragment = InventoryFragment.newInstance(exerciseID, submitTitle);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

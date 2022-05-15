@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.elearningptit.model.MarkInventory;
 import com.example.elearningptit.remote.APICallSubmit;
@@ -35,16 +36,17 @@ public class InventoryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String EXERCISE_ID = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TITLE = "param2";
 
     // TODO: Rename and change types of parameters
     private int exerciseID;
-    private String mParam2;
+    private String title;
 
 
     private int highM, mediumM, lowM, verylowM;
 
     PieChart pieChart;
+    TextView chartTitle;
 
     public InventoryFragment() {
         // Required empty public constructor
@@ -63,7 +65,7 @@ public class InventoryFragment extends Fragment {
         InventoryFragment fragment = new InventoryFragment();
         Bundle args = new Bundle();
         args.putInt(EXERCISE_ID, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(TITLE, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,7 +75,7 @@ public class InventoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             exerciseID = getArguments().getInt(EXERCISE_ID);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            title = getArguments().getString(TITLE);
         }
     }
 
@@ -88,10 +90,10 @@ public class InventoryFragment extends Fragment {
 
     private void addControl(View view){
         pieChart = view.findViewById(R.id.pieChart);
+        chartTitle = view.findViewById(R.id.tvChartTitle);
     }
 
     private void setEvent(){
-
 
         //Call api get inventory
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
@@ -137,6 +139,7 @@ public class InventoryFragment extends Fragment {
     }
 
     private void drawChart(int high, int medium, int low, int verylow){
+        chartTitle.setText(title);
         ArrayList<PieEntry> mark = new ArrayList<>();
         if(high > 0)
         {
@@ -164,7 +167,8 @@ public class InventoryFragment extends Fragment {
 
         pieChart.setData(pieData);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Điểm");
+        pieChart.setCenterText("Điểm (%)");
+        pieChart.setCenterTextSize(16f);
         pieChart.animateY(1000);
     }
 }
