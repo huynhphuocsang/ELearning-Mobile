@@ -38,62 +38,43 @@ public class VerifyUserCodeActivity extends AppCompatActivity {
         btnConfirmUserCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userScore = txtUserCode.getText().toString();
-                if (userScore == "") {
+                String userCode = txtUserCode.getText().toString();
+                if (userCode == "") {
                     Toast.makeText(VerifyUserCodeActivity.this, "Mã không được để trống !!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //Toast.makeText(VerifyUserCodeActivity.this, userScore, Toast.LENGTH_SHORT).show();
-                Call<List<StudentDTO>> student = APICallStudent.apiCall.findByStudentCode(userScore);
-                student.enqueue(new Callback<List<StudentDTO>>() {
+                Call<HashCodeVerifyResponse> student = APICallStudent.apiCall.verifyForgotPassword(userCode);
+                student.enqueue(new Callback<HashCodeVerifyResponse>() {
                     @Override
-                    public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
+                    public void onResponse(Call<HashCodeVerifyResponse> call, Response<HashCodeVerifyResponse> response) {
                         if (response.code() == 200) {
-                            sendVerifyForgotPassword(userScore);
+                            Toast.makeText(VerifyUserCodeActivity.this, "Đã gửi mã xác thực đến mail Sinh viên của bạn", Toast.LENGTH_SHORT).show();
+
+                            HashCodeVerifyResponse hashCodeVerifyResponse =response.body();
+                            Intent intent=new Intent(VerifyUserCodeActivity.this,VerifyEmailCodeActivity.class);
+                            intent.putExtra("VALUE-KEY",hashCodeVerifyResponse.getValueKey());
+                            intent.putExtra("USER-CODE",userCode);
+                            startActivity(intent);
+                            finish();
                         } else if (response.code() == 401) {
-                            Toast.makeText(VerifyUserCodeActivity.this, "Unauthorized ForgotPassword", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyUserCodeActivity.this, "Unauthorized sendVerifyForgotPassword", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 403) {
-                            Toast.makeText(VerifyUserCodeActivity.this, "Forbidden  ForgotPassword", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyUserCodeActivity.this, "Forbidden  sendVerifyForgotPassword", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 404) {
-                            Toast.makeText(VerifyUserCodeActivity.this, "Not Found  ForgotPassword", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyUserCodeActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<StudentDTO>> call, Throwable t) {
-                        Toast.makeText(VerifyUserCodeActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<HashCodeVerifyResponse> call, Throwable t) {
+                        Toast.makeText(VerifyUserCodeActivity.this, "sendVerifyForgotPassword fail", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
     }
 
-    public void sendVerifyForgotPassword(String userScr){
-        Call<HashCodeVerifyResponse> student = APICallStudent.apiCall.verifyForgotPassword(userScr);
-        student.enqueue(new Callback<HashCodeVerifyResponse>() {
-            @Override
-            public void onResponse(Call<HashCodeVerifyResponse> call, Response<HashCodeVerifyResponse> response) {
-                if (response.code() == 200) {
-                    HashCodeVerifyResponse hashCodeVerifyResponse =response.body();
-                    Intent intent=new Intent(VerifyUserCodeActivity.this,VerifyEmailCodeActivity.class);
-                    intent.putExtra("VALUE-KEY",hashCodeVerifyResponse.getValueKey());
-                    intent.putExtra("USER-CODE",userScr);
-                    startActivity(intent);
-                } else if (response.code() == 401) {
-                    Toast.makeText(VerifyUserCodeActivity.this, "Unauthorized sendVerifyForgotPassword", Toast.LENGTH_SHORT).show();
-                } else if (response.code() == 403) {
-                    Toast.makeText(VerifyUserCodeActivity.this, "Forbidden  sendVerifyForgotPassword", Toast.LENGTH_SHORT).show();
-                } else if (response.code() == 404) {
-                    Toast.makeText(VerifyUserCodeActivity.this, "Not Found  sendVerifyForgotPassword", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<HashCodeVerifyResponse> call, Throwable t) {
-                Toast.makeText(VerifyUserCodeActivity.this, "sendVerifyForgotPassword fail", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
 

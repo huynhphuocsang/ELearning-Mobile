@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.R;
+import com.example.elearningptit.model.CodeVerifySuccessResponse;
 import com.example.elearningptit.model.HashCodeVerifyResponse;
 import com.example.elearningptit.model.RecoveryModelRequest;
 import com.example.elearningptit.remote.APICallStudent;
@@ -36,7 +37,6 @@ public class VerifyEmailCodeActivity extends AppCompatActivity {
     private void setEvent() {
         Intent intent=getIntent();
         valueKey=intent.getStringExtra("VALUE-KEY");
-        userCode=intent.getStringExtra("USER-CODE");
         btnConfirmEmailCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,19 +47,19 @@ public class VerifyEmailCodeActivity extends AppCompatActivity {
                 }
                 //Toast.makeText(VerifyEmailCodeActivity.this, valueKey +"\n-"+userCode, Toast.LENGTH_SHORT).show();
                 RecoveryModelRequest recoveryModelRequest=new RecoveryModelRequest(valueKey,emailCode);
-                Call<HashCodeVerifyResponse> student = APICallStudent.apiCall.verifyCode(recoveryModelRequest);
-                student.enqueue(new Callback<HashCodeVerifyResponse>() {
+                Call<CodeVerifySuccessResponse> student = APICallStudent.apiCall.verifyCode(recoveryModelRequest);
+                student.enqueue(new Callback<CodeVerifySuccessResponse>() {
                     @Override
-                    public void onResponse(Call<HashCodeVerifyResponse> call, Response<HashCodeVerifyResponse> response) {
+                    public void onResponse(Call<CodeVerifySuccessResponse> call, Response<CodeVerifySuccessResponse> response) {
                         if (response.code() == 200) {
-
-                            HashCodeVerifyResponse hashCodeVerifyResponse=response.body();
+                            CodeVerifySuccessResponse codeVerifySuccessResponse=response.body();
                             Intent intent=new Intent(VerifyEmailCodeActivity.this,NewPasswordActivity.class);
-                            intent.putExtra("VALUE-KEY",hashCodeVerifyResponse.getValueKey());
+                            intent.putExtra("VALUE-KEY",codeVerifySuccessResponse.getValueKey());
+                            intent.putExtra("VALUE-CODE",codeVerifySuccessResponse.getCodeValue());
                             startActivity(intent);
+                            finish();
                         } else if (response.code() == 400) {
-                            Toast.makeText(VerifyEmailCodeActivity.this, recoveryModelRequest.getKey() +"\n-"+userCode, Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(VerifyEmailCodeActivity.this, "Could not get session", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyEmailCodeActivity.this, "Mã xác thực không hợp lệ", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 403) {
                             Toast.makeText(VerifyEmailCodeActivity.this, "Forbidden  VerifyEmailCodeActivity", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 404) {
@@ -68,7 +68,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<HashCodeVerifyResponse> call, Throwable t) {
+                    public void onFailure(Call<CodeVerifySuccessResponse> call, Throwable t) {
                         Toast.makeText(VerifyEmailCodeActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -89,6 +89,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<HashCodeVerifyResponse> call, Response<HashCodeVerifyResponse> response) {
                 if (response.code() == 200) {
+                    Toast.makeText(VerifyEmailCodeActivity.this, "Đã gửi mã xác thực đến mail sinh viên của bạn", Toast.LENGTH_SHORT).show();
                     HashCodeVerifyResponse  hashCodeVerifyResponse  =response.body();
                     valueKey=hashCodeVerifyResponse.getValueKey();
                 } else if (response.code() == 401) {
@@ -96,7 +97,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity {
                 } else if (response.code() == 403) {
                     Toast.makeText(VerifyEmailCodeActivity.this, "Forbidden sendVerifyForgotPassword VerifyEmailCodeActivity", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 404) {
-                    Toast.makeText(VerifyEmailCodeActivity.this, "Not Found sendVerifyForgotPassword VerifyEmailCodeActivity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyEmailCodeActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
