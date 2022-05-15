@@ -486,6 +486,7 @@ public class ExcerciseFragment extends Fragment {
                 Log.e("Status:", "Call student submit exercise fail");
             }
         });
+        return true;
     }
 
 }
