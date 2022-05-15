@@ -4,6 +4,7 @@ import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.JwtResponse;
 import com.example.elearningptit.model.LoginRequest;
 import com.example.elearningptit.model.MarkDTO;
+import com.example.elearningptit.model.MarkInventory;
 import com.example.elearningptit.model.StudentSubmitExercise;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,4 +31,8 @@ public interface APICallSubmit {
 
     @PUT("submit/mark")
     Call<String> putSubmitMark(@Header("Authorization") String token, @Body MarkDTO markDTO);
+
+    @GET("submit/inventory?")
+    Call<MarkInventory> getMarkInventory(@Header("Authorization") String token, @Query("excercise-id") int excerciseId);
 }
+
