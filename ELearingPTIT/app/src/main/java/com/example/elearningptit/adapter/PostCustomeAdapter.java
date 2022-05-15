@@ -116,6 +116,7 @@ public class PostCustomeAdapter extends ArrayAdapter {
                     public void doSomething(int i) {
                         commentAmounts.put(posts.get(position).getPostId(), i);
                         tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
+                        Log.d("print", tvCommentAmount.getText().toString());
                     }
                 };
 
