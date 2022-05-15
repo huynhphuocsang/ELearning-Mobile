@@ -6,8 +6,8 @@ public class GlobalVariables {
 //    public static String BASE_URL="http://192.168.7.107:8080/api/";
 
     public static String BASE_URL="http://192.168.1.8:8080/api/";
-//    public static String BASE_URL="http://192.168.7.106:8080/api/";
-//    public static String BASE_URL="http://192.168.1.9:8080/api/";
+//    public static String BASE_URL="http://192.168.7.105:8080/api/";
+//    public static String BASE_URL="http://192.168.42.35:8080/api/";
 //    public static String BASE_URL="http://192.168.1.11:8080/api/";
 
 }
