@@ -1,4 +1,4 @@
-package com.example.elearningptit.remote;
+package com.example.elearningptit.remote.admin;
 
 import com.example.elearningptit.config.GlobalVariables;
 import com.google.gson.Gson;

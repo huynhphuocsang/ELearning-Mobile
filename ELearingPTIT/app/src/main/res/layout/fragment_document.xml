@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical"
+    android:padding="15px"
     android:background="#ECECEC"
     tools:context=".DocumentFragment">
+
+
+    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:layout_width="match_parent"

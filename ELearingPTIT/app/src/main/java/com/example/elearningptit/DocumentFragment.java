@@ -15,9 +15,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ListView;
+
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +54,9 @@ public class DocumentFragment extends Fragment {
     private String creditclass_id;
     private String teacher;
 
+    TextView tenMon, tenGV;
+    ListView listTL;
+
     public DocumentFragment() {
         // Required empty public constructor
     }
@@ -79,6 +86,8 @@ public class DocumentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
         View view = inflater.inflate(R.layout.fragment_document, container, false);
 
         Intent getDaTa=getActivity().getIntent();
@@ -186,11 +195,20 @@ public class DocumentFragment extends Fragment {
         tbDocument.addView(tbRow);
     }
 
+
+    private void addControl(View view) {
+        tbDocument = view.findViewById(R.id.tbDocument);
+
+    }
+
+    private void setControl(View view) {
+
+        tenGV = view.findViewById(R.id.textTenGV);
+
+    }
+
     private void setEvent() {
 
     }
 
-    private void addControl(View view) {
-        tbDocument = view.findViewById(R.id.tbDocument);
-    }
 }
