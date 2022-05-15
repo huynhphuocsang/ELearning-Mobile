@@ -44,9 +44,14 @@
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_document.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_excercise.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_frangment.xml" value="0.25" />
+<<<<<<< HEAD
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_exercise_detail_teacher.xml" value="0.22568093385214008" />
+=======
+>>>>>>> 2b0f6e70b61f0b61a02a68f1c8d21b80a1b4fbd0
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_credit.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_home_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_infor_fragment.xml" value="0.21203703703703702" />
+        <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_inventory.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_member.xml" value="0.25416666666666665" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_notification_fragment.xml" value="0.21203703703703702" />
         <entry key="..\:/Mobile/ELearingPTIT/app/src/main/res/layout/fragment_post_delta.xml" value="0.21203703703703702" />
