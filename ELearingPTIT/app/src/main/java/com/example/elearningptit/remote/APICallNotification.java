@@ -3,6 +3,8 @@ package com.example.elearningptit.remote;
 import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.NewPasswordModel;
 import com.example.elearningptit.model.NotificationPageForUser;
+import com.example.elearningptit.model.PostResponseDTO;
+import com.example.elearningptit.model.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,4 +30,5 @@ public interface APICallNotification {
 
     @PUT("seen")
     Call<String> setSeen(@Header("Authorization") String token, @Query("notification-id") long notificationId);
+
 }

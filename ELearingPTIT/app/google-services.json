@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "196175355482",
+    "project_id": "elearningptit-d643a",
+    "storage_bucket": "elearningptit-d643a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196175355482:android:47bd455262050d4a040263",
+        "android_client_info": {
+          "package_name": "com.example.elearningptit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196175355482-s83ieddrrtbc8cbhsp8okivoek0dk8g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwMKV_CZItq_A_2KDmv-zILRaXo-xzQQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196175355482-s83ieddrrtbc8cbhsp8okivoek0dk8g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
