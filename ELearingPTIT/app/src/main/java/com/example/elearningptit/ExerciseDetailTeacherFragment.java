@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -66,6 +67,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     LinearLayout listDocument;
     TableLayout tbSVSubmit;
     Button btnChart;
+    FrameLayout frame;
 
     public ExerciseDetailTeacherFragment() {
         // Required empty public constructor
@@ -121,9 +123,18 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         listDocument = view.findViewById(R.id.listDocumentTeacher);
         tbSVSubmit = view.findViewById(R.id.tbSVSubmit);
         btnChart = view.findViewById(R.id.btnInventory);
+        frame = view.findViewById(R.id.exerciseDetailTeacher);
     }
 
     private void setEvent(){
+
+        frame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         getExerciseDocument();
         getListStudentSubmit();
     }
@@ -210,7 +221,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvSTT.setTextColor(Color.BLACK);
                             tvSTT.setGravity(Gravity.CENTER);
                             tvSTT.setTextSize(15);
-                            tvSTT.setPadding(40,5,0,0);
+//                            tvSTT.setPadding(40,5,0,0);
                             tbRow.addView(tvSTT);
 
                             tvMaSV = new TextView(getContext());
@@ -218,7 +229,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvMaSV.setTextColor(Color.BLACK);
                             tvMaSV.setGravity(Gravity.CENTER);
                             tvMaSV.setTextSize(15);
-                            tvMaSV.setPadding(70,10,0,0);
+//                            tvMaSV.setPadding(70,10,0,0);
                             tbRow.addView(tvMaSV);
 
                             tvHoTen = new TextView(getContext());
@@ -226,7 +237,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvHoTen.setTextColor(Color.BLACK);
                             tvHoTen.setGravity(Gravity.CENTER);
                             tvHoTen.setTextSize(15);
-                            tvHoTen.setPadding(70,10,0,0);
+//                            tvHoTen.setPadding(70,10,0,0);
                             tbRow.addView(tvHoTen);
 
                             tvDiem = new TextView(getContext());
@@ -234,7 +245,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvDiem.setTextColor(Color.BLACK);
                             tvDiem.setGravity(Gravity.CENTER);
                             tvDiem.setTextSize(15);
-                            tvDiem.setPadding(85,10,0,0);
+                            tvDiem.setPadding(0,0,20,0);
 
                             tvDiem.setId(sv.getUserId());
                             tvDiem.setOnLongClickListener(new View.OnLongClickListener() {

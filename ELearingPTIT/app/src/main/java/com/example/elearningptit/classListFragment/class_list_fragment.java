@@ -36,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -340,8 +341,22 @@ public class class_list_fragment extends Fragment {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.code()==200){
-                            Intent creditClassIntent = new Intent(getActivity(), CreditClassActivity.class);
-                            startActivity(creditClassIntent);
+
+                            Intent intent = new Intent(getActivity(), CreditClassActivity.class);
+                            intent.putExtra("CREDITCLASS_ID",creditClassesPage.getCreditClassDTOS().get(i).getCreditClassId()+"");
+                            intent.putExtra("SUBJECT_NAME",creditClassesPage.getCreditClassDTOS().get(i).getSubjectName());
+                            intent.putExtra("SEMESTER",creditClassesPage.getCreditClassDTOS().get(i).getSemester());
+
+                            String teacherNames = creditClassesPage.getCreditClassDTOS().get(i).getTeachers().stream()
+                                    .map(n -> String.valueOf(n))
+                                    .collect(Collectors.joining(", "));
+                            intent.putExtra("TEACHER",teacherNames);
+
+                            startActivity(intent);
+
+
+//                            Intent creditClassIntent = new Intent(getActivity(), CreditClassActivity.class);
+//                            startActivity(creditClassIntent);
                         }else if(response.code()==422){
                             showVerifyDialog(creditClassId);
                         }else{
