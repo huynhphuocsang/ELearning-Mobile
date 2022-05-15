@@ -2,6 +2,7 @@ package com.example.elearningptit.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +11,32 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.elearningptit.EventListener;
 import com.example.elearningptit.MemberFragment;
+import com.example.elearningptit.PostDeltaFragment;
 import com.example.elearningptit.R;
 import com.example.elearningptit.model.PostCommentDTO;
+import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.Student;
+import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallPost;
+import com.example.elearningptit.remote.APICallUser;
 import com.example.elearningptit.remote.admin.APICallCreaditClass;
 import com.example.elearningptit.remote.admin.APICallManageCreditClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,13 +46,14 @@ import retrofit2.Response;
 public class StudentAdapter extends ArrayAdapter<Student> {
     private Context context;
     private int layout;
-    private List<Student> studentList;
+    List<Student> studentList;
     String jwtToken;
     EventListener onAfterDeleteStudent;
     List<String> roles;
+    MemberFragment memberFragment;
     String creditClassId;
     public StudentAdapter(@NonNull Context context, int resource,
-                          List<Student> studentList, String creditClassId,  EventListener onAfterDeleteStudent, List<String> roles) {
+                          List<Student> studentList, HashMap<Integer, Integer> hashMap, FragmentActivity activity, String creditClassId, EventListener onAfterDeleteStudent, List<String> roles) {
         super(context, resource, studentList);
         this.context = context;
         this.layout = resource;
@@ -69,20 +80,15 @@ public class StudentAdapter extends ArrayAdapter<Student> {
         TextView tenSV = convertView.findViewById(R.id.textTenSV);
         ImageButton deleteSV = convertView.findViewById(R.id.deleteSV);
 
-
         Student student = studentList.get(position);
 
         maSV.setText(student.getStudentCode());
         tenSV.setText(student.getFullnanme());
 
+
+
         if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
         {
-            deleteSV.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            deleteSV.setVisibility(View.VISIBLE);
-
             deleteSV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -112,6 +118,7 @@ public class StudentAdapter extends ArrayAdapter<Student> {
                     dialog.show();
                 }
             });
+
 
         }
         return convertView;
@@ -143,7 +150,6 @@ public class StudentAdapter extends ArrayAdapter<Student> {
     public void addStudent (Student student) {
         List<String> listStudent=new ArrayList<>();
         listStudent.add(student.getStudentCode());
-        //delete comment
         Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
         call.enqueue(new Callback<String>() {
             @Override
@@ -162,7 +168,6 @@ public class StudentAdapter extends ArrayAdapter<Student> {
             }
         });
     }
-
 
 
 

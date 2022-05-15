@@ -1,8 +1,6 @@
 package com.example.elearningptit;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,41 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elearningptit.adapter.CommentCustomeAdapter;
 import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.adapter.StudentAdapter;
-import com.example.elearningptit.model.CreditClassDetailDTO;
+import com.example.elearningptit.forgotPassword.VerifyUserCodeActivity;
 import com.example.elearningptit.model.CreditClassListMemberDTO;
 import com.example.elearningptit.model.PostCommentDTO;
-import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.Student;
-import com.example.elearningptit.model.StudentSubmitExercise;
+import com.example.elearningptit.model.StudentDTO;
 import com.example.elearningptit.model.Teacher;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
-import com.example.elearningptit.remote.APICallCreditClassDetail;
-import com.example.elearningptit.remote.APICallPost;
-import com.example.elearningptit.remote.APICallSubmit;
+import com.example.elearningptit.remote.APICallStudent;
 import com.example.elearningptit.remote.APICallUser;
-import com.example.elearningptit.remote.admin.APICallManageCreditClass;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +61,8 @@ public class MemberFragment extends Fragment {
     long userID;
     UserInfo userInfo;
     List<String> listRoles;
-
+    List<Student> posts;
+    StudentAdapter studentAdapter;
     private static final String CREDITCLASS_ID = "CREDITCLASS_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
     private static final String SEMESTER = "SEMESTER";
@@ -142,22 +128,54 @@ public class MemberFragment extends Fragment {
     }
 
 
-    public OkHttpClient getClient(String jwttoken){
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
-                        Request newRequest = chain.request().newBuilder()
-                                .addHeader("Authorization", "Bearer "+jwttoken)
-                                .build();
-                        return chain.proceed(newRequest);
+//    public OkHttpClient getClient(String jwttoken){
+//        OkHttpClient client = new OkHttpClient.Builder()
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public okhttp3.Response intercept(Chain chain) throws IOException {
+//                        Request newRequest = chain.request().newBuilder()
+//                                .addHeader("Authorization", "Bearer "+jwttoken)
+//                                .build();
+//                        return chain.proceed(newRequest);
+//                    }
+//                })
+//                .build();
+//        return client;
+//    }
+
+    public void getUserInfo() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        Call<UserInfo> userInfoCall = APICallUser.apiCall.getUserInfo("Bearer " + jwtToken);
+        userInfoCall.enqueue(new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+
+                if (response.code() == 200) {
+                    //Lấy list role user
+                    userInfo = response.body();
+                    if(userInfo.getRoles().size() > 0)
+                    {
+                        listRoles = userInfo.getRoles();
+                        userID = userInfo.getUserId();
                     }
-                })
-                .build();
-        return client;
+                    else
+                    {
+                        listRoles = new ArrayList<>();
+                    }
+
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+                Toast.makeText(getContext(), "Load thất bại ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
-
-
 
     private void getInforForPostListView () {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
@@ -217,51 +235,18 @@ public class MemberFragment extends Fragment {
     }
 
 
-    private void getUserInfo() {
-        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
-        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-        Call<UserInfo> userInfoCall = APICallUser.apiCall.getUserInfo("Bearer " + jwtToken);
-        userInfoCall.enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-
-                if (response.code() == 200) {
-                    //Lấy list role user
-                    userInfo = response.body();
-                    if(userInfo.getRoles().size() > 0)
-                    {
-                        listRoles = userInfo.getRoles();
-                        userID = userInfo.getUserId();
-                    }
-                    else
-                    {
-                        listRoles = new ArrayList<>();
-                    }
-
-                } else if (response.code() == 401) {
-                    Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-                Toast.makeText(getContext(), "Load thất bại ", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
     private void setButtonThemSV(){
         themSv.setVisibility(View.VISIBLE);
+        Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.item_them_sv);
+        EditText EditcodeStudent = dialog.findViewById(R.id.editTextNhapHo);
+        Button btnHuy = dialog.findViewById(R.id.buttonHUY);
+        Button btnLuu = dialog.findViewById(R.id.buttonLUU);
+
         themSv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialog = new Dialog(getContext());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.item_them_sv);
-
-                Button btnHuy = dialog.findViewById(R.id.buttonHUY);
-                Button btnLuu = dialog.findViewById(R.id.buttonLUU);
 
                 btnHuy.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -273,8 +258,32 @@ public class MemberFragment extends Fragment {
                 btnLuu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "Add success", Toast.LENGTH_SHORT).show();
-//                        context.addStudent();
+                        String studentdelete = EditcodeStudent.getText().toString();
+                        if (studentdelete == "") {
+                            Toast.makeText(getContext(), "Mã không được để trống !!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Call<List<StudentDTO>> student = APICallStudent.apiCall.findByStudentCode(studentdelete);
+                        student.enqueue(new Callback<List<StudentDTO>>() {
+                            @Override
+                            public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
+                                if (response.code() == 200) {
+                                    Log.e("Status:" , "Failure");
+
+                                } else if (response.code() == 401) {
+                                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 403) {
+                                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 404) {
+                                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<StudentDTO>> call, Throwable t) {
+                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
 
@@ -295,7 +304,6 @@ public class MemberFragment extends Fragment {
             }
         });
     }
-
 
 
 
