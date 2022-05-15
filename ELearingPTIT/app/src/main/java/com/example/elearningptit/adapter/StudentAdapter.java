@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.example.elearningptit.model.Student;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallPost;
 import com.example.elearningptit.remote.admin.APICallCreaditClass;
+import com.example.elearningptit.remote.admin.APICallManageCreditClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +38,18 @@ public class StudentAdapter extends ArrayAdapter<Student> {
     private int layout;
     private List<Student> studentList;
     String jwtToken;
-    EventListener onAfterDeleteComment;
+    EventListener onAfterDeleteStudent;
     List<String> roles;
-    public StudentAdapter(@NonNull Context context, int resource, @NonNull Student[] objects, Context context1, int layout, List<Student> studentList) {
-        super(context, resource, objects);
-        this.context = context1;
-        this.layout = layout;
+    String creditClassId;
+    public StudentAdapter(@NonNull Context context, int resource,
+                          List<Student> studentList, String creditClassId,  EventListener onAfterDeleteStudent, List<String> roles) {
+        super(context, resource, studentList);
+        this.context = context;
+        this.layout = resource;
         this.studentList = studentList;
+        this.creditClassId=creditClassId;
+        this.onAfterDeleteStudent = onAfterDeleteStudent;
+        this.roles = roles;
     }
 
 
@@ -57,17 +64,16 @@ public class StudentAdapter extends ArrayAdapter<Student> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView =inflater.inflate(layout,null);
-        ImageView AvatarSV = convertView.findViewById(R.id.imageSV);
+
         TextView maSV = convertView.findViewById(R.id.textMSV);
         TextView tenSV = convertView.findViewById(R.id.textTenSV);
-        ImageView deleteSV = convertView.findViewById(R.id.deleteSV);
+        ImageButton deleteSV = convertView.findViewById(R.id.deleteSV);
 
 
         Student student = studentList.get(position);
 
         maSV.setText(student.getStudentCode());
         tenSV.setText(student.getFullnanme());
-
 
         if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
         {
@@ -88,7 +94,7 @@ public class StudentAdapter extends ArrayAdapter<Student> {
                     Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
                     TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
 
-                    tvContent.setText("Bạn có chắc muốn xóa Sinh Viên không?");
+                    tvContent.setText("Bạn có chắc muốn xóa bình luận không?");
 
                     btnCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -99,38 +105,65 @@ public class StudentAdapter extends ArrayAdapter<Student> {
                     btnVerify.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-//
+                            deleteStudent(student);
                             dialog.dismiss();
                         }
                     });
                     dialog.show();
                 }
             });
+
         }
         return convertView;
     }
 
 
+    public void deleteStudent (Student student) {
+        List<String> listStudent=new ArrayList<>();
+        listStudent.add(student.getStudentCode());
+        //delete comment
+        Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    onAfterDeleteStudent.doSomething();
+                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
-//    void deleteStudent (Student student) {
-//        //delete comment
-//        Call<Student> call = APICallCreaditClass.apiCall.deleteStudent("Bearer " + jwtToken, student.getStudentCode());
-//        call.enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//                if (response.code() == 200) {
-//                    onAfterDeleteComment.doSomething();
-//                    Toast.makeText(getContext(), "Xóa bình luận thành công", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//                Toast.makeText(getContext(), "Xóa bình luận thất bại", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void addStudent (Student student) {
+        List<String> listStudent=new ArrayList<>();
+        listStudent.add(student.getStudentCode());
+        //delete comment
+        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    onAfterDeleteStudent.doSomething();
+                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
 }

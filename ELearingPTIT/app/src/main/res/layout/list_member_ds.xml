@@ -3,11 +3,12 @@
     android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginTop="5dp"
     android:layout_marginLeft="30dp"
-    android:background="@drawable/border_radius_item">
+    android:background="@drawable/post_custom_shape">
 
     <LinearLayout
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="30dp">
         <ImageView
@@ -20,39 +21,37 @@
         <TextView
             android:layout_marginLeft="10dp"
             android:id="@+id/textMSV"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="30dp"
-            android:text="N18DCCN236"
+            android:text="N236"
             android:textAlignment="center"
             android:textSize="15dp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="30dp"
             android:text=" - "
             android:textAlignment="center"
-            android:textSize="17dp"
+            android:textSize="15dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textTenSV"
-            android:layout_width="wrap_content"
+            android:layout_width="195dp"
             android:layout_height="30dp"
             android:text="Lù Vĩnh Trường"
             android:textAlignment="center"
-            android:textSize="17dp"
+            android:textSize="15dp"
             android:textStyle="bold" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/deleteSV"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="55dp"
+            android:src="@drawable/ic_delete"
 
-            android:src="@android:drawable/ic_delete" />
-
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
+
 </LinearLayout>
-<!--    android:visibility="invisible"-->

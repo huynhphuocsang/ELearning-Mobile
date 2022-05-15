@@ -15,12 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.adapter.CommentCustomeAdapter;
 import com.example.elearningptit.adapter.PostCustomeAdapter;
 import com.example.elearningptit.adapter.StudentAdapter;
 import com.example.elearningptit.model.CreditClassDetailDTO;
@@ -36,6 +38,7 @@ import com.example.elearningptit.remote.APICallCreditClassDetail;
 import com.example.elearningptit.remote.APICallPost;
 import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.remote.admin.APICallManageCreditClass;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -73,8 +76,6 @@ public class MemberFragment extends Fragment {
     long userID;
     UserInfo userInfo;
     List<String> listRoles;
-
-    private Boolean flagSubmits1Class = false;
 
     private static final String CREDITCLASS_ID = "CREDITCLASS_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
@@ -117,7 +118,7 @@ public class MemberFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_member, container, false);
 
         Intent getDaTa=getActivity().getIntent();
-
+        creditclass_id =getDaTa.getStringExtra("CREDITCLASS_ID");
         setControl(view);
         setEvent();
         return view;
@@ -127,7 +128,6 @@ public class MemberFragment extends Fragment {
     private void setControl(View view) {
         listGV = view.findViewById(R.id.listGV);
         listSV = view.findViewById(R.id.listViewDSSV);
-
         xuatPDF = view.findViewById(R.id.buttonXuatPDF);
         themSv = view.findViewById(R.id.buttonThemSV);
 
@@ -162,7 +162,7 @@ public class MemberFragment extends Fragment {
     private void getInforForPostListView () {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-        Call<CreditClassListMemberDTO> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassListMember("Bearer " + jwtToken,  2);
+        Call<CreditClassListMemberDTO> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassListMember("Bearer " + jwtToken, Integer.valueOf(creditclass_id));
         creditClassDetailDTOCall.enqueue(new Callback<CreditClassListMemberDTO>() {
             @Override
             public void onResponse(Call<CreditClassListMemberDTO> call, Response<CreditClassListMemberDTO> response) {
@@ -274,6 +274,7 @@ public class MemberFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(), "Add success", Toast.LENGTH_SHORT).show();
+//                        context.addStudent();
                     }
                 });
 
@@ -296,23 +297,6 @@ public class MemberFragment extends Fragment {
     }
 
 
-//    public void setButtonXoaSV(String ten, String MaSV){
-//        AlertDialog.Builder dialogXoa = new AlertDialog.Builder(getContext());
-//        dialogXoa.setMessage("Bạn có muốn xóa học sinh " + ten + " không?");
-//        dialogXoa.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                getInforForPostListView();
-//            }
-//        });
-//        dialogXoa.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//
-//            }
-//        });
-//        dialogXoa.show();
-//    }
+
 
 }

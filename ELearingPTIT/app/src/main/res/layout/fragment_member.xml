@@ -28,7 +28,7 @@
         android:background="@drawable/item_list_document"
         android:layout_marginLeft="30dp"
         android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
@@ -36,7 +36,7 @@
 
             android:id="@+id/listGV"
             android:layout_width="350dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -59,15 +59,15 @@
 
         <Button
             android:id="@+id/buttonXuatPDF"
-            android:layout_marginLeft="30dp"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:text="XUẤT PDF"
-            android:visibility="invisible"
+            android:layout_marginLeft="30dp"
             android:drawableRight="@drawable/export"
+            android:text="XUẤT PDF"
             android:textAlignment="center"
             android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/buttonThemSV"
@@ -94,15 +94,14 @@
         android:background="@drawable/item_list_document"
         android:layout_marginLeft="30dp"
         android:layout_width="350dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
-
             android:id="@+id/listViewDSSV"
             android:layout_width="350dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
         </LinearLayout>
