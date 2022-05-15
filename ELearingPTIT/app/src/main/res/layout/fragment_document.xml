@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,8 +40,8 @@
         <TableLayout
             android:id="@+id/tbDocument"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_height="match_parent"
+            android:stretchColumns="1">
             <TableRow
                 android:layout_width="match_parent"
                 android:paddingTop="10dp"
@@ -52,51 +52,38 @@
                     android:layout_width="20dp"
                     android:layout_height="15dp"/>
                 <TextView
-                    android:layout_weight="5"
                     android:text="Tên"
                     android:textSize="10dp"/>
                 <TextView
-                    android:layout_weight="1"
-                    android:text="Người chỉnh sửa"
-                    android:gravity="center"
-                    android:textSize="10dp"/>
-                <TextView
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
                     android:text="Chỉnh sửa lần cuối"
                     android:textSize="10dp"
                     android:gravity="center"/>
             </TableRow>
-            <TableRow
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:background="@color/white"
-                android:outlineAmbientShadowColor="@color/black"
-                android:outlineSpotShadowColor="#FF0000">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="15dp"
-                    android:src="@drawable/post_default_avatar"/>
-                <TextView
-                    android:layout_weight="5"
-                    android:layout_height="match_parent"
-                    android:text="Tên"
-                    android:gravity="center|start"
-                    android:textSize="10dp"/>
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Người chỉnh sửa"
-                    android:gravity="center"
-                    android:textSize="10dp"/>
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Chỉnh sửa lần cuối"
-                    android:textSize="10dp"
-                    android:gravity="center"/>
-            </TableRow>
+<!--            <TableRow-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:paddingTop="10dp"-->
+<!--                android:paddingBottom="10dp"-->
+<!--                android:paddingLeft="6dp"-->
+<!--                android:paddingRight="6dp"-->
+<!--                android:background="@color/white">-->
+<!--                <ImageView-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="15dp"/>-->
+<!--                <TextView-->
+<!--                    android:text="Tên"-->
+<!--                    android:textSize="10dp"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="150dp"-->
+<!--                    android:text="Chỉnh sửa lần cuối"-->
+<!--                    android:textSize="10dp"-->
+<!--                    android:gravity="center"/>-->
+<!--            </TableRow>-->
+<!--            <TableRow-->
+<!--                android:layout_width="match_parent">-->
+<!--                <TextView-->
+<!--                    android:textSize="6dp"/>-->
+<!--            </TableRow>-->
         </TableLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

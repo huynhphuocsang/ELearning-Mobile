@@ -1,6 +1,7 @@
 package com.example.elearningptit.remote;
 
 import com.example.elearningptit.config.GlobalVariables;
+import com.example.elearningptit.model.CodeVerifySuccessResponse;
 import com.example.elearningptit.model.HashCodeVerifyResponse;
 import com.example.elearningptit.model.NewPasswordModel;
 import com.example.elearningptit.model.RecoveryModelRequest;
@@ -36,7 +37,7 @@ public interface APICallStudent {
     Call<HashCodeVerifyResponse> verifyForgotPassword(@Query("student-code") String studentCode);
 
     @POST("student/verify-code")
-    Call<HashCodeVerifyResponse> verifyCode(@Body RecoveryModelRequest recoveryModelRequest);
+    Call<CodeVerifySuccessResponse> verifyCode(@Body RecoveryModelRequest recoveryModelRequest);
 
     @POST("student/recover-password")
     Call<String> updatePassword(@Body UpdatePasswordRequestWithVerify updatePasswordRequestWithVerify);
