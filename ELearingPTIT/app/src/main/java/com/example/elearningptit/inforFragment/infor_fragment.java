@@ -27,7 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.LoginActivity;
 import com.example.elearningptit.R;
+import com.example.elearningptit.forgotPassword.NewPasswordActivity;
 import com.example.elearningptit.model.AvatarResponse;
 import com.example.elearningptit.model.RealPathUtil;
 import com.example.elearningptit.model.UserInfo;
@@ -153,6 +155,8 @@ public class infor_fragment extends Fragment {
                         editor.putString("login","false");
                         editor.apply();
                         getActivity().finish();
+                        Intent intent0=new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent0);
                     }
                 });
                 dialog.show();

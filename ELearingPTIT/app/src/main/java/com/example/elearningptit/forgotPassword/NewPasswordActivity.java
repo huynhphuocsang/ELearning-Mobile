@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.elearningptit.LoginActivity;
 import com.example.elearningptit.R;
 import com.example.elearningptit.inforFragment.UpdatePasswordActivity;
 import com.example.elearningptit.model.RecoveryModelRequest;
@@ -25,6 +26,7 @@ public class NewPasswordActivity extends AppCompatActivity {
     Button btnUpdatePassword;
 
     String valueKey = "";
+    String valueCode="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class NewPasswordActivity extends AppCompatActivity {
     private void setEvent() {
         Intent intent = getIntent();
         valueKey = intent.getStringExtra("VALUE-KEY");
+        valueCode = intent.getStringExtra("VALUE-CODE");
         btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,14 +53,19 @@ public class NewPasswordActivity extends AppCompatActivity {
                     Toast.makeText(NewPasswordActivity.this, "Mật khẩu xác thực không trùng khớp", Toast.LENGTH_SHORT).show();
                     return ;
                 }
-                UpdatePasswordRequestWithVerify updatePasswordRequestWithVerify=new UpdatePasswordRequestWithVerify(valueKey, newPassword);
+                UpdatePasswordRequestWithVerify updatePasswordRequestWithVerify=new UpdatePasswordRequestWithVerify(valueKey, newPassword,valueCode);
                 Call<String> student = APICallStudent.apiCall.updatePassword(updatePasswordRequestWithVerify);
                 student.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.code() == 200) {
-                            Toast.makeText(NewPasswordActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
-                        } else if (response.code() == 401) {
+                            Toast.makeText(NewPasswordActivity.this, response.body()+"", Toast.LENGTH_SHORT).show();
+                            Intent intent0=new Intent(NewPasswordActivity.this, LoginActivity.class);
+                            startActivity(intent0);
+                            finish();
+                        } else if (response.code() == 400) {
+                            Toast.makeText(NewPasswordActivity.this, response.body()+"", Toast.LENGTH_SHORT).show();
+                        }else if (response.code() == 401) {
                             Toast.makeText(NewPasswordActivity.this, "Unauthorized NewPasswordActivity", Toast.LENGTH_SHORT).show();
                         } else if (response.code() == 403) {
                             Toast.makeText(NewPasswordActivity.this, "Forbidden  NewPasswordActivity", Toast.LENGTH_SHORT).show();
