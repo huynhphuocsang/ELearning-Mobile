@@ -144,6 +144,7 @@ public class PostDeltaFragment extends Fragment {
                         @Override
                         public void doSomething() {
                             getInforForCommentListView();
+                            onDetach.doSomething(comments.size());
                         }
 
                         @Override
