@@ -268,7 +268,8 @@ public class MemberFragment extends Fragment {
                             @Override
                             public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
                                 if (response.code() == 200) {
-                                    Log.e("Status:" , "Failure");
+
+                                    Log.e("Status:" , "Success");
 
                                 } else if (response.code() == 401) {
                                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
