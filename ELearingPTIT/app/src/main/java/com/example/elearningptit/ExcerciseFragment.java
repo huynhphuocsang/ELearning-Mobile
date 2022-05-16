@@ -188,6 +188,7 @@ public class ExcerciseFragment extends Fragment {
 
                         imgView = new ImageView(getContext());
                         imgView.setPadding(70, 0, 0, 0);
+                        imgView.setId(listExercise.indexOf(exercise));
 
                         // ---------------------------------------------------Đây là call 1 bài tập trong 1 lớp có ai nộp hay chưa (Role ADMIN - Teacher)
 
@@ -249,7 +250,10 @@ public class ExcerciseFragment extends Fragment {
                                     ExerciseSubmit exerSub = response.body();
                                     if(!exerSub.getSubmitFile().equals(""))
                                     {
+                                        Log.e("Nop bai:", "Sinh vien nop bai " + exercise.getExcerciseId() + " roi!");
                                         imgView.setImageResource(R.drawable.ic_ok);
+                                        setOK(imgView);
+                                        Log.e("Set avatar: " , exercise.getExcerciseId() + " roi");
                                         flagStudentSubmit = true;
                                     }
                                 }
@@ -267,6 +271,8 @@ public class ExcerciseFragment extends Fragment {
                             imgView.setImageResource(R.drawable.ic_cancel);
                         }
                         }
+
+                        tbRow.addView(imgView);
 
                         tbRow.setId(exercise.getExcerciseId());
                         tbRow.setOnClickListener(new View.OnClickListener() {
@@ -300,7 +306,7 @@ public class ExcerciseFragment extends Fragment {
                                 }
                             }
                         });
-                        tbRow.addView(imgView);
+
                         tbBaiTap.addView(tbRow);
                     }
                 }
@@ -345,6 +351,10 @@ public class ExcerciseFragment extends Fragment {
                 dialog.show();
             }
         });
+    }
+
+    private void setOK(ImageView imgView){
+        imgView.setImageResource(R.drawable.ic_ok);
     }
 
 }
