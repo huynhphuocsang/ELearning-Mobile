@@ -81,10 +81,10 @@ public class DocumentCustomeAdapter extends ArrayAdapter {
         {
             submitFileTye.setImageResource(R.drawable.ic_excel);
         }
-//            else if (fileType.equals("pptx"))
-//            {
-//                submitFileTye.setImageResource(R.drawable.powerpoint);
-//            }
+        else if (fileType.equals("pptx"))
+        {
+            submitFileTye.setImageResource(R.drawable.ic_powerpoint);
+        }
         else {
             submitFileTye.setImageResource(R.drawable.ic_text);
         }

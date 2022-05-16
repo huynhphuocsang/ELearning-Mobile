@@ -221,7 +221,7 @@ public class DetailDocumentFragment extends Fragment {
 
     private void uploadFile() {
         File file=new File(getDriveFilePath(fileUri));
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse("multipart/form-data"),file));
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse(getDocMediaType(file.getName())),file));
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         Call<DocumentResponseData> callDelete = APICallManagerDocument.apiCall.uploadFile("Bearer " + jwtToken, filePart, Long.valueOf(folderId) );
@@ -248,6 +248,31 @@ public class DetailDocumentFragment extends Fragment {
         });
     }
 
+    private String getDocMediaType(String name){
+        String fileType = name.substring(name.lastIndexOf('.') + 1);
+        if(fileType.equals("doc"))
+        {
+            return "application/msword";
+        }
+        else if(fileType.equals("docx")){
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        }
+        else if(fileType.equals("pdf"))
+        {
+            return "application/pdf";
+        }
+        else if(fileType.equals("xlsx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        }
+        else if (fileType.equals("pptx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        }
+        else {
+            return "text/plain";
+        }
+    }
     private String getDriveFilePath(Uri uri) {
         Uri returnUri = uri;
         Cursor returnCursor = getContext().getContentResolver().query(returnUri, null, null, null, null);
