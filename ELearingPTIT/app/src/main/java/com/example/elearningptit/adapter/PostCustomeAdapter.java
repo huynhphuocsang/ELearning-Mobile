@@ -189,7 +189,7 @@ public class PostCustomeAdapter extends ArrayAdapter {
     }
 
     void deletePost (int position) {
-        Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost(jwtToken, posts.get(position).getPostId());
+        Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.deletePost("Bearer " + jwtToken, posts.get(position).getPostId());
         postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
             @Override
             public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
