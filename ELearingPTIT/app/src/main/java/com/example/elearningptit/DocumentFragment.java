@@ -1,5 +1,7 @@
 package com.example.elearningptit;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,6 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import android.widget.ImageView;
@@ -25,14 +31,34 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.CreditClassDetail;
 import com.example.elearningptit.model.CreditClassDetailDTO;
 import com.example.elearningptit.model.Folder;
+import com.example.elearningptit.model.FolderDTOResponse;
+import com.example.elearningptit.model.FolderRequest;
+import com.example.elearningptit.model.PostResponseDTO;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallCreditClassDetail;
+import com.example.elearningptit.remote.APICallPost;
+import com.example.elearningptit.remote.APICallTeacher;
+import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.remote.admin.APICallFolder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +70,7 @@ import retrofit2.Response;
  */
 public class DocumentFragment extends Fragment {
     TableLayout tbDocument;
+    FloatingActionButton btnAddFolder;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,6 +80,8 @@ public class DocumentFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String creditclass_id;
     private String teacher;
+    private Set<String> userRoles;
+    private String token="";
 
     TextView tenMon, tenGV;
     ListView listTL;
@@ -94,6 +123,9 @@ public class DocumentFragment extends Fragment {
         creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
         teacher=getDaTa.getStringExtra("TEACHER");
 
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        token = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        userRoles=preferences.getStringSet(getResources().getString(R.string.USER_ROLES), new HashSet<>());
         addControl(view);
         setEvent();
         getInforForDocumentListView();
@@ -104,9 +136,8 @@ public class DocumentFragment extends Fragment {
     private void getInforForDocumentListView () {
         resetTableRow();
 
-        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
-        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-        Call<CreditClassDetail> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassDetail("Bearer " + jwtToken,  Integer.valueOf(creditclass_id));
+
+        Call<CreditClassDetail> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassDetail("Bearer " + token,  Integer.valueOf(creditclass_id));
         creditClassDetailDTOCall.enqueue(new Callback<CreditClassDetail>() {
             @Override
             public void onResponse(Call<CreditClassDetail> call, Response<CreditClassDetail> response) {
@@ -171,10 +202,52 @@ public class DocumentFragment extends Fragment {
         TextView tvBlank = new TextView(getContext());
         tvBlank.setTextSize(6);
 
+
+
         tbRow.addView(im);
         tbRow.addView(tvName);
         tbRow.addView(tvLastEdited);
         tbBlankRow.addView(tvBlank);
+
+        if(userRoles.contains("ROLE_TEACHER") || userRoles.contains("ROLE_MODERATOR")){
+            ImageView im2 = new ImageView(getContext());
+            im2.setMaxWidth(12);
+            im2.setMaxHeight(12);
+            im2.setImageResource(R.drawable.ic_cancel);
+            im2.setPadding(0,0,6,0);
+
+            im2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(getContext());
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.verify_logout_dialog);
+
+                    Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
+                    Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
+                    TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
+
+                    tvContent.setText("Bạn có chắc muốn xóa folder "+folderName+" không?");
+
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    btnVerify.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            deleteFolder(folder.getFolderId());
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+            });
+
+            tbRow.addView(im2);
+        }
 
         tbRow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,9 +268,60 @@ public class DocumentFragment extends Fragment {
         tbDocument.addView(tbRow);
     }
 
+    private void deleteFolder(int folderId) {
+        Call<FolderDTOResponse> folderCall = APICallFolder.apiCall.deleteFolder(token, folderId);
+        folderCall.enqueue(new Callback<FolderDTOResponse>() {
+            @Override
+            public void onResponse(Call<FolderDTOResponse> call, Response<FolderDTOResponse> response) {
+                if (response.code() == 200) {
+//                    onAfterDeletePost.doSomething();
+                    resetTableRow();
+                    getInforForDocumentListView();
+                    Toast.makeText(getContext(), "Tạo Folder thành công", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized Xóa Folder", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden Xóa Folder", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found Xóa Folder", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<FolderDTOResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa Folder thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addFolder(String folderName) {
+        FolderRequest folderRequest=new FolderRequest(Long.valueOf(creditclass_id),folderName,0);
+        Call<String> folderCall = APICallFolder.apiCall.createNewFolder(token, folderRequest);
+        folderCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    resetTableRow();
+                    getInforForDocumentListView();
+                    Toast.makeText(getContext(), "Thêm Folder thành công", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized Thêm Folder", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden Thêm Folder", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found Thêm Folder", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Thêm Folder thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void addControl(View view) {
         tbDocument = view.findViewById(R.id.tbDocument);
+        btnAddFolder=view.findViewById(R.id.btnAddFolder);
 
     }
 
@@ -208,6 +332,48 @@ public class DocumentFragment extends Fragment {
     }
 
     private void setEvent() {
+        if(userRoles.contains("ROLE_TEACHER") || userRoles.contains("ROLE_MODERATOR")){
+            btnAddFolder.setVisibility(View.VISIBLE);
+            btnAddFolder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Dialog dialog = new Dialog(getContext());
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.verify_add_folder_dialog);
+
+                    Button btnVerifyAddFolder = dialog.findViewById(R.id.btnVerifyAddFolder);
+                    Button btnCancelAddFolder = dialog.findViewById(R.id.btnCancelAddFolder);
+                    EditText edFolderName = dialog.findViewById(R.id.txtFolderName);
+
+                    btnCancelAddFolder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    btnVerifyAddFolder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String folderName = edFolderName.getText().toString();
+                            if(folderName.equals(""))
+                            {
+                                Toast.makeText(getContext(), "Tên folder không được để trống", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                addFolder(folderName);
+                            }
+                        }
+                    });
+
+
+                    dialog.show();
+                }
+            });
+        }else{
+            btnAddFolder.setVisibility(View.INVISIBLE);
+        }
 
     }
 

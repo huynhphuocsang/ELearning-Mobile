@@ -59,7 +59,7 @@ public class NewPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.code() == 200) {
-                            Toast.makeText(NewPasswordActivity.this, response.body()+"", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewPasswordActivity.this, "Cập nhập mật khẩu thành công", Toast.LENGTH_SHORT).show();
                             Intent intent0=new Intent(NewPasswordActivity.this, LoginActivity.class);
                             startActivity(intent0);
                             finish();

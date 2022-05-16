@@ -2,6 +2,7 @@ package com.example.elearningptit.forgotPassword;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,7 @@ public class VerifyUserCodeActivity extends AppCompatActivity {
 
     TextInputEditText txtUserCode;
     Button btnConfirmUserCode;
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +34,11 @@ public class VerifyUserCodeActivity extends AppCompatActivity {
         setControl();
         setEvent();
     }
-
     private void setEvent() {
+        progressDialog = new ProgressDialog(VerifyUserCodeActivity.this);
+        progressDialog.setMessage("Đang xác thực mã....");
+
+
         btnConfirmUserCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +47,7 @@ public class VerifyUserCodeActivity extends AppCompatActivity {
                     Toast.makeText(VerifyUserCodeActivity.this, "Mã không được để trống !!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                progressDialog.show();
                 Call<HashCodeVerifyResponse> student = APICallStudent.apiCall.verifyForgotPassword(userCode);
                 student.enqueue(new Callback<HashCodeVerifyResponse>() {
                     @Override
@@ -63,11 +68,13 @@ public class VerifyUserCodeActivity extends AppCompatActivity {
                         } else if (response.code() == 404) {
                             Toast.makeText(VerifyUserCodeActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                         }
+                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Call<HashCodeVerifyResponse> call, Throwable t) {
                         Toast.makeText(VerifyUserCodeActivity.this, "sendVerifyForgotPassword fail", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 });
 
