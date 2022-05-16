@@ -1,12 +1,15 @@
 package com.example.elearningptit;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
+import android.security.identity.ResultData;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,9 +61,12 @@ public class ExerciseDetailFrangment extends Fragment {
     private int exerciseID;
 
 
+
     TextView txtTitle, txtEndTime, txtContent, txtStatus, txtSubmitTime;
     Button btnAddFile;
     LinearLayout submitFile, listDocument;
+
+    Intent myIntent;
 
     public ExerciseDetailFrangment() {
         // Required empty public constructor
@@ -126,8 +132,38 @@ public class ExerciseDetailFrangment extends Fragment {
 
     private void setEvent()
     {
+        btnAddFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                myIntent.setType("*/*");
+//                startActivityForResult(myIntent, 10);
+                startActivity(myIntent);
+            }
+        });
+
+
         getExerciseDocument();
         getExerciseSubmit();
+    }
+
+//    public void addFile(int requestCode);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        Log.e("Vo day chua?", "1");
+        switch (requestCode)
+        {
+            case 10:
+                if(resultCode == ResultData.STATUS_OK)
+                {
+                    Log.e("Vo day chua?", "2");
+                    String path = data.getData().getPath();
+                    Log.e("path: ", path);
+                }
+                break;
+        }
     }
 
     public void getExerciseDocument(){

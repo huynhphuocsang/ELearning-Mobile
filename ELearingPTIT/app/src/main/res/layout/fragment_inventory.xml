@@ -4,7 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InventoryFragment"
-    android:backgroundTint="#EAEAEA">
+    android:background="#EAEAEA">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thống kê điểm"
+        android:textSize="25dp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        android:text=""
+        android:textColor="#EF2F14"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:id="@+id/tvChartTitle"
+        />
 
     <!-- TODO: Update blank fragment layout -->
     <com.github.mikephil.charting.charts.PieChart
