@@ -14,6 +14,12 @@ public class Folder {
     public Folder() {
     }
 
+    public Folder(int folderId, String folderName, String upTime) {
+        this.folderId = folderId;
+        this.folderName = folderName;
+        this.upTime = upTime;
+    }
+
     public Folder(int folderId, String folderName, String upTime, int parentsFolder, List<Document> documents) {
         this.folderId = folderId;
         this.folderName = folderName;
