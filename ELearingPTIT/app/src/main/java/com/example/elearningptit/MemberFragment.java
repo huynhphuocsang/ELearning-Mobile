@@ -56,7 +56,7 @@ public class MemberFragment extends Fragment {
     private String mParam2;
 
     LinearLayout listGV, listSV;
-    Button xuatPDF, themSv;
+    Button xuatPDF, themSV;
 
     long userID;
     UserInfo userInfo;
@@ -115,7 +115,7 @@ public class MemberFragment extends Fragment {
         listGV = view.findViewById(R.id.listGV);
         listSV = view.findViewById(R.id.listViewDSSV);
         xuatPDF = view.findViewById(R.id.buttonXuatPDF);
-        themSv = view.findViewById(R.id.buttonThemSV);
+        themSV = view.findViewById(R.id.buttonThemSV);
 
 
     }
@@ -236,7 +236,7 @@ public class MemberFragment extends Fragment {
 
 
     private void setButtonThemSV(){
-        themSv.setVisibility(View.VISIBLE);
+        themSV.setVisibility(View.VISIBLE);
         Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.item_them_sv);
@@ -244,7 +244,7 @@ public class MemberFragment extends Fragment {
         Button btnHuy = dialog.findViewById(R.id.buttonHUY);
         Button btnLuu = dialog.findViewById(R.id.buttonLUU);
 
-        themSv.setOnClickListener(new View.OnClickListener() {
+        themSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -269,7 +269,7 @@ public class MemberFragment extends Fragment {
                             public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
                                 if (response.code() == 200) {
 
-                                    Log.e("Status:" , "Success");
+                                    Log.e("Status:" , "OK");
 
                                 } else if (response.code() == 401) {
                                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
