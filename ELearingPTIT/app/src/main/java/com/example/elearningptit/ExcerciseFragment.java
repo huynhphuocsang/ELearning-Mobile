@@ -476,7 +476,6 @@ public class ExcerciseFragment extends Fragment {
                 Log.e("Status:", "Call student submit exercise fail");
             }
         });
-        return true;
     }
 
     private void CallAPIgetExerciseSubmit(String jwtToken, int exerciseID, ImageView imgView)
