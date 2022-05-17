@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -63,6 +64,7 @@ public class ExcerciseFragment extends Fragment {
     UserInfo userInfo;
     long userID;
     List<String> listRoles;
+    FrameLayout testVu;
 
     private List<Exercise> listExercise;
 
@@ -115,12 +117,18 @@ public class ExcerciseFragment extends Fragment {
     private void addControl(View view) {
         tbBaiTap = view.findViewById(R.id.tbBaiTap);
         btnAddExercise = view.findViewById(R.id.btnAddExercise);
+        testVu = view.findViewById(R.id.testVu);
     }
 
     private void setEvent(){
         Intent getDaTa=getActivity().getIntent();
         creditClassId=getDaTa.getStringExtra("CREDITCLASS_ID");
         getUserInfo();
+        testVu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
     }
 
 

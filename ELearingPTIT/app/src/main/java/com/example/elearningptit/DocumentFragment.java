@@ -23,6 +23,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import android.widget.ImageView;
@@ -89,6 +90,7 @@ public class DocumentFragment extends Fragment {
     TextView tenMon, tenGV;
     ListView listTL;
     private ProgressDialog progressDialog;
+    FrameLayout testTruong;
     public DocumentFragment() {
         // Required empty public constructor
     }
@@ -132,6 +134,7 @@ public class DocumentFragment extends Fragment {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         token = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         userRoles=preferences.getStringSet(getResources().getString(R.string.USER_ROLES), new HashSet<>());
+
         addControl(view);
         setEvent();
         getInforForDocumentListView();
@@ -334,14 +337,11 @@ public class DocumentFragment extends Fragment {
     private void addControl(View view) {
         tbDocument = view.findViewById(R.id.tbDocument);
         btnAddFolder=view.findViewById(R.id.btnAddFolder);
-
-    }
-
-    private void setControl(View view) {
-
+        testTruong=view.findViewById(R.id.testTruong);
         tenGV = view.findViewById(R.id.textTenGV);
 
     }
+
 
     private void setEvent() {
         if(userRoles.contains("ROLE_TEACHER") || userRoles.contains("ROLE_MODERATOR")){
@@ -385,6 +385,12 @@ public class DocumentFragment extends Fragment {
                 }
             });
         }
+
+        testTruong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
 
     }
 

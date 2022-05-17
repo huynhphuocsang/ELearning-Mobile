@@ -38,45 +38,45 @@ public class CreditClassActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this,  R.id.fragmentContainerCreditClass);
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                Fragment selectedFragment = null;
-//                switch (item.getItemId()){
-//                    case R.id.homeCreditFragment:
-//                        selectedFragment = HomeCreditFragment.newInstance();
-//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-//                        transaction.commit();
-//                        return true;
-//
-//                    case R.id.excerciseFragment:
-//                        selectedFragment = ExcerciseFragment.newInstance("","");
-//                        transaction = getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-//                        transaction.commit();
-//                        return true;
-//
-//                    case R.id.documentFragment:
-//                        selectedFragment = DocumentFragment.newInstance();
-//                        transaction = getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-//                        transaction.commit();
-//                        return true;
-//
-//                    case R.id.memberFragment:
-//                        selectedFragment = MemberFragment.newInstance("","");
-//                        transaction = getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
-//                        transaction.commit();
-//                        return true;
-//                }
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragmentContainerCreditClass, selectedFragment);
-//                transaction.commit();
-//                return true;
-//            }
-//        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                switch (item.getItemId()){
+                    case R.id.homeCreditFragment:
+                        selectedFragment = HomeCreditFragment.newInstance();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
+                        transaction.commit();
+                        return true;
+
+                    case R.id.excerciseFragment:
+                        selectedFragment = ExcerciseFragment.newInstance("","");
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
+                        transaction.commit();
+                        return true;
+
+                    case R.id.documentFragment:
+                        selectedFragment = DocumentFragment.newInstance();
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
+                        transaction.commit();
+                        return true;
+
+                    case R.id.memberFragment:
+                        selectedFragment = MemberFragment.newInstance("","");
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerCreditClass,selectedFragment);
+                        transaction.commit();
+                        return true;
+                }
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainerCreditClass, selectedFragment);
+                transaction.commit();
+                return true;
+            }
+        });
 
     }
 }

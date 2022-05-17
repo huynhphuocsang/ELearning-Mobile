@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="#ECECEC"
     android:orientation="vertical"
-    tools:context=".ExcerciseFragment">
+    tools:context=".ExcerciseFragment"
+    android:id="@+id/testVu">
 
     <!-- TODO: Update blank fragment layout -->
 

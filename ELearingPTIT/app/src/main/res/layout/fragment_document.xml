@@ -7,7 +7,8 @@
     android:layout_marginBottom="20dp"
     android:padding="15px"
     android:background="#ECECEC"
-    tools:context=".DocumentFragment">
+    tools:context=".DocumentFragment"
+    android:id="@+id/testTruong">
 
 
     <!-- TODO: Update blank fragment layout -->
