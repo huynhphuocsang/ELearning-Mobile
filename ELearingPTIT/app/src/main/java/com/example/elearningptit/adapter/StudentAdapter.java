@@ -28,6 +28,7 @@ import com.example.elearningptit.R;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.Student;
+import com.example.elearningptit.model.StudentCodeDTO;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallPost;
@@ -111,7 +112,7 @@ public class StudentAdapter extends ArrayAdapter<Student> {
                     btnVerify.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            deleteStudent(student);
+//                            deleteStudent(student);
                             dialog.dismiss();
                         }
                     });
@@ -125,11 +126,11 @@ public class StudentAdapter extends ArrayAdapter<Student> {
     }
 
 
-    public void deleteStudent (Student student) {
-        List<String> listStudent=new ArrayList<>();
-        listStudent.add(student.getStudentCode());
+    public void deleteStudent (List<String> student) {
+        StudentCodeDTO studentCode = new StudentCodeDTO();
+        studentCode.setStudentCode(student);
         //delete comment
-        Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
+        Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), studentCode);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -147,27 +148,27 @@ public class StudentAdapter extends ArrayAdapter<Student> {
             }
         });
     }
-    public void addStudent (Student student) {
-        List<String> listStudent=new ArrayList<>();
-        listStudent.add(student.getStudentCode());
-        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    onAfterDeleteStudent.doSomething();
-                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void addStudent (Student student) {
+//        List<String> listStudent=new ArrayList<>();
+//        listStudent.add(student.getStudentCode());
+//        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
+//        call.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.code() == 200) {
+//                    onAfterDeleteStudent.doSomething();
+//                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 
 

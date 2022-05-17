@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.elearningptit.forgotPassword.VerifyUserCodeActivity;
 import com.example.elearningptit.model.CreditClassListMemberDTO;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.Student;
+import com.example.elearningptit.model.StudentCodeDTO;
 import com.example.elearningptit.model.StudentDTO;
 import com.example.elearningptit.model.Teacher;
 import com.example.elearningptit.model.UserInfo;
@@ -117,8 +119,6 @@ public class MemberFragment extends Fragment {
         listSV = view.findViewById(R.id.listViewDSSV);
         xuatPDF = view.findViewById(R.id.buttonXuatPDF);
         themSV = view.findViewById(R.id.buttonThemSV);
-
-
     }
 
     private void setEvent() {
@@ -208,6 +208,44 @@ public class MemberFragment extends Fragment {
                         TextView nameSV = convertView.findViewById(R.id.textTenSV);
                         TextView maSV = convertView.findViewById(R.id.textMSV);
 
+                        ImageButton deleteSV = convertView.findViewById(R.id.deleteSV);
+
+
+                        deleteSV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Dialog dialog = new Dialog(getContext());
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                dialog.setContentView(R.layout.verify_logout_dialog);
+
+                                Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
+                                Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
+                                TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
+
+                                tvContent.setText("Bạn có chắc muốn xóa "+ sv.getFullnanme() +" không?");
+
+                                btnCancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                btnVerify.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        //Xóa ở đây
+                                        List<String> st = new ArrayList<>();
+                                        st.add(sv.getStudentCode());
+                                        deleteStudent(jwtToken, creditclass_id, st);
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                dialog.show();
+                            }
+                        });
+
                         nameSV.setText(sv.getFullnanme());
                         maSV.setText(sv.getStudentCode());
 
@@ -220,7 +258,6 @@ public class MemberFragment extends Fragment {
                         setButtonPDF();
 
                     }
-//                    getCommentAmountsForPost(jwtToken);
                 } else if (response.code() == 401) {
                     //token expire
                     Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
@@ -312,11 +349,9 @@ public class MemberFragment extends Fragment {
                     if(list.size() > 0)
                     {
                         String code = "";
-                        String name = "";
                         for(StudentDTO s : list)
                         {
                             code = s.getStudentCode();
-                            name = s.getFullnanme();
                         }
 
                         for(Student s : students)
@@ -329,7 +364,8 @@ public class MemberFragment extends Fragment {
                         }
 
                         //Thêm ở đây
-                        Student st = new Student(code, name);
+                        List<String> st = new ArrayList<>();
+                        st.add(code);
                         addStudent(jwtToken, creditclass_id, st);
 
                     }
@@ -372,10 +408,10 @@ public class MemberFragment extends Fragment {
         return -1;
     }
 
-    public void addStudent (String jwtToken, String creditClassId, Student student) {
-        List<String> listStudent=new ArrayList<>();
-        listStudent.add(student.getStudentCode());
-        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), listStudent);
+    public void addStudent (String jwtToken, String creditClassId, List<String> student) {
+        StudentCodeDTO studentCode = new StudentCodeDTO();
+        studentCode.setStudentCode(student);
+        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), studentCode);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -408,6 +444,52 @@ public class MemberFragment extends Fragment {
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
                 Log.e("Status: " , "Call api fail");
+            }
+        });
+
+        getInforForPostListView();
+    }
+
+    public void deleteStudent (String jwtToken, String creditClassId, List<String> student) {
+        StudentCodeDTO studentCode = new StudentCodeDTO();
+        studentCode.setStudentCode(student);
+        Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), studentCode);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 401)
+                {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                    Log.e("Status: ", "Unauthorized");
+                }
+                else if(response.code() == 403)
+                {
+                    Log.e("Status: ", "Forbidden");
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 404)
+                {
+                    Log.e("Status: ", "Not Found");
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 500)
+                {
+                    Log.e("Status: ", "Not Found");
+                    Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa SV thất bại " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Status: ", t.getMessage());
             }
         });
 
