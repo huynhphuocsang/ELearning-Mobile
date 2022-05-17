@@ -29,4 +29,10 @@ public interface APICallExercise {
 
     @GET("excercise/document-info")
     Call<List<Document>> getExerciseDocument(@Header("Authorization") String token, @Query("excercise-id") long exerciseID);
+
+//    @POST("excercise/create-new")
+//    Call<String> postNewExercise(@Header("Authorization") String token, );
+//
+//    @POST("avatar/upload")
+//    Call<AvatarResponse> uploadAvatar(@Header("Authorization") String token, @Part MultipartBody.Part file);
 }
