@@ -136,7 +136,6 @@ public class home_fragment extends Fragment {
         });
     }
     private void getTimeline() {
-
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDateTime now = LocalDateTime.now();
         String today=dtf.format(now);
@@ -226,14 +225,11 @@ public class home_fragment extends Fragment {
                     Toast.makeText(getContext(), "Đường dẫn không tồn tại", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<CreditClass>> call, Throwable t) {
                 Toast.makeText(getContext(), "Thất bại rồi", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
     private void addControl(View view) {
 

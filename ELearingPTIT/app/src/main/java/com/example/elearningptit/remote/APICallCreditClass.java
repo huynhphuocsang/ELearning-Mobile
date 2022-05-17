@@ -39,7 +39,8 @@ public interface APICallCreditClass {
 
     @GET("credit-class/get-credit-class/with-name/{page}")
     Call<CreditClassPageForUser> getCreditClassBySChoolyearDepartSemName(@Header("Authorization") String token, @Path("page") int pageNo,
-                                                                         @Query("schoolyear") String shoolYear, @Query("department_id") int departmentId, @Query("semester") int semester, @Query("name") String name);
+                                                                         @Query("schoolyear") String shoolYear, @Query("department_id") int departmentId,
+                                                                         @Query("semester") int semester, @Query("name") String name);
 
     @GET("credit-class/{pageNo}")
     Call<List<CreditClass>> getCreditClass2(@Header("Authorization") String token, @Path("pageNo") int pageNo);

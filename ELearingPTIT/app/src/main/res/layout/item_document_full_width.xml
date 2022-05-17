@@ -32,11 +32,10 @@
         android:id="@+id/ibtSubmitExerciseDelete"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:background="#EB3542"
         android:layout_gravity="right"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/post_delete"
+        android:src="@drawable/ic_cancel"
         />
 
 </FrameLayout>

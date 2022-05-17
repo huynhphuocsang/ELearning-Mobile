@@ -27,8 +27,6 @@ public interface APICallTeacher {
     APICallTeacher apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallTeacher.class);
 
-
-
     @GET("user/timetable-by-time-teacher")
     Call<List<TimelineDTO>> getTimetableTeacher(@Header("Authorization") String token, @Query("date")String date);
 

@@ -8,12 +8,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.model.CreditClassDetail;
-import com.example.elearningptit.model.Document;
 import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.model.StudentSubmitExercise;
@@ -36,18 +33,13 @@ import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
-import com.example.elearningptit.timetable.time_table_fragment;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,7 +58,6 @@ public class ExcerciseFragment extends Fragment {
 
     TableLayout tbBaiTap;
     TextView tv;
-    ImageView imgView;
     Button btnAddExercise;
 
     UserInfo userInfo;
@@ -74,8 +65,6 @@ public class ExcerciseFragment extends Fragment {
     List<String> listRoles;
 
     private List<Exercise> listExercise;
-    private Boolean flagStudentSubmit = false;
-    private Boolean flagSubmits1Class = false;
 
 
     private String creditClassId="";
@@ -132,7 +121,6 @@ public class ExcerciseFragment extends Fragment {
         Intent getDaTa=getActivity().getIntent();
         creditClassId=getDaTa.getStringExtra("CREDITCLASS_ID");
         getUserInfo();
-        getExercise();
     }
 
 
@@ -147,16 +135,13 @@ public class ExcerciseFragment extends Fragment {
                 if (response.code() == 200) {
                     //Lấy list role user
                     userInfo = response.body();
-                    if(userInfo.getRoles().size() > 0)
+                    if(!userInfo.equals(null))
                     {
                         listRoles = userInfo.getRoles();
                         userID = userInfo.getUserId();
                     }
-                    else
-                    {
-                        listRoles = new ArrayList<>();
-                    }
 
+                    getExercise();
                 } else if (response.code() == 401) {
                     //token expire
                     Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
@@ -193,16 +178,17 @@ public class ExcerciseFragment extends Fragment {
                         tbRow.addView(tv);
 
 
-                        imgView = new ImageView(getContext());
+                        ImageView imgView = new ImageView(getContext());
                         imgView.setPadding(0, 0, 120, 0);
-                        imgView.setId(listExercise.indexOf(exercise));
+                        imgView.setId(exercise.getExcerciseId());
 
                         // ---------------------------------------------------Đây là call 1 bài tập trong 1 lớp có ai nộp hay chưa (Role ADMIN - Teacher)
 
                         if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
                         {
                             setButtonExercise();
-                            callAPIListStudentSubmit(jwtToken, exercise.getExcerciseId());
+                            callAPIListStudentSubmit(jwtToken, exercise.getExcerciseId(), imgView);
+//                            tbRow.addView(imgView);
 //                            Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exercise.getExcerciseId());
 //                            listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
 //                                @Override
@@ -240,44 +226,37 @@ public class ExcerciseFragment extends Fragment {
 //                                }
 //                            });
 
-                            if(flagSubmits1Class == false)
-                            {
-                                imgView.setImageResource(R.drawable.ic_cancel);
-                            }
+//                            if(flagSubmits1Class == false)
+//                            {
+//                                imgView.setImageResource(R.drawable.ic_cancel);
+//                            }
                         }
-
                         else
                         {
                             // ---------------------------- Đây là call xem SV bất kì nộp bài tập hay chưa (Role USER)
-                            Call<ExerciseSubmit> exerciseSubmit = APICallUser.apiCall.getExerciseSubmit("Bearer " + jwtToken, exercise.getExcerciseId());
-                            exerciseSubmit.enqueue(new Callback<ExerciseSubmit>() {
-                            @Override
-                            public void onResponse(Call<ExerciseSubmit> call, Response<ExerciseSubmit> response) {
-                                if(response.code() == 200)
-                                {
-                                    ExerciseSubmit exerSub = response.body();
-                                    if(!exerSub.getSubmitFile().equals(""))
-                                    {
-                                        Log.e("Nop bai:", "Sinh vien nop bai " + exercise.getExcerciseId() + " roi!");
-                                        imgView.setImageResource(R.drawable.ic_ok);
-                                        setOK(imgView);
-                                        Log.e("Set avatar: " , exercise.getExcerciseId() + " roi");
-                                        flagStudentSubmit = true;
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
-                                Log.e("Status:", "Call exercise submit fail");
-                            }
-
-                        });
-
-                        if(flagStudentSubmit == false)
-                        {
-                            imgView.setImageResource(R.drawable.ic_cancel);
-                        }
+                            CallAPIgetExerciseSubmit(jwtToken, exercise.getExcerciseId(), imgView);
+//                            Call<ExerciseSubmit> exerciseSubmit = APICallUser.apiCall.getExerciseSubmit("Bearer " + jwtToken, exercise.getExcerciseId());
+//                            exerciseSubmit.enqueue(new Callback<ExerciseSubmit>() {
+//                            @Override
+//                            public void onResponse(Call<ExerciseSubmit> call, Response<ExerciseSubmit> response) {
+//                                if(response.code() == 200)
+//                                {
+//                                    ExerciseSubmit exerSub = response.body();
+//                                    if(!exerSub.getSubmitFile().equals(""))
+//                                    {
+//                                        Log.e("Nop bai:", "Sinh vien nop bai " + exercise.getExcerciseId() + " roi!");
+//                                        imgView.setImageResource(R.drawable.ic_ok);
+//                                        setOK(imgView);
+//                                        Log.e("Set avatar: " , exercise.getExcerciseId() + " roi");
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
+//                                Log.e("Status:", "Call exercise submit fail");
+//                            }
+//                        });
                         }
 
                         tbRow.addView(imgView);
@@ -325,9 +304,6 @@ public class ExcerciseFragment extends Fragment {
                 Log.e("Status: ", "Call API get credit class fail");
             }
         });
-
-        flagStudentSubmit = false;
-        flagSubmits1Class = false;
     }
 
     private void setButtonExercise(){
@@ -447,24 +423,28 @@ public class ExcerciseFragment extends Fragment {
         });
     }
 
-    private void setOK(ImageView imgView){
-        imgView.setImageResource(R.drawable.ic_ok);
-    }
 
-    private boolean callAPIListStudentSubmit(String jwtToken, int exerciseID){
+    private boolean callAPIListStudentSubmit(String jwtToken, int exerciseID, ImageView imgView)
+    {
         Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exerciseID);
         listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
             @Override
             public void onResponse(Call<List<StudentSubmitExercise>> call, Response<List<StudentSubmitExercise>> response) {
                 if (response.code() == 200)
                 {
+                    Log.e("ID: ",exerciseID + "");
+                    Log.e("IMGVIEWID: ", imgView.getId() + "");
                     List<StudentSubmitExercise> list = response.body();
                     if(!list.equals(null)){
                         if(list.size() > 0)
                         {
+                            imgView.setImageResource(R.drawable.ic_ok);
+                        }
+                        else
+                        {
+                            imgView.setImageResource(R.drawable.ic_cancel);
                         }
                     }
-
                 }
                 else if(response.code() == 401)
                 {
@@ -487,6 +467,48 @@ public class ExcerciseFragment extends Fragment {
             }
         });
         return true;
+    }
+
+    private void CallAPIgetExerciseSubmit(String jwtToken, int exerciseID, ImageView imgView)
+    {
+        Log.e("Call SV", "Dung roi ne!");
+        Call<ExerciseSubmit> exerciseSubmit = APICallUser.apiCall.getExerciseSubmit("Bearer " + jwtToken, exerciseID);
+        exerciseSubmit.enqueue(new Callback<ExerciseSubmit>() {
+        @Override
+        public void onResponse(Call<ExerciseSubmit> call, Response<ExerciseSubmit> response) {
+            if(response.code() == 200)
+            {
+                ExerciseSubmit exerSub = response.body();
+                if(!exerSub.getSubmitFile().equals(""))
+                {
+                    Log.e("Status", "Vao duoc ok");
+                    imgView.setImageResource(R.drawable.ic_ok);
+                }
+                else
+                {
+                    Log.e("Status", "Vao duoc cancel");
+                    imgView.setImageResource(R.drawable.ic_cancel);
+                }
+            }
+            else if(response.code() == 401)
+            {
+                Log.e("Status:", "Unauthorized");
+            }
+            else if(response.code() == 403)
+            {
+                Log.e("Status:", "Forbidden");
+            }
+            else if(response.code() == 404)
+            {
+                imgView.setImageResource(R.drawable.ic_cancel);
+                Log.e("Status:", "Not Found");
+            }
+        }
+        @Override
+        public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
+            Log.e("Status:", "Call exercise submit fail");
+        }
+    });
     }
 
 }
