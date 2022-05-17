@@ -424,7 +424,7 @@ public class ExcerciseFragment extends Fragment {
     }
 
 
-    private boolean callAPIListStudentSubmit(String jwtToken, int exerciseID, ImageView imgView)
+    private void callAPIListStudentSubmit(String jwtToken, int exerciseID, ImageView imgView)
     {
         Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exerciseID);
         listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
