@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginLeft="30dp"
-    android:background="@drawable/post_custom_shape">
+    android:background="@drawable/member_dong">
 
     <LinearLayout
         android:id="@+id/LinearLayoutSV"
@@ -49,7 +49,7 @@
         <ImageButton
             android:id="@+id/deleteSV"
             android:src="@drawable/ic_delete"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_width="30dp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
