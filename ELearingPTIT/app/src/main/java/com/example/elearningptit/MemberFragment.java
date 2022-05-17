@@ -463,7 +463,6 @@ public class MemberFragment extends Fragment {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "Xóa SV thất bại " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("Status: ", t.getMessage());
             }
         });
 
