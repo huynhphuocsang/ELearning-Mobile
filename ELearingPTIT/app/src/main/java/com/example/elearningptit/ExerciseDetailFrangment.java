@@ -1,8 +1,11 @@
 package com.example.elearningptit;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elearningptit.model.CreditClassDetail;
 import com.example.elearningptit.model.Document;
@@ -52,6 +56,9 @@ public class ExerciseDetailFrangment extends Fragment {
     private static final String ARG_PARAM4 = "param4";
     private static final String ARG_PARAM5 = "param5";
 
+    private static final int PICKFILE_REQUEST_CODE = 1000;
+    private Uri fileUri;
+
     // TODO: Rename and change types of parameters
     private String submitTitle;
     private String submitEndTime;
@@ -67,6 +74,7 @@ public class ExerciseDetailFrangment extends Fragment {
     LinearLayout submitFile, listDocument;
 
     Intent myIntent;
+
 
     public ExerciseDetailFrangment() {
         // Required empty public constructor
@@ -135,10 +143,11 @@ public class ExerciseDetailFrangment extends Fragment {
         btnAddFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                myIntent.setType("*/*");
-//                startActivityForResult(myIntent, 10);
-                startActivity(myIntent);
+//                myIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//                myIntent.setType("*/*");
+////                startActivityForResult(myIntent, 10);
+//                startActivity(myIntent);
+                pickFile();
             }
         });
 
@@ -148,23 +157,6 @@ public class ExerciseDetailFrangment extends Fragment {
     }
 
 //    public void addFile(int requestCode);
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        Log.e("Vo day chua?", "1");
-        switch (requestCode)
-        {
-            case 10:
-                if(resultCode == ResultData.STATUS_OK)
-                {
-                    Log.e("Vo day chua?", "2");
-                    String path = data.getData().getPath();
-                    Log.e("path: ", path);
-                }
-                break;
-        }
-    }
 
     public void getExerciseDocument(){
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
@@ -287,12 +279,14 @@ public class ExerciseDetailFrangment extends Fragment {
                     txtStatus.setText("Chưa nộp");
                     txtStatus.setTextColor(Color.RED);
                     txtSubmitTime.setText("");
+                    btnAddFile.setEnabled(true);
                 }
             }
 
             @Override
             public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
                 Log.e("Load fail", "Fail");
+                btnAddFile.setEnabled(true);
             }
 
         });
@@ -309,6 +303,26 @@ public class ExerciseDetailFrangment extends Fragment {
         }
         else{
             return "";
+        }
+    }
+
+
+    public void pickFile(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        startActivityForResult(Intent.createChooser(intent, "Select File"), PICKFILE_REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, @android.support.annotation.Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICKFILE_REQUEST_CODE) {
+            fileUri = data.getData();
+            if(data!=null){
+                Log.e("Status: ", "Pick file thanh cong");
+            }
+
         }
     }
 

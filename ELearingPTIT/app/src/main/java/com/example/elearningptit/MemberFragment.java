@@ -210,41 +210,49 @@ public class MemberFragment extends Fragment {
 
                         ImageButton deleteSV = convertView.findViewById(R.id.deleteSV);
 
+                        if (listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
+                        {
+                            deleteSV.setVisibility(View.VISIBLE);
+                            deleteSV.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Dialog dialog = new Dialog(getContext());
+                                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                    dialog.setContentView(R.layout.verify_logout_dialog);
 
-                        deleteSV.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Dialog dialog = new Dialog(getContext());
-                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                dialog.setContentView(R.layout.verify_logout_dialog);
+                                    Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
+                                    Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
+                                    TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
 
-                                Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
-                                Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
-                                TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
+                                    tvContent.setText("Bạn có chắc muốn xóa "+ sv.getFullnanme() +" không?");
 
-                                tvContent.setText("Bạn có chắc muốn xóa "+ sv.getFullnanme() +" không?");
+                                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dialog.dismiss();
+                                        }
+                                    });
 
-                                btnCancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                                    btnVerify.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            //Xóa ở đây
+                                            List<String> st = new ArrayList<>();
+                                            st.add(sv.getStudentCode());
+                                            deleteStudent(jwtToken, creditclass_id, st);
+                                            dialog.dismiss();
+                                        }
+                                    });
 
-                                btnVerify.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        //Xóa ở đây
-                                        List<String> st = new ArrayList<>();
-                                        st.add(sv.getStudentCode());
-                                        deleteStudent(jwtToken, creditclass_id, st);
-                                        dialog.dismiss();
-                                    }
-                                });
+                                    dialog.show();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            deleteSV.setVisibility(View.INVISIBLE);
+                        }
 
-                                dialog.show();
-                            }
-                        });
 
                         nameSV.setText(sv.getFullnanme());
                         maSV.setText(sv.getStudentCode());
@@ -421,21 +429,17 @@ public class MemberFragment extends Fragment {
                 else if(response.code() == 401)
                 {
                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
-                    Log.e("Status: ", "Unauthorized");
                 }
                 else if(response.code() == 403)
                 {
-                    Log.e("Status: ", "Forbidden");
                     Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 404)
                 {
-                    Log.e("Status: ", "Not Found");
                     Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 500)
                 {
-                    Log.e("Status: ", "Not Found");
                     Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -443,7 +447,6 @@ public class MemberFragment extends Fragment {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
-                Log.e("Status: " , "Call api fail");
             }
         });
 
@@ -463,33 +466,24 @@ public class MemberFragment extends Fragment {
                 else if(response.code() == 401)
                 {
                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
-                    Log.e("Status: ", "Unauthorized");
                 }
                 else if(response.code() == 403)
                 {
-                    Log.e("Status: ", "Forbidden");
                     Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 404)
                 {
-                    Log.e("Status: ", "Not Found");
                     Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 500)
                 {
-                    Log.e("Status: ", "Not Found");
                     Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "Xóa SV thất bại " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("Status: ", t.getMessage());
             }
         });
 
