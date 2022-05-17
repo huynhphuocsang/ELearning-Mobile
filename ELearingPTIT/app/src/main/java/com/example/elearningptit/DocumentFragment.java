@@ -141,8 +141,6 @@ public class DocumentFragment extends Fragment {
 
     private void getInforForDocumentListView () {
         resetTableRow();
-
-
         Call<CreditClassDetail> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassDetail("Bearer " + token,  Integer.valueOf(creditclass_id));
         creditClassDetailDTOCall.enqueue(new Callback<CreditClassDetail>() {
             @Override

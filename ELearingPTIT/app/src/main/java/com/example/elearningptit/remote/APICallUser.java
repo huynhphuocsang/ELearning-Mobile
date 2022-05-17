@@ -34,10 +34,6 @@ public interface APICallUser {
     APICallUser apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallUser.class);
 
-
-    @GET("auth/get-account-info")
-    Call<String> getAccountInfo(@Header("Authorization") String token);
-
     @GET("user/get-user-info")
     Call<UserInfo> getUserInfo(@Header("Authorization") String token);
 
@@ -46,7 +42,6 @@ public interface APICallUser {
 
     @PUT("user/update-new-password")
     Call<String> updateNewPassword(@Header("Authorization") String token, @Body NewPasswordModel newPasswordModel);
-
 
     @POST("user/join-class")
     Call<String> joinClass(@Header("Authorization") String token, @Body StudentJoinClassRequestDTO studentJoinClassRequestDTO);
@@ -62,4 +57,7 @@ public interface APICallUser {
 
     @GET("/timetable-by-time-teacher")
     Call<List<TimelineDTO>> getTimetableTeacher(@Header("Authorization") String token, @Query("date")String date);
+
+    @GET("auth/get-account-info")
+    Call<String> getAccountInfo(@Header("Authorization") String token);
 }

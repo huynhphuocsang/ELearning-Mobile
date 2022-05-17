@@ -129,20 +129,6 @@ public class MemberFragment extends Fragment {
     }
 
 
-//    public OkHttpClient getClient(String jwttoken){
-//        OkHttpClient client = new OkHttpClient.Builder()
-//                .addInterceptor(new Interceptor() {
-//                    @Override
-//                    public okhttp3.Response intercept(Chain chain) throws IOException {
-//                        Request newRequest = chain.request().newBuilder()
-//                                .addHeader("Authorization", "Bearer "+jwttoken)
-//                                .build();
-//                        return chain.proceed(newRequest);
-//                    }
-//                })
-//                .build();
-//        return client;
-//    }
 
     public void getUserInfo() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
@@ -207,12 +193,11 @@ public class MemberFragment extends Fragment {
                         View convertView = inflater.inflate(R.layout.list_member_ds, null);
                         TextView nameSV = convertView.findViewById(R.id.textTenSV);
                         TextView maSV = convertView.findViewById(R.id.textMSV);
-
                         ImageButton deleteSV = convertView.findViewById(R.id.deleteSV);
 
-                        if (listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
-                        {
+                        if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER")) {
                             deleteSV.setVisibility(View.VISIBLE);
+
                             deleteSV.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -224,7 +209,7 @@ public class MemberFragment extends Fragment {
                                     Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
                                     TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
 
-                                    tvContent.setText("Bạn có chắc muốn xóa "+ sv.getFullnanme() +" không?");
+                                    tvContent.setText("Bạn có chắc muốn xóa " + sv.getFullnanme() + " không?");
 
                                     btnCancel.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -248,12 +233,6 @@ public class MemberFragment extends Fragment {
                                 }
                             });
                         }
-                        else
-                        {
-                            deleteSV.setVisibility(View.INVISIBLE);
-                        }
-
-
                         nameSV.setText(sv.getFullnanme());
                         maSV.setText(sv.getStudentCode());
 
@@ -264,6 +243,7 @@ public class MemberFragment extends Fragment {
                     {
                         setButtonThemSV();
                         setButtonPDF();
+
 
                     }
                 } else if (response.code() == 401) {
@@ -480,7 +460,6 @@ public class MemberFragment extends Fragment {
                     Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getContext(), "Xóa SV thất bại " + t.getMessage(), Toast.LENGTH_SHORT).show();

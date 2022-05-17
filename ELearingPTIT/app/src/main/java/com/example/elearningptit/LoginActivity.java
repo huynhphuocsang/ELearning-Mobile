@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 LoginRequest loginRequest = new LoginRequest(username,password);
                 Call<JwtResponse> jwtResponseCall = APICallSignin.apiCall.userLogin(loginRequest);
-
                 jwtResponseCall.enqueue(new Callback<JwtResponse>() {
                     @Override
                     public void onResponse(Call<JwtResponse> call, Response<JwtResponse> response) {
@@ -80,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                         else if(response.code()==401){
                             showToast("Tên đăng nhập hoặc mật khẩu không đúng!");
                         }
-
                     }
-
                     @Override
                     public void onFailure(Call<JwtResponse> call, Throwable t) {
                         showToast(t.toString());

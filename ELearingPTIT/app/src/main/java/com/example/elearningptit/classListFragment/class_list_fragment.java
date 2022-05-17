@@ -353,8 +353,6 @@ public class class_list_fragment extends Fragment {
                             intent.putExtra("TEACHER",teacherNames);
 
                             startActivity(intent);
-
-
 //                            Intent creditClassIntent = new Intent(getActivity(), CreditClassActivity.class);
 //                            startActivity(creditClassIntent);
                         }else if(response.code()==422){
@@ -369,7 +367,6 @@ public class class_list_fragment extends Fragment {
                         Toast.makeText(getContext(),"Error code: "+t.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
         });
     }
