@@ -154,7 +154,7 @@ public class home_fragment extends Fragment {
                     timelineDTOList = response.body();
 
                     timelineDTOList.forEach((timelineDTO -> {
-                        if(now.getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
+                        if(now.getDayOfWeek().getValue()==timelineDTO.getDayOfWeek()){
                             if(timelineDTO.getEndLesson()<=5){
                                 tvTodayMorningRoom.setText(timelineDTO.getRoom());
                                 tvTodayMorningClass.setText(timelineDTO.getSubjectName());
@@ -163,7 +163,7 @@ public class home_fragment extends Fragment {
                                 tvTodayAfterRoom.setText(timelineDTO.getRoom());
                                 tvTodayAfterClass.setText(timelineDTO.getSubjectName());
                             }
-                        }else if((now.plusDays(1)).getDayOfWeek().getValue()+1==timelineDTO.getDayOfWeek()){
+                        }else if((now.plusDays(1)).getDayOfWeek().getValue()==timelineDTO.getDayOfWeek()){
                             if(timelineDTO.getEndLesson()<=5){
                                 tvTomoMorningRoom.setText(timelineDTO.getRoom());
                                 tvTomoMorningClass.setText(timelineDTO.getSubjectName());

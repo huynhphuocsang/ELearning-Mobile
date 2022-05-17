@@ -600,7 +600,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         canvas.drawText("Tên môn học: "+subjectname, x0, y0+=height, paint);
         canvas.drawText("Năm học: "+semester, x0, y0+=height, paint);
         canvas.drawText("Nội dung bài tập: "+txtContent.getText(), x0, y0+=height, paint);
-        canvas.drawText("Dách sinh viên nộp bài:", x0, y0+=height, paint);
+        canvas.drawText("Danh sách sinh viên nộp bài:", x0, y0+=height, paint);
 
 
 
