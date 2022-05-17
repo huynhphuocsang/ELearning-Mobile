@@ -247,6 +247,6 @@ public class home_fragment extends Fragment {
 
         lvListCreditClass=view.findViewById(R.id.lvListCreditClass);
 
-        tvSeeMoreCreditclass=view.findViewById(R.id.tvSeeMoreCreditclass);
+//        tvSeeMoreCreditclass=view.findViewById(R.id.tvSeeMoreCreditclass);
     }
 }

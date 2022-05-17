@@ -25,6 +25,7 @@ import com.example.elearningptit.EventListener;
 import com.example.elearningptit.PostDeltaFragment;
 import com.example.elearningptit.R;
 import com.example.elearningptit.model.PostDTO;
+import com.example.elearningptit.model.PostDTOWithComment;
 import com.example.elearningptit.model.PostResponseDTO;
 import com.example.elearningptit.remote.APICallPost;
 import com.squareup.picasso.Picasso;
@@ -44,19 +45,19 @@ import retrofit2.Response;
 public class PostCustomeAdapter extends ArrayAdapter {
     Context context;
     int layoutID;
-    List<PostDTO> posts;
-    HashMap<Long, Integer> commentAmounts;
+    List<PostDTOWithComment> posts;
+//    HashMap<Long, Integer> commentAmounts;
     FragmentActivity fragmentActivity;
     String jwtToken;
     EventListener onAfterDeletePost;
     List<String> roles;
 
-    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTO> posts, HashMap<Long, Integer> commentAmounts, FragmentActivity fragmentActivity, String jwtToken, EventListener onAfterDeletePost, List<String> roles) {
+    public PostCustomeAdapter(@NonNull Context context, int resource, List<PostDTOWithComment> posts, FragmentActivity fragmentActivity, String jwtToken, EventListener onAfterDeletePost, List<String> roles) {
         super(context, resource, posts);
         this.context = context;
         this.layoutID = resource;
         this.posts = posts;
-        this.commentAmounts = commentAmounts;
+//        this.commentAmounts = commentAmounts;
         this.fragmentActivity=fragmentActivity;
         this.jwtToken = jwtToken;
         this.onAfterDeletePost = onAfterDeletePost;
@@ -98,13 +99,13 @@ public class PostCustomeAdapter extends ArrayAdapter {
 //            Picasso.get().load(posts.get(position).getAvartarPublisher()).into(imAvatar);
         }
 
-        tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
+        tvCommentAmount.setText(posts.get(position).getQuantityComments() + " bình luận");
 
         //set event
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PostDTO post = posts.get(position);
+                PostDTOWithComment post = posts.get(position);
                 PostDeltaFragment postDeltaFragment = PostDeltaFragment.newInstance(post.getPostId(), post.getAvartarPublisher(), post.getFullname(), post.getPostContent(), post.getPostedTime(), roles);
                 postDeltaFragment.onDetach = new EventListener() {
                     @Override
@@ -114,9 +115,10 @@ public class PostCustomeAdapter extends ArrayAdapter {
 
                     @Override
                     public void doSomething(int i) {
-                        commentAmounts.put(posts.get(position).getPostId(), i);
-                        tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
-                        Log.d("print", tvCommentAmount.getText().toString());
+                        onAfterDeletePost.doSomething();
+//                        commentAmounts.put(posts.get(position).getPostId(), i);
+//                        tvCommentAmount.setText(commentAmounts.get(posts.get(position).getPostId()) + " bình luận");
+//                        Log.d("print", tvCommentAmount.getText().toString());
                     }
                 };
 

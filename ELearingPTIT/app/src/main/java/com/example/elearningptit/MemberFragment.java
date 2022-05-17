@@ -59,8 +59,8 @@ public class MemberFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    LinearLayout listGV, listSV;
-    Button xuatPDF, themSV;
+    LinearLayout listGV, listSV,testNghia;
+    Button themSV;
 
     long userID;
     UserInfo userInfo;
@@ -122,8 +122,8 @@ public class MemberFragment extends Fragment {
     private void setControl(View view) {
         listGV = view.findViewById(R.id.listGV);
         listSV = view.findViewById(R.id.listViewDSSV);
-        xuatPDF = view.findViewById(R.id.buttonXuatPDF);
         themSV = view.findViewById(R.id.buttonThemSV);
+        testNghia = view.findViewById(R.id.testNghia);
     }
 
     private void setEvent() {
@@ -131,6 +131,11 @@ public class MemberFragment extends Fragment {
         getUserInfo();
         getInforForPostListView();
 
+        testNghia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
     }
 
 
@@ -247,7 +252,6 @@ public class MemberFragment extends Fragment {
                     if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
                     {
                         setButtonThemSV();
-                        setButtonPDF();
 
 
                     }
@@ -317,18 +321,6 @@ public class MemberFragment extends Fragment {
         });
     }
 
-    private void setButtonPDF(){
-        xuatPDF.setVisibility(View.VISIBLE);
-        xuatPDF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog dialog = new Dialog(getContext());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-                dialog.show();
-            }
-        });
-    }
 
     private void callAPIFindStudentByCode(String jwtToken, String studentCode)
     {

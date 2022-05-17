@@ -2,8 +2,11 @@ package com.example.elearningptit.remote;
 
 import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.CreditClassDetailDTO;
+import com.example.elearningptit.model.PostDTOWithComment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import kotlin.ParameterName;
 import retrofit2.Call;
@@ -21,4 +24,8 @@ public interface APICallCreditClassDetail {
 
     @GET("credit-class/creditclass-detail")
     Call<CreditClassDetailDTO> getCreditClassDelta(@Header("Authorization") String token, @Query("creditclass_id") long creditClassId);
+
+    @GET("credit-class/creditclass-list-post")
+    Call<List<PostDTOWithComment>> getPostsInClass(@Header("Authorization") String token, @Query("creditclass_id") long creditClassId);
+
 }

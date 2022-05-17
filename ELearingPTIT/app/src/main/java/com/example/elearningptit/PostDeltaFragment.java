@@ -141,14 +141,14 @@ public class PostDeltaFragment extends Fragment {
             public void onResponse(Call<List<PostCommentDTO>> call, Response<List<PostCommentDTO>> response) {
                 if (response.code() == 200) {
                     comments = response.body();
-                    onDetach.doSomething(comments.size());
+//                    onDetach.doSomething(comments.size());
 
                     //set adapter
                     EventListener afterDeleteComment = new EventListener() {
                         @Override
                         public void doSomething() {
                             getInforForCommentListView();
-                            onDetach.doSomething(comments.size());
+//                            onDetach.doSomething(comments.size());
                         }
                         @Override
                         public void doSomething(int i) {

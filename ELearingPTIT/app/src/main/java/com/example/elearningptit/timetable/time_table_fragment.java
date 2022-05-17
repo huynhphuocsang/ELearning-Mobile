@@ -21,6 +21,7 @@ import com.example.elearningptit.adapter.TimetableCustomeAdapter;
 import com.example.elearningptit.model.NotificationPageForUser;
 import com.example.elearningptit.model.TimelineDTO;
 import com.example.elearningptit.remote.APICallNotification;
+import com.example.elearningptit.remote.APICallTeacher;
 import com.example.elearningptit.remote.APICallUser;
 
 import java.text.ParseException;
@@ -38,8 +39,10 @@ import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,6 +78,7 @@ public class time_table_fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Set<String> userRoles;
 
     public time_table_fragment() {
         // Required empty public constructor
@@ -111,6 +115,8 @@ public class time_table_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_time_table_fragment, container, false);
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        userRoles=preferences.getStringSet(getResources().getString(R.string.USER_ROLES), new HashSet<>());
         addControl(view);
         setEvent();
         return view;
@@ -207,10 +213,14 @@ public class time_table_fragment extends Fragment {
     private void getInfoForListview() {
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
-
+        Call<List<TimelineDTO>> timelineCall;
         String date = formatterForGetAPI.format(sundayPointer);
-
-        Call<List<TimelineDTO>> timelineCall = APICallUser.apiCall.getTimetable("Bearer " + jwtToken, date);
+        if(userRoles.contains("ROLE_TEACHER")){
+            timelineCall= APICallTeacher.apiCall.getTimetableTeacher("Bearer " + jwtToken, date);
+        }
+        else{
+            timelineCall= APICallUser.apiCall.getTimetable("Bearer " + jwtToken, date);
+        }
         timelineCall.enqueue(new Callback<List<TimelineDTO>>() {
             @Override
             public void onResponse(Call<List<TimelineDTO>> call, Response<List<TimelineDTO>> response) {
