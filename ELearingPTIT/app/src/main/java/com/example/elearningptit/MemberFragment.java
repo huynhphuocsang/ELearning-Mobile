@@ -1,6 +1,7 @@
 package com.example.elearningptit;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -76,7 +77,7 @@ public class MemberFragment extends Fragment {
     private String subjectname;
     private String semester;
     private String teacher;
-
+    private ProgressDialog progressDialog;
     public MemberFragment() {
         // Required empty public constructor
     }
@@ -105,6 +106,10 @@ public class MemberFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_member, container, false);
+
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý....");
 
         Intent getDaTa=getActivity().getIntent();
         creditclass_id =getDaTa.getStringExtra("CREDITCLASS_ID");
@@ -397,6 +402,7 @@ public class MemberFragment extends Fragment {
     }
 
     public void addStudent (String jwtToken, String creditClassId, List<String> student) {
+        progressDialog.show();
         StudentCodeDTO studentCode = new StudentCodeDTO();
         studentCode.setStudentCode(student);
         Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), studentCode);
@@ -405,6 +411,7 @@ public class MemberFragment extends Fragment {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getContext(), "Thêm SV thành công", Toast.LENGTH_SHORT).show();
+                    getInforForPostListView();
                 }
                 else if(response.code() == 401)
                 {
@@ -422,18 +429,21 @@ public class MemberFragment extends Fragment {
                 {
                     Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
             }
         });
 
-        getInforForPostListView();
+
     }
 
     public void deleteStudent (String jwtToken, String creditClassId, List<String> student) {
+        progressDialog.show();
         StudentCodeDTO studentCode = new StudentCodeDTO();
         studentCode.setStudentCode(student);
         Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), studentCode);
@@ -442,6 +452,7 @@ public class MemberFragment extends Fragment {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
+                    getInforForPostListView();
                 }
                 else if(response.code() == 401)
                 {
@@ -459,14 +470,16 @@ public class MemberFragment extends Fragment {
                 {
                     Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), "Xóa SV thất bại " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        getInforForPostListView();
+
     }
 
 }

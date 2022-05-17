@@ -1,5 +1,6 @@
 package com.example.elearningptit;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -61,6 +62,8 @@ public class HomeCreditFragment extends Fragment {
     List<PostDTO> posts;
     PostCustomeAdapter adapter;
     UserInfo userInfo;
+
+    private ProgressDialog progressDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -214,12 +217,16 @@ public class HomeCreditFragment extends Fragment {
             return;
         }
 
+        progressDialog.show();
+
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         Call<PostResponseDTO> postResponseDTOCall = APICallPost.apiCall.createNewPost("Bearer " + jwtToken, Long.valueOf(creditclass_id), new PostRequestDTO(etPostContent.getText().toString()));
         postResponseDTOCall.enqueue(new Callback<PostResponseDTO>() {
             @Override
             public void onResponse(Call<PostResponseDTO> call, Response<PostResponseDTO> response) {
+                progressDialog.dismiss();
+
                 if (response.code() == 200) {
                     //update UI
                     etPostContent.setText("");
@@ -236,6 +243,8 @@ public class HomeCreditFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PostResponseDTO> call, Throwable t) {
+                progressDialog.dismiss();
+
                 Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -297,6 +306,9 @@ public class HomeCreditFragment extends Fragment {
         tvHeader.setText(subjectname + " - " + creditclass_id);
         tvSemester.setText(semester);
         tvTeacher.setText(teacher);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý....");
 
         getUserInfo();
 

@@ -1,14 +1,29 @@
 package com.example.elearningptit;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +49,13 @@ import com.example.elearningptit.remote.APICallExercise;
 import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -62,12 +84,28 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     private long userID;
     private int exerciseID;
 
+    String creditclass_id;
+    String subjectname;
+    String semester;
+    String teacher;
+
     TextView txtTitle, txtEndTime, txtContent;
     TextView  tvSTT, tvMaSV, tvHoTen, tvDiem;
     LinearLayout listDocument;
     TableLayout tbSVSubmit;
-    Button btnChart;
+    Button btnChart, btnPDF;
     FrameLayout frame;
+
+    List<StudentSubmitExercise> list;
+    // declaring width and height
+    // for our PDF file.
+    int pageHeight = 1120;
+    int pagewidth = 792;
+    //Điểm bắt đầu vẽ bảng tính theo chiều dọc
+    int y0=200;
+    // creating a bitmap variable
+    // for storing our images
+    Bitmap bmp, scaledbmp;
 
     public ExerciseDetailTeacherFragment() {
         // Required empty public constructor
@@ -111,6 +149,11 @@ public class ExerciseDetailTeacherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_detail_teacher, container, false);
+        Intent getDaTa=getActivity().getIntent();
+        creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
+        subjectname=getDaTa.getStringExtra("SUBJECT_NAME");
+        semester=getDaTa.getStringExtra("SEMESTER");
+        teacher=getDaTa.getStringExtra("TEACHER");
         addControl(view) ;
         setEvent();
         return view;
@@ -124,6 +167,8 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         tbSVSubmit = view.findViewById(R.id.tbSVSubmit);
         btnChart = view.findViewById(R.id.btnInventory);
         frame = view.findViewById(R.id.exerciseDetailTeacher);
+
+        btnPDF = view.findViewById(R.id.btnPDF);
     }
 
     private void setEvent(){
@@ -134,6 +179,8 @@ public class ExerciseDetailTeacherFragment extends Fragment {
 
             }
         });
+
+        setEventExport();
 
         getExerciseDocument();
         getListStudentSubmit();
@@ -210,7 +257,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             public void onResponse(Call<List<StudentSubmitExercise>> call, Response<List<StudentSubmitExercise>> response) {
                 if (response.code() == 200)
                 {
-                    List<StudentSubmitExercise> list = response.body();
+                    list = response.body();
                     if(!list.equals(null)){
                         for(StudentSubmitExercise sv : list)
                         {
@@ -408,4 +455,187 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             return "";
         }
     }
-}
+    private void setEventExport() {
+        // initializing  variables.
+        bmp = BitmapFactory.decodeResource(getResources(), R.drawable.logo_ptit);
+        scaledbmp = Bitmap.createScaledBitmap(bmp, 50, 50, false);
+
+        // checking our permissions.
+
+
+        btnPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                generatePDF();
+            }
+        });
+    }
+
+
+    private void generatePDF() {
+        // creating an object variable
+        // for our PDF document.
+        PdfDocument pdfDocument = new PdfDocument();
+
+        // two variables for paint "paint" is used
+        // for drawing shapes and we will use "title"
+        // for adding text in our PDF file.
+        Paint paint = new Paint();
+        Paint title = new Paint();
+
+        // we are adding page info to our PDF file
+        // in which we will be passing our pageWidth,
+        // pageHeight and number of pages and after that
+        // we are calling it to create our PDF.
+        PdfDocument.PageInfo mypageInfo = new PdfDocument.PageInfo.Builder(pagewidth, pageHeight, 1).create();
+
+        // below line is used for setting
+        // start page for our PDF file.
+        PdfDocument.Page myPage = pdfDocument.startPage(mypageInfo);
+
+        // creating a variable for canvas
+        // from our page of PDF.
+        Canvas canvas = myPage.getCanvas();
+
+        // below line is used to draw our image on our PDF file.
+        // the first parameter of our drawbitmap method is
+        // our bitmap
+        // second parameter is position from left
+        // third parameter is position from top and last
+        // one is our variable for paint.
+        canvas.drawBitmap(scaledbmp, 30, 20, paint);
+
+        // below line is used for adding typeface for
+        // our text which we will be adding in our PDF file.
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+
+        // below line is used for setting text size
+        // which we will be displaying in our PDF file.
+        title.setTextSize(15);
+
+        // below line is sued for setting color
+        // of our text inside our PDF file.
+        title.setColor(Color.RED);
+
+        // below line is used to draw text in our PDF file.
+        // the first parameter is our text, second parameter
+        // is position from start, third parameter is position from top
+        // and then we are passing our variable of paint which is title.
+        canvas.drawText("E-learning PTIT", 85, 50, title);
+
+        // similarly we are creating another text and in this
+        // we are aligning this text to center of our PDF file.
+        title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        title.setColor(ContextCompat.getColor(getContext(), R.color.purple_200));
+
+        title.setTextSize(26);
+        title.setColor(Color.RED);
+        // below line is used for setting
+        // our text to center of PDF.
+        title.setTextAlign(Paint.Align.CENTER);
+        title.setFakeBoldText(true);
+        canvas.drawText("ĐIỂM BÀI TẬP SINH VIÊN", 396, 120, title);
+
+
+        drawTable(canvas,title,5,4);
+
+        //canvas.drawText("This is sample document which we have created.", 396, 560, title);
+
+        // after adding all attributes to our
+        // PDF file we will be finishing our page.
+        pdfDocument.finishPage(myPage);
+
+        // below line is used to set the name of
+        // our PDF file and its path.
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+ "/ElearningPTIT-Report";
+        File dir = new File(path);
+        if(!dir.exists())
+            dir.mkdirs();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Date date = new Date();
+        String fileName="thống-kê-điểmBT-lớp-"+creditclass_id+"_"+dateFormat.format(date)+".pdf";
+        File file = new File(dir, fileName);
+
+        try {
+            // after creating a file name we will
+            // write our PDF file to that location.
+            pdfDocument.writeTo(new FileOutputStream(file));
+
+            // below line is to print toast message
+            // on completion of PDF generation.
+            Toast.makeText(getContext(), "Xuất PDF thành công vào: \n"+path, Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            // below line is used
+            // to handle error
+            e.printStackTrace();
+        }
+        // after storing our pdf to that
+        // location we are closing our PDF file.
+        pdfDocument.close();
+        //viewPdf(path,fileName);
+    }
+    private void drawRectangle(Canvas canvas, Paint paint,int x, int y, int width, int height, String text, boolean isCenter){
+        canvas.drawLine(x,y,x+width,y,paint);
+        canvas.drawLine(x,y,x,y+height,paint);
+        canvas.drawLine(x+width,y,x+width,y+height,paint);
+        canvas.drawLine(x,y+height,x+width,y+height,paint);
+
+        int setWidth=x+15;
+        if(isCenter){
+            setWidth=x+width/2-(text.length()/2)*3;
+        }
+        canvas.drawText(text,setWidth,y+height/2+5,paint);
+    }
+
+    private void drawTable(Canvas canvas, Paint paint, int row, int col ){
+        int x0=100,x=600;
+        int y0Temp=y0;
+        int width=pagewidth-200,height=25;
+        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(15);
+        paint.setFakeBoldText(false);
+
+        canvas.drawText("Mã lớp: "+creditclass_id, x0, y0+=height, paint);
+        canvas.drawText("Tên môn học: "+subjectname, x0, y0+=height, paint);
+        canvas.drawText("Năm học: "+semester, x0, y0+=height, paint);
+        canvas.drawText("Nội dung bài tập: "+txtContent.getText(), x0, y0+=height, paint);
+        canvas.drawText("Dách sinh viên nộp bài:", x0, y0+=height, paint);
+
+
+
+        //Draw header table
+        y0 += height;
+        paint.setFakeBoldText(true);
+        drawRectangle(canvas, paint, x0, y0, width / col, height, "STT",true);
+        drawRectangle(canvas, paint, x0 + (width / col), y0, width / col, height, "Mã SV",true);
+        drawRectangle(canvas, paint, x0 + (width / col) * 2, y0, width / col, height, "Họ tên",true);
+        drawRectangle(canvas, paint, x0 + (width / col) * 3, y0, width / col, height, "Điểm",true);
+
+        //draw content table
+        paint.setFakeBoldText(false);
+        float scoreAvg=0;
+        for(int i=0;i<list.size();i++)
+        {
+            y0+=height;
+            StudentSubmitExercise studentSubmit=list.get(i);
+            drawRectangle(canvas,paint,x0,y0,width/col,height,String.valueOf(i+1),true);
+            drawRectangle(canvas,paint,x0+(width/col),y0,width/col,height,studentSubmit.getStudentCode(),false);
+            drawRectangle(canvas,paint,x0+(width/col)*2,y0,width/col,height,studentSubmit.getFullname(),false);
+            drawRectangle(canvas,paint,x0+(width/col)*3,y0,width/col,height,String.valueOf(Math.round(studentSubmit.getMark())),true);
+            scoreAvg+=studentSubmit.getMark();
+        }
+
+        scoreAvg=(float) Math.round((scoreAvg/list.size()) * 10) / 10;
+
+        canvas.drawText("Tổng số sinh viên: "+list.size(), x0, y0+=height*2, paint);
+        canvas.drawText("Điểm trung bình: "+scoreAvg, x0+200, y0, paint);
+        y0+=height;
+
+        drawRectangle(canvas, paint, x0-10, y0Temp-10, width +20, y0-y0Temp, "",true);
+        y0+=height*2;
+    }
+
+
+
+    }
