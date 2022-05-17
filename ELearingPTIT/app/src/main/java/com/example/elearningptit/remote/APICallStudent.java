@@ -31,7 +31,7 @@ public interface APICallStudent {
 
 
     @GET("student/get-by-student-code")
-    Call<List<StudentDTO>> findByStudentCode(@Query("student-code") String studentCode);
+    Call<List<StudentDTO>> findByStudentCode(@Header("Authorization") String token, @Query("student-code") String studentCode);
 
     @POST("student/verify-forget-password")
     Call<HashCodeVerifyResponse> verifyForgotPassword(@Query("student-code") String studentCode);

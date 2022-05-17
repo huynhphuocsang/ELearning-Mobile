@@ -30,6 +30,7 @@ import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallStudent;
 import com.example.elearningptit.remote.APICallUser;
+import com.example.elearningptit.remote.admin.APICallManageCreditClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,8 +62,8 @@ public class MemberFragment extends Fragment {
     long userID;
     UserInfo userInfo;
     List<String> listRoles;
-    List<Student> posts;
-    StudentAdapter studentAdapter;
+    List<Student> students;
+
     private static final String CREDITCLASS_ID = "CREDITCLASS_ID";
     private static final String SUBJECT_NAME = "SUBJECT_NAME";
     private static final String SEMESTER = "SEMESTER";
@@ -178,6 +179,8 @@ public class MemberFragment extends Fragment {
     }
 
     private void getInforForPostListView () {
+        listGV.removeAllViews();
+        listSV.removeAllViews();
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         Call<CreditClassListMemberDTO> creditClassDetailDTOCall = APICallCreditClass.apiCall.getCreditClassListMember("Bearer " + jwtToken, Integer.valueOf(creditclass_id));
@@ -192,13 +195,13 @@ public class MemberFragment extends Fragment {
 
                         View convertView = inflater.inflate(R.layout.list_member_ds_gv, null);
                         TextView nameGV = convertView.findViewById(R.id.textTenGV);
-                        Log.e("TeacherName:", gv.getFullname());
                         nameGV.setText(gv.getFullname());
 
                         listGV.addView(convertView);
                     }
 
                     List<Student> studentList =  response.body().getStudents();
+                    students = studentList;
                     for(Student sv : studentList){
                         LayoutInflater inflater = LayoutInflater.from(getContext());
                         View convertView = inflater.inflate(R.layout.list_member_ds, null);
@@ -210,7 +213,6 @@ public class MemberFragment extends Fragment {
 
                         listSV.addView(convertView);
                     }
-                    Log.e("Status:" , "Success");
 
                     if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
                     {
@@ -222,20 +224,22 @@ public class MemberFragment extends Fragment {
                 } else if (response.code() == 401) {
                     //token expire
                     Toast.makeText(getContext(), "Phiên đăng nhập hết hạn", Toast.LENGTH_SHORT).show();
-                    Log.e("Status:" , "Fail");
                 }
             }
 
             @Override
             public void onFailure(Call<CreditClassListMemberDTO> call, Throwable t) {
-//                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
-                Log.e("Status:" , "Failure");
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
     private void setButtonThemSV(){
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
+        String jwtToken = preferences.getString("jwttoken", "");
+
         themSV.setVisibility(View.VISIBLE);
         Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -258,33 +262,23 @@ public class MemberFragment extends Fragment {
                 btnLuu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String studentdelete = EditcodeStudent.getText().toString();
-                        if (studentdelete == "") {
+                        String studentCode = EditcodeStudent.getText().toString();
+                        if (studentCode.equals("")) {
                             Toast.makeText(getContext(), "Mã không được để trống !!", Toast.LENGTH_SHORT).show();
-                            return;
                         }
-                        Call<List<StudentDTO>> student = APICallStudent.apiCall.findByStudentCode(studentdelete);
-                        student.enqueue(new Callback<List<StudentDTO>>() {
-                            @Override
-                            public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
-                                if (response.code() == 200) {
-
-                                    Log.e("Status:" , "OK");
-
-                                } else if (response.code() == 401) {
-                                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
-                                } else if (response.code() == 403) {
-                                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
-                                } else if (response.code() == 404) {
-                                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
-                                }
+                        else
+                        {
+                            Integer code = isInteger(studentCode);
+                            if (code == -1)
+                            {
+                                Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng mã!!", Toast.LENGTH_SHORT).show();
                             }
-
-                            @Override
-                            public void onFailure(Call<List<StudentDTO>> call, Throwable t) {
-                                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                            else
+                            {
+                                callAPIFindStudentByCode(jwtToken, studentCode);
                             }
-                        });
+                        }
+
                     }
                 });
 
@@ -306,6 +300,118 @@ public class MemberFragment extends Fragment {
         });
     }
 
+    private void callAPIFindStudentByCode(String jwtToken, String studentCode)
+    {
+        Call<List<StudentDTO>> call = APICallStudent.apiCall.findByStudentCode("Bearer " + jwtToken, studentCode);
+        call.enqueue(new Callback<List<StudentDTO>>() {
+            @Override
+            public void onResponse(Call<List<StudentDTO>> call, Response<List<StudentDTO>> response) {
+                if(response.code() == 200)
+                {
+                    List<StudentDTO> list = response.body();
+                    if(list.size() > 0)
+                    {
+                        String code = "";
+                        String name = "";
+                        for(StudentDTO s : list)
+                        {
+                            code = s.getStudentCode();
+                            name = s.getFullnanme();
+                        }
 
+                        for(Student s : students)
+                        {
+                            if(s.getStudentCode().equals(code))
+                            {
+                                Toast.makeText(getContext(), "Mã sinh viên đã có trong lớp!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        //Thêm ở đây
+                        Student st = new Student(code, name);
+                        addStudent(jwtToken, creditclass_id, st);
+
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "Mã sinh viên không đúng. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else if(response.code() == 401)
+                {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 403)
+                {
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 404)
+                {
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StudentDTO>> call, Throwable t) {
+                Toast.makeText(getContext(), "Call api find student fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private int isInteger(String code)
+    {
+        try {
+            Integer codeInt = Integer.parseInt(code);
+            return 0;
+        }
+        catch (NumberFormatException e)
+        {
+        }
+        return -1;
+    }
+
+    public void addStudent (String jwtToken, String creditClassId, Student student) {
+        List<String> listStudent=new ArrayList<>();
+        listStudent.add(student.getStudentCode());
+        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId), listStudent);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.code() == 200) {
+                    Toast.makeText(getContext(), "Thêm SV thành công", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 401)
+                {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                    Log.e("Status: ", "Unauthorized");
+                }
+                else if(response.code() == 403)
+                {
+                    Log.e("Status: ", "Forbidden");
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 404)
+                {
+                    Log.e("Status: ", "Not Found");
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+                else if(response.code() == 500)
+                {
+                    Log.e("Status: ", "Not Found");
+                    Toast.makeText(getContext(), "Server fail", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
+                Log.e("Status: " , "Call api fail");
+            }
+        });
+
+        getInforForPostListView();
+    }
 
 }
