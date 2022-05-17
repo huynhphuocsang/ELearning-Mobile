@@ -3,12 +3,12 @@ package com.example.elearningptit.model;
 public class FolderRequest {
     private Long creditClassId;
     private String folderName;
-    private int parentId;
+    private Long parentId;
 
     public FolderRequest() {
     }
 
-    public FolderRequest(Long creditClassId, String folderName, int parentId) {
+    public FolderRequest(Long creditClassId, String folderName, Long parentId) {
         this.creditClassId = creditClassId;
         this.folderName = folderName;
         this.parentId = parentId;
@@ -22,7 +22,7 @@ public class FolderRequest {
         return folderName;
     }
 
-    public int getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
@@ -34,7 +34,7 @@ public class FolderRequest {
         this.folderName = folderName;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 }
