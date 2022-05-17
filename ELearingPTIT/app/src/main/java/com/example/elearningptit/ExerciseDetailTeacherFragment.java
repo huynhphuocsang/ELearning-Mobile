@@ -369,7 +369,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentContainerCreditClass, inventoryFragment);
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack(inventoryFragment.getClass().getName());
                 fragmentTransaction.commit();
             }
         });

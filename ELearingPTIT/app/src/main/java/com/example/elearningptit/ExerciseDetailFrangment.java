@@ -252,7 +252,8 @@ public class ExerciseDetailFrangment extends Fragment {
                         ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
                         ImageButton ibtDeleteSubmit = convertView.findViewById(R.id.ibtSubmitExerciseDelete);
                         submitName.setText(submitFileName);
-                        ibtDeleteSubmit.setVisibility(View.VISIBLE);
+//                        ibtDeleteSubmit.setVisibility(View.VISIBLE);
+                        btnAddFile.setEnabled(false);
 
                         String fileType = exerSub.getSubmitFile().getFileType();
 

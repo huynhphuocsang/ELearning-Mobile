@@ -28,6 +28,7 @@ import com.example.elearningptit.R;
 import com.example.elearningptit.model.PostCommentDTO;
 import com.example.elearningptit.model.PostDTO;
 import com.example.elearningptit.model.Student;
+import com.example.elearningptit.model.StudentCodeDTO;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallPost;
@@ -86,89 +87,8 @@ public class StudentAdapter extends ArrayAdapter<Student> {
         tenSV.setText(student.getFullnanme());
 
 
-
-        if (!roles.contains("ROLE_MODERATOR") && !roles.contains("ROLE_TEACHER"))
-        {
-            deleteSV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Dialog dialog = new Dialog(getContext());
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.verify_logout_dialog);
-
-                    Button btnVerify = dialog.findViewById(R.id.btnVerifyLogout);
-                    Button btnCancel = dialog.findViewById(R.id.btnCancelLogout);
-                    TextView tvContent = dialog.findViewById(R.id.tvVerifyContent);
-
-                    tvContent.setText("Bạn có chắc muốn xóa bình luận không?");
-
-                    btnCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialog.dismiss();
-                        }
-                    });
-                    btnVerify.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            deleteStudent(student);
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-                }
-            });
-
-
-        }
         return convertView;
     }
-
-
-    public void deleteStudent (Student student) {
-        List<String> listStudent=new ArrayList<>();
-        listStudent.add(student.getStudentCode());
-        //delete comment
-        Call<String> call = APICallManageCreditClass.apiCall.removeStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    onAfterDeleteStudent.doSomething();
-                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    public void addStudent (Student student) {
-        List<String> listStudent=new ArrayList<>();
-        listStudent.add(student.getStudentCode());
-        Call<String> call = APICallManageCreditClass.apiCall.addStudentToCreditClass("Bearer " + jwtToken, Long.valueOf(creditClassId),listStudent);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    onAfterDeleteStudent.doSomething();
-                    Toast.makeText(getContext(), "Xóa SV thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Thất bại" + response.body(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getContext(), "Xóa SV thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 
 
 }

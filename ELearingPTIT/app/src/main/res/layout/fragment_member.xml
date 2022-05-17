@@ -61,25 +61,28 @@
             android:id="@+id/buttonXuatPDF"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="50dp"
             android:drawableRight="@drawable/export"
             android:text="XUẤT PDF"
             android:textAlignment="center"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:backgroundTint="#FFBF44"/>
 
         <Button
             android:id="@+id/buttonThemSV"
             android:layout_marginLeft="10dp"
-            android:layout_width="165dp"
+            android:layout_width="130dp"
             android:layout_height="40dp"
-            android:text="THÊM SINH VIÊN"
+            android:text="THÊM SV"
             android:visibility="invisible"
             android:drawableRight="@android:drawable/ic_menu_add"
             android:textAlignment="center"
             android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:backgroundTint="#18AF55"
+            />
 
     </LinearLayout>
 
