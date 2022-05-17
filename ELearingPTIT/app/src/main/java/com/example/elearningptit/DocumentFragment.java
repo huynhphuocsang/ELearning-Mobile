@@ -2,6 +2,7 @@ package com.example.elearningptit;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -49,6 +50,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -85,7 +88,7 @@ public class DocumentFragment extends Fragment {
 
     TextView tenMon, tenGV;
     ListView listTL;
-
+    private ProgressDialog progressDialog;
     public DocumentFragment() {
         // Required empty public constructor
     }
@@ -118,6 +121,9 @@ public class DocumentFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_document, container, false);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý....");
 
         Intent getDaTa=getActivity().getIntent();
         creditclass_id=getDaTa.getStringExtra("CREDITCLASS_ID");
@@ -174,7 +180,7 @@ public class DocumentFragment extends Fragment {
         String folderName = folder.getFolderName();
         String lastEdited = folder.getUpTime();
 
-        Log.d("print", folderName + " | " + lastEdited + " | " + folder.getDocuments().size());
+        //Log.d("print", folderName + " | " + lastEdited + " | " + folder.getDocuments().size());
 
         TableRow tbRow = new TableRow(getContext());
         TableRow tbBlankRow = new TableRow(getContext());
@@ -236,7 +242,32 @@ public class DocumentFragment extends Fragment {
                     btnVerify.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            deleteFolder(folder.getFolderId());
+                            progressDialog.show();
+                            Call<FolderDTOResponse> folderCall = APICallFolder.apiCall.deleteFolder("Bearer " + token, Long.valueOf(folder.getFolderId()));
+                            folderCall.enqueue(new Callback<FolderDTOResponse>() {
+                                @Override
+                                public void onResponse(Call<FolderDTOResponse> call, Response<FolderDTOResponse> response) {
+                                    if (response.code() == 200) {
+                                        tbDocument.removeView(tbBlankRow);
+                                        tbDocument.removeView(tbRow);
+                                        Toast.makeText(getContext(), "Xóa Folder thành công", Toast.LENGTH_SHORT).show();
+                                    } else if (response.code() == 401) {
+                                        Toast.makeText(getContext(), "Unauthorized Xóa Folder", Toast.LENGTH_SHORT).show();
+                                    } else if (response.code() == 403) {
+                                        Toast.makeText(getContext(), "Forbidden Xóa Folder", Toast.LENGTH_SHORT).show();
+                                    } else if (response.code() == 404) {
+                                        Toast.makeText(getContext(), "Not Found Xóa Folder", Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onFailure(Call<FolderDTOResponse> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    Log.d("print", t.getMessage().toString());
+                                    Toast.makeText(getContext(), "Xóa Folder thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             dialog.dismiss();
                         }
                     });
@@ -267,41 +298,21 @@ public class DocumentFragment extends Fragment {
     }
 
     private void deleteFolder(int folderId) {
-        Call<FolderDTOResponse> folderCall = APICallFolder.apiCall.deleteFolder(token, folderId);
-        folderCall.enqueue(new Callback<FolderDTOResponse>() {
-            @Override
-            public void onResponse(Call<FolderDTOResponse> call, Response<FolderDTOResponse> response) {
-                if (response.code() == 200) {
-//                    onAfterDeletePost.doSomething();
-                    resetTableRow();
-                    getInforForDocumentListView();
-                    Toast.makeText(getContext(), "Tạo Folder thành công", Toast.LENGTH_SHORT).show();
-                } else if (response.code() == 401) {
-                    Toast.makeText(getContext(), "Unauthorized Xóa Folder", Toast.LENGTH_SHORT).show();
-                } else if (response.code() == 403) {
-                    Toast.makeText(getContext(), "Forbidden Xóa Folder", Toast.LENGTH_SHORT).show();
-                } else if (response.code() == 404) {
-                    Toast.makeText(getContext(), "Not Found Xóa Folder", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<FolderDTOResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Xóa Folder thất bại", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void addFolder(String folderName) {
-        FolderRequest folderRequest=new FolderRequest(Long.valueOf(creditclass_id),folderName,0);
-        Call<String> folderCall = APICallFolder.apiCall.createNewFolder(token, folderRequest);
-        folderCall.enqueue(new Callback<String>() {
+        progressDialog.show();
+        FolderRequest folderRequest=new FolderRequest(Long.valueOf(creditclass_id),folderName,0L);
+        Call<FolderDTOResponse> folderCall = APICallFolder.apiCall.createNewFolder("Bearer " + token, folderRequest);
+        folderCall.enqueue(new Callback<FolderDTOResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    resetTableRow();
-                    getInforForDocumentListView();
+            public void onResponse(Call<FolderDTOResponse> call, Response<FolderDTOResponse> response) {
+                if (response.code() == 201) {
                     Toast.makeText(getContext(), "Thêm Folder thành công", Toast.LENGTH_SHORT).show();
+                    FolderDTOResponse folderDTOResponse=response.body();
+                    String dayup=folderDTOResponse.getUpTime().toLocaleString();
+                    createTableRow(new Folder(Integer.parseInt(folderDTOResponse.getFolderId()+""),folderDTOResponse.getFolderName(),dayup));
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Unauthorized Thêm Folder", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 403) {
@@ -309,10 +320,13 @@ public class DocumentFragment extends Fragment {
                 } else if (response.code() == 404) {
                     Toast.makeText(getContext(), "Not Found Thêm Folder", Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<FolderDTOResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.d("print", t.getMessage().toString());
                 Toast.makeText(getContext(), "Thêm Folder thất bại", Toast.LENGTH_SHORT).show();
             }
         });
@@ -361,6 +375,7 @@ public class DocumentFragment extends Fragment {
                             else
                             {
                                 addFolder(folderName);
+                                dialog.dismiss();
                             }
                         }
                     });
@@ -369,8 +384,6 @@ public class DocumentFragment extends Fragment {
                     dialog.show();
                 }
             });
-        }else{
-            btnAddFolder.setVisibility(View.INVISIBLE);
         }
 
     }

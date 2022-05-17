@@ -30,7 +30,7 @@ public interface APICallFolder {
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallFolder.class);
 
     @POST("folder/create-new-folder")
-    Call<String> createNewFolder(@Header("Authorization") String token, @Body FolderRequest folderRequest);
+    Call<FolderDTOResponse> createNewFolder(@Header("Authorization") String token, @Body FolderRequest folderRequest);
 
     @DELETE("folder/delete-folder")
     Call<FolderDTOResponse> deleteFolder(@Header("Authorization") String token, @Query("folder-id") long folderId);

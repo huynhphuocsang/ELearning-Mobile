@@ -2,6 +2,7 @@ package com.example.elearningptit.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,10 +82,10 @@ public class DocumentCustomeAdapter extends ArrayAdapter {
         {
             submitFileTye.setImageResource(R.drawable.ic_excel);
         }
-//            else if (fileType.equals("pptx"))
-//            {
-//                submitFileTye.setImageResource(R.drawable.powerpoint);
-//            }
+        else if (fileType.equals("pptx"))
+        {
+            submitFileTye.setImageResource(R.drawable.ic_powerpoint);
+        }
         else {
             submitFileTye.setImageResource(R.drawable.ic_text);
         }
@@ -114,7 +115,7 @@ public class DocumentCustomeAdapter extends ArrayAdapter {
                     btnVerify.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            deleteFolder(documents.get(position).getDocumentId());
+                            deleteFile(documents.get(position).getDocumentId());
                             dialog.dismiss();
                         }
                     });
@@ -125,13 +126,14 @@ public class DocumentCustomeAdapter extends ArrayAdapter {
         return  convertView;
     }
 
-    private void deleteFolder(int documentId) {
-        Call<String> folderCall = APICallManagerDocument.apiCall.deleteFile(token, documentId);
+    private void deleteFile(int documentId) {
+        Call<String> folderCall = APICallManagerDocument.apiCall.deleteFile("Bearer " + token, Long.valueOf(documentId));
         folderCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getContext(), "Xóa File thành công thành công", Toast.LENGTH_SHORT).show();
+                    onAfterDeleteFile.doSomething();
                 } else if (response.code() == 401) {
                     Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 403) {
@@ -143,6 +145,7 @@ public class DocumentCustomeAdapter extends ArrayAdapter {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Log.d("print",t.getMessage()+"");
                 Toast.makeText(getContext(), "Xóa File thất bại", Toast.LENGTH_SHORT).show();
             }
         });

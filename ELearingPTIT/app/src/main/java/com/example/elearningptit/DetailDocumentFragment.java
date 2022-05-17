@@ -3,6 +3,7 @@ package com.example.elearningptit;
 import static android.app.Activity.RESULT_OK;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -72,6 +73,8 @@ public class DetailDocumentFragment extends Fragment {
     private Set<String> userRoles;
     public  EventListener onDetach;
 
+    private ProgressDialog progressDialog;
+
     public DetailDocumentFragment() {
         // Required empty public constructor
     }
@@ -106,6 +109,8 @@ public class DetailDocumentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail_document, container, false);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý file....");
 
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         userRoles=preferences.getStringSet(getResources().getString(R.string.USER_ROLES), new HashSet<>());
@@ -172,7 +177,6 @@ public class DetailDocumentFragment extends Fragment {
                                 @Override
                                 public void doSomething() {
                                     getInforForDeltaDocument();
-                                    onDetach.doSomething(folder.getDocuments().size());
                                 }
 
                                 @Override
@@ -220,8 +224,9 @@ public class DetailDocumentFragment extends Fragment {
     }
 
     private void uploadFile() {
+        progressDialog.show();
         File file=new File(getDriveFilePath(fileUri));
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse("multipart/form-data"),file));
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse(getDocMediaType(file.getName())),file));
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         Call<DocumentResponseData> callDelete = APICallManagerDocument.apiCall.uploadFile("Bearer " + jwtToken, filePart, Long.valueOf(folderId) );
@@ -238,16 +243,43 @@ public class DetailDocumentFragment extends Fragment {
                 } else if (response.code() == 404) {
                     Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<DocumentResponseData> call, Throwable t) {
+                progressDialog.dismiss();
                 Log.d("print",t.getMessage());
                 Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private String getDocMediaType(String name){
+        String fileType = name.substring(name.lastIndexOf('.') + 1);
+        if(fileType.equals("doc"))
+        {
+            return "application/msword";
+        }
+        else if(fileType.equals("docx")){
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        }
+        else if(fileType.equals("pdf"))
+        {
+            return "application/pdf";
+        }
+        else if(fileType.equals("xlsx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        }
+        else if (fileType.equals("pptx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        }
+        else {
+            return "text/plain";
+        }
+    }
     private String getDriveFilePath(Uri uri) {
         Uri returnUri = uri;
         Cursor returnCursor = getContext().getContentResolver().query(returnUri, null, null, null, null);

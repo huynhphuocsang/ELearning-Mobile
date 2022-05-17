@@ -3,6 +3,7 @@ package com.example.elearningptit.remote;
 import com.example.elearningptit.config.GlobalVariables;
 import com.example.elearningptit.model.Document;
 import com.example.elearningptit.model.DocumentResponseData;
+import com.example.elearningptit.remote.admin.APICallFolder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,7 +21,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APICallManagerDocument {
-    Gson gson = new GsonBuilder().create();
+    Gson gson = new GsonBuilder().setLenient().create();
     APICallManagerDocument apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallManagerDocument.class);
 
@@ -32,7 +33,7 @@ public interface APICallManagerDocument {
     Call<DocumentResponseData> uploadFile (@Header("Authorization") String token, @Part MultipartBody.Part file, @Query("folder-id") Long folderId);
 
     @DELETE("admin/document/delete-document")
-    Call<String> deleteFile (@Header("Authorization") String token, @Query("document-id") int documentId);
+    Call<String> deleteFile (@Header("Authorization") String token, @Query("document-id") Long documentId);
 
 
 }
