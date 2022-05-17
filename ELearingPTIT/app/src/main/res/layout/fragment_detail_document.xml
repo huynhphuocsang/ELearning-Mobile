@@ -38,12 +38,6 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:src="@drawable/document_line"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="cơ sở dữ liệu phân tán - lưu nguyễn kỳ thư"
-            android:textSize="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

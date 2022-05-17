@@ -1,5 +1,6 @@
 package com.example.elearningptit;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -51,6 +52,8 @@ public class PostDeltaFragment extends Fragment {
 
     CommentCustomeAdapter adapter;
     List<PostCommentDTO> comments;
+
+    private ProgressDialog progressDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -123,6 +126,7 @@ public class PostDeltaFragment extends Fragment {
         addControl(view);
         setEvent();
 
+
         return view;
     }
 
@@ -183,12 +187,15 @@ public class PostDeltaFragment extends Fragment {
             return;
         }
 
+        progressDialog.show();
+
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
         String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
         Call<PostCommentDTO> call = APICallPost.apiCall.comment("Bearer " + jwtToken, new PostCommentRequest(postId, etComment.getText().toString()));
         call.enqueue(new Callback<PostCommentDTO>() {
             @Override
             public void onResponse(Call<PostCommentDTO> call, Response<PostCommentDTO> response) {
+                progressDialog.dismiss();
                 if (response.code() == 200) {
                     Toast.makeText(getContext(), "Bình luận thành công", Toast.LENGTH_SHORT).show();
 
@@ -203,6 +210,7 @@ public class PostDeltaFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PostCommentDTO> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), "Bình luận thất bại", Toast.LENGTH_SHORT).show();
             }
         });
@@ -227,6 +235,9 @@ public class PostDeltaFragment extends Fragment {
         tvFullname.setText(fullname);
         tvTime.setText(postedTime);
         tvContent.setText(postContent);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý....");
 
         //set avatar
         if (avartarPublisher != null && !avartarPublisher.isEmpty())
