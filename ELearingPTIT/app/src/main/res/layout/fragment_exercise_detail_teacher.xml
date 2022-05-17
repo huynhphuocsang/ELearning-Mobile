@@ -67,6 +67,24 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:layout_marginVertical="10dp">
+            <Button
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:textSize="12dp"
+                android:text="XUẤT PDF"
+                android:drawableLeft="@drawable/export"
+                android:backgroundTint="#FFBF44"
+                android:visibility="visible"
+                android:layout_gravity="end"
+                android:id="@+id/btnPDF"/>
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +92,6 @@
             android:padding="10dp"
             android:orientation="vertical"
             android:background="#fff"
-            android:layout_marginTop="40dp"
             >
             <LinearLayout
                 android:layout_width="match_parent"
