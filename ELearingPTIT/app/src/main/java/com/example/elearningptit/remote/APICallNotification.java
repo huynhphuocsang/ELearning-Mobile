@@ -24,11 +24,11 @@ public interface APICallNotification {
     APICallNotification apiCall = new Retrofit.Builder().baseUrl(GlobalVariables.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(APICallNotification.class);
 
-    @GET("all-notification/{pageNo}")
+    @GET("notification/all-notification/{pageNo}")
     Call<NotificationPageForUser> getNotification(@Header("Authorization") String token, @Path("pageNo") int pageNo);
 
 
-    @PUT("seen")
+    @PUT("notification/seen")
     Call<String> setSeen(@Header("Authorization") String token, @Query("notification-id") long notificationId);
 
 }

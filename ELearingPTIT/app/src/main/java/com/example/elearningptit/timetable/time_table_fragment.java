@@ -62,7 +62,7 @@ public class time_table_fragment extends Fragment {
     LocalDate currentDate = LocalDate.now();
     LocalDate saturdayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).minusWeeks(1) ;
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
 
     LocalDate sundayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
@@ -163,7 +163,7 @@ public class time_table_fragment extends Fragment {
             tvMessageTime.setVisibility(View.INVISIBLE);
             rightNow = true;
         } else {
-            Toast.makeText(getContext(),"DIstance : vao day ne ", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(),"DIstance : vao day ne ", Toast.LENGTH_SHORT).show();
 
             tvTimeByWeek.setTextColor(Color.rgb(0, 0, 200));
             tvMessageTime.setVisibility(View.VISIBLE);

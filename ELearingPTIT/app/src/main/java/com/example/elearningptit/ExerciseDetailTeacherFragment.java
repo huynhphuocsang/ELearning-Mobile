@@ -322,7 +322,6 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                     else
                     {
                         updateDiem(diemMoiFloat, tongSVSubmit);
-                        Toast.makeText(getContext(), "Sửa điểm thành công", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 }
@@ -350,6 +349,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
             public void onResponse(Call<String> call, Response<String> response) {
                 tbSVSubmit.removeViewsInLayout(1, tongSVSubmit);
                 getListStudentSubmit();
+                Toast.makeText(getContext(), "Sửa điểm thành công", Toast.LENGTH_SHORT).show();
             }
 
             @Override
