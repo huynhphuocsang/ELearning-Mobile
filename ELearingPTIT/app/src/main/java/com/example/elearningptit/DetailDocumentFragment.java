@@ -246,6 +246,7 @@ public class DetailDocumentFragment extends Fragment {
                 progressDialog.dismiss();
             }
 
+
             @Override
             public void onFailure(Call<DocumentResponseData> call, Throwable t) {
                 progressDialog.dismiss();

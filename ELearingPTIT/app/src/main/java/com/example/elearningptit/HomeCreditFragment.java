@@ -161,8 +161,6 @@ public class HomeCreditFragment extends Fragment {
 ////                                    getInforForPostListView();
 //                                }
 //                            };
-
-
                             adapter = new PostCustomeAdapter(getContext(), R.layout.item_post, posts, hashMap, getActivity(), jwtToken, afterDeletePost, userInfo.getRoles());
                             lvPost.setAdapter(adapter);
                         }

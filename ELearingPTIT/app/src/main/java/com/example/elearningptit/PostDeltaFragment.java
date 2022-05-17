@@ -150,13 +150,11 @@ public class PostDeltaFragment extends Fragment {
                             getInforForCommentListView();
                             onDetach.doSomething(comments.size());
                         }
-
                         @Override
                         public void doSomething(int i) {
 
                         }
                     };
-
                     adapter = new CommentCustomeAdapter(getContext(), R.layout.item_comment, comments, jwtToken, afterDeleteComment, roles);
                     lvComments.setAdapter(adapter);
                 } else if (response.code() == 401) {

@@ -8,12 +8,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.elearningptit.model.CreditClassDetail;
-import com.example.elearningptit.model.Document;
 import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
 import com.example.elearningptit.model.StudentSubmitExercise;
@@ -36,18 +33,13 @@ import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
-import com.example.elearningptit.timetable.time_table_fragment;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -434,7 +426,6 @@ public class ExcerciseFragment extends Fragment {
 
     private void callAPIListStudentSubmit(String jwtToken, int exerciseID, ImageView imgView)
     {
-
         Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exerciseID);
         listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
             @Override
@@ -452,7 +443,6 @@ public class ExcerciseFragment extends Fragment {
                         else
                         {
                             imgView.setImageResource(R.drawable.ic_cancel);
-
                         }
                     }
                 }
@@ -513,7 +503,6 @@ public class ExcerciseFragment extends Fragment {
                 Log.e("Status:", "Not Found");
             }
         }
-
         @Override
         public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
             Log.e("Status:", "Call exercise submit fail");
