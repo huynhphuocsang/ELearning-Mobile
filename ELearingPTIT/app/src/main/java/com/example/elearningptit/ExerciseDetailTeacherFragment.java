@@ -298,7 +298,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                             tvDiem.setOnLongClickListener(new View.OnLongClickListener() {
                                 @Override
                                 public boolean onLongClick(View view) {
-                                    dialogNhapDiem(sv.getMark(), list.size());
+                                    dialogNhapDiem(sv.getMark(), list.size(), sv.getUserId());
                                     return false;
                                 }
                             });
@@ -335,7 +335,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         });
     }
 
-    private void dialogNhapDiem(float diemCu, int tongSVSubmit)
+    private void dialogNhapDiem(float diemCu, int tongSVSubmit, int MaSV)
     {
         Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -345,6 +345,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         Button btnThem = (Button) dialog.findViewById(R.id.btnAddMark);
         Button btnHuy = (Button) dialog.findViewById(R.id.btnCancelMark);
 
+//        edtNhapDiem.setText(diemCu + "");
         edtNhapDiem.setText(diemCu + "");
 
         btnThem.setOnClickListener(new View.OnClickListener() {
@@ -368,7 +369,7 @@ public class ExerciseDetailTeacherFragment extends Fragment {
                     }
                     else
                     {
-                        updateDiem(diemMoiFloat, tongSVSubmit);
+                        updateDiem(diemMoiFloat, tongSVSubmit, MaSV);
                         dialog.dismiss();
                     }
                 }
@@ -385,18 +386,25 @@ public class ExerciseDetailTeacherFragment extends Fragment {
         dialog.show();
     }
 
-    private void updateDiem(float diemMoi, int tongSVSubmit)
+    private void updateDiem(float diemMoi, int tongSVSubmit, int Masv)
     {
         SharedPreferences preferences = getActivity().getSharedPreferences("JWTTOKEN", 0);
         String jwtToken = preferences.getString("jwttoken", "");
-        MarkDTO markDTO = new MarkDTO(exerciseID, diemMoi, userID);
+        MarkDTO markDTO = new MarkDTO(exerciseID, diemMoi, Masv);
         Call<String> call = APICallSubmit.apiCall.putSubmitMark("Bearer "+ jwtToken, markDTO);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                tbSVSubmit.removeViewsInLayout(1, tongSVSubmit);
-                getListStudentSubmit();
-                Toast.makeText(getContext(), "Sửa điểm thành công", Toast.LENGTH_SHORT).show();
+                if(response.code() == 200 || response.code() == 201)
+                {
+                    tbSVSubmit.removeViewsInLayout(1, tongSVSubmit);
+                    getListStudentSubmit();
+                    Toast.makeText(getContext(), "Sửa điểm thành công", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Log.e("Sua diem: ", response.code() + "");
+                }
             }
 
             @Override

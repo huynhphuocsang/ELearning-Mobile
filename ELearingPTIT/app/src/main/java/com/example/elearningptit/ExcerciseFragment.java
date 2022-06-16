@@ -196,75 +196,11 @@ public class ExcerciseFragment extends Fragment {
                         {
                             setButtonExercise();
                             callAPIListStudentSubmit(jwtToken, exercise.getExcerciseId(), imgView);
-//                            tbRow.addView(imgView);
-//                            Call<List<StudentSubmitExercise>> listStudentSubmitExercise = APICallSubmit.apiCall.getListStudentSubmitExercise("Bearer " + jwtToken, exercise.getExcerciseId());
-//                            listStudentSubmitExercise.enqueue(new Callback<List<StudentSubmitExercise>>() {
-//                                @Override
-//                                public void onResponse(Call<List<StudentSubmitExercise>> call, Response<List<StudentSubmitExercise>> response) {
-//                                    if (response.code() == 200)
-//                                    {
-//                                        List<StudentSubmitExercise> list = response.body();
-//                                        if(!list.equals(null)){
-//                                            if(list.size() > 0)
-//                                            {
-//                                                imgView.setImageResource(R.drawable.ic_ok);
-//                                                flagSubmits1Class = true;
-//                                            }
-//                                        }
-//
-//                                    }
-//                                    else if(response.code() == 401)
-//                                    {
-//                                        Log.e("Status:", "Unauthorized");
-//                                    }
-//                                    else if(response.code() == 403)
-//                                    {
-//                                        Log.e("Status:", "Forbidden");
-//                                    }
-//                                    else if(response.code() == 404)
-//                                    {
-//                                        imgView.setImageResource(R.drawable.ic_cancel);
-//                                        Log.e("Status:", "Not Found");
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<List<StudentSubmitExercise>> call, Throwable t) {
-//                                    Log.e("Status:", "Call student submit exercise fail");
-//                                }
-//                            });
-
-//                            if(flagSubmits1Class == false)
-//                            {
-//                                imgView.setImageResource(R.drawable.ic_cancel);
-//                            }
                         }
                         else
                         {
                             // ---------------------------- Đây là call xem SV bất kì nộp bài tập hay chưa (Role USER)
                             CallAPIgetExerciseSubmit(jwtToken, exercise.getExcerciseId(), imgView);
-//                            Call<ExerciseSubmit> exerciseSubmit = APICallUser.apiCall.getExerciseSubmit("Bearer " + jwtToken, exercise.getExcerciseId());
-//                            exerciseSubmit.enqueue(new Callback<ExerciseSubmit>() {
-//                            @Override
-//                            public void onResponse(Call<ExerciseSubmit> call, Response<ExerciseSubmit> response) {
-//                                if(response.code() == 200)
-//                                {
-//                                    ExerciseSubmit exerSub = response.body();
-//                                    if(!exerSub.getSubmitFile().equals(""))
-//                                    {
-//                                        Log.e("Nop bai:", "Sinh vien nop bai " + exercise.getExcerciseId() + " roi!");
-//                                        imgView.setImageResource(R.drawable.ic_ok);
-//                                        setOK(imgView);
-//                                        Log.e("Set avatar: " , exercise.getExcerciseId() + " roi");
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<ExerciseSubmit> call, Throwable t) {
-//                                Log.e("Status:", "Call exercise submit fail");
-//                            }
-//                        });
                         }
 
                         tbRow.addView(imgView);
@@ -315,7 +251,7 @@ public class ExcerciseFragment extends Fragment {
     }
 
     private void setButtonExercise(){
-        btnAddExercise.setVisibility(View.VISIBLE);
+        btnAddExercise.setVisibility(View.INVISIBLE);
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

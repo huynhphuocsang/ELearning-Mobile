@@ -252,8 +252,6 @@ public class MemberFragment extends Fragment {
                     if(listRoles.contains("ROLE_MODERATOR") || listRoles.contains("ROLE_TEACHER"))
                     {
                         setButtonThemSV();
-
-
                     }
                 } else if (response.code() == 401) {
                     //token expire
@@ -302,15 +300,7 @@ public class MemberFragment extends Fragment {
                         }
                         else
                         {
-                            Integer code = isInteger(studentCode);
-                            if (code == -1)
-                            {
-                                Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng mã!!", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                callAPIFindStudentByCode(jwtToken, studentCode);
-                            }
+                            callAPIFindStudentByCode(jwtToken, studentCode);
                         }
 
                     }

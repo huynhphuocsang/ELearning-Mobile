@@ -2,8 +2,10 @@ package com.example.elearningptit;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
+import android.provider.OpenableColumns;
 import android.security.identity.ResultData;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,15 +31,25 @@ import android.widget.Toast;
 
 import com.example.elearningptit.model.CreditClassDetail;
 import com.example.elearningptit.model.Document;
+import com.example.elearningptit.model.DocumentResponseData;
 import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
+import com.example.elearningptit.model.ExerciseSubmitResponse;
 import com.example.elearningptit.remote.APICallCreditClass;
 import com.example.elearningptit.remote.APICallExercise;
+import com.example.elearningptit.remote.APICallManagerDocument;
+import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,6 +87,8 @@ public class ExerciseDetailFrangment extends Fragment {
     LinearLayout submitFile, listDocument;
 
     Intent myIntent;
+
+    private ProgressDialog progressDialog;
 
 
     public ExerciseDetailFrangment() {
@@ -121,6 +136,8 @@ public class ExerciseDetailFrangment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_exercise_detail_frangment, container, false);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý file....");
         addControl(view);
         setEvent();
         return view;
@@ -244,7 +261,6 @@ public class ExerciseDetailFrangment extends Fragment {
                         ImageView submitFileTye = convertView.findViewById(R.id.submitFileType);
                         ImageButton ibtDeleteSubmit = convertView.findViewById(R.id.ibtSubmitExerciseDelete);
                         submitName.setText(submitFileName);
-//                        ibtDeleteSubmit.setVisibility(View.VISIBLE);
                         btnAddFile.setEnabled(false);
 
                         String fileType = exerSub.getSubmitFile().getFileType();
@@ -320,10 +336,113 @@ public class ExerciseDetailFrangment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == PICKFILE_REQUEST_CODE) {
             fileUri = data.getData();
             if(data!=null){
+                uploadFile();
                 Log.e("Status: ", "Pick file thanh cong");
             }
 
         }
+    }
+
+    private String getDocMediaType(String name){
+        String fileType = name.substring(name.lastIndexOf('.') + 1);
+        if(fileType.equals("doc"))
+        {
+            return "application/msword";
+        }
+        else if(fileType.equals("docx")){
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        }
+        else if(fileType.equals("pdf"))
+        {
+            return "application/pdf";
+        }
+        else if(fileType.equals("xlsx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        }
+        else if (fileType.equals("pptx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        }
+        else {
+            return "text/plain";
+        }
+    }
+
+    private String getDriveFilePath(Uri uri) {
+        Uri returnUri = uri;
+        Cursor returnCursor = getContext().getContentResolver().query(returnUri, null, null, null, null);
+        /*
+         * Get the column indexes of the data in the Cursor,
+         *     * move to the first row in the Cursor, get the data,
+         *     * and display it.
+         * */
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        String name = (returnCursor.getString(nameIndex));
+        String size = (Long.toString(returnCursor.getLong(sizeIndex)));
+        File file = new File(getContext().getCacheDir(), name);
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            int read = 0;
+            int maxBufferSize = 1 * 1024 * 1024;
+            int bytesAvailable = inputStream.available();
+
+            //int bufferSize = 1024;
+            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+
+            final byte[] buffers = new byte[bufferSize];
+            while ((read = inputStream.read(buffers)) != -1) {
+                outputStream.write(buffers, 0, read);
+            }
+            Log.e("File Size", "Size " + file.length());
+            inputStream.close();
+            outputStream.close();
+            Log.e("File Path", "Path " + file.getPath());
+            Log.e("File Size", "Size " + file.length());
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
+        return file.getPath();
+    }
+
+    private void uploadFile() {
+        progressDialog.show();
+        File file=new File(getDriveFilePath(fileUri));
+        MultipartBody.Part exerciseIDPath = MultipartBody.Part.createFormData("excerciseId", String.valueOf(exerciseID));
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse(getDocMediaType(file.getName())),file));
+        MultipartBody.Part contentPath = MultipartBody.Part.createFormData("submitContent", String.valueOf("Hello"));
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN),
+                "");
+
+        Call<ExerciseSubmitResponse> callDelete = APICallSubmit.apiCall.submitExercise("Bearer " + jwtToken, exerciseIDPath, filePart, contentPath);
+        callDelete.enqueue(new Callback<ExerciseSubmitResponse>() {
+            @Override
+            public void onResponse(Call<ExerciseSubmitResponse> call, Response<ExerciseSubmitResponse> response) {
+                if (response.code() == 201 || response.code() == 200) {
+                    getExerciseSubmit();
+                    Toast.makeText(getContext(), "Nộp bài tập thành công", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+
+            @Override
+            public void onFailure(Call<ExerciseSubmitResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.d("print",t.getMessage());
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
