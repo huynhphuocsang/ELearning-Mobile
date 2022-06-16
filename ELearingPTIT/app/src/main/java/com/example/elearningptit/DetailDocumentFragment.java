@@ -228,7 +228,8 @@ public class DetailDocumentFragment extends Fragment {
         File file=new File(getDriveFilePath(fileUri));
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(),  RequestBody.create(MediaType.parse(getDocMediaType(file.getName())),file));
         SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
-        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN), "");
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN),
+                "");
         Call<DocumentResponseData> callDelete = APICallManagerDocument.apiCall.uploadFile("Bearer " + jwtToken, filePart, Long.valueOf(folderId) );
         callDelete.enqueue(new Callback<DocumentResponseData>() {
             @Override

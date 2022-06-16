@@ -439,7 +439,6 @@ public class class_list_fragment extends Fragment {
             @Override
             public void onResponse(Call<CreditClassPageForUser> call, Response<CreditClassPageForUser> response) {
                 if(response.code()==200){
-                    Toast.makeText(getContext()," load list credit class successfully! "+response.code(),Toast.LENGTH_SHORT).show();
                     showOnListView(response);
                 }else{
                     Toast.makeText(getContext(),"Could not load list credit class! "+response.code(),Toast.LENGTH_SHORT).show();
