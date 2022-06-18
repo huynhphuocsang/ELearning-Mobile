@@ -65,7 +65,7 @@ public class time_table_fragment extends Fragment {
     LocalDate currentDate = LocalDate.now();
     LocalDate saturdayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY));
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).minusWeeks(1);
 
     LocalDate sundayPointer = LocalDate.now()
             .with(IsoFields.WEEK_OF_WEEK_BASED_YEAR, getCurrentWeek())
