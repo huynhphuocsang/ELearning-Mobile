@@ -1,16 +1,22 @@
 package com.example.elearningptit;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +32,30 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.elearningptit.model.CreateExerciseResponse;
 import com.example.elearningptit.model.CreditClassDetail;
 import com.example.elearningptit.model.Exercise;
 import com.example.elearningptit.model.ExerciseSubmit;
+import com.example.elearningptit.model.ExerciseSubmitResponse;
 import com.example.elearningptit.model.StudentSubmitExercise;
 import com.example.elearningptit.model.UserInfo;
 import com.example.elearningptit.remote.APICallCreditClass;
+import com.example.elearningptit.remote.APICallExercise;
 import com.example.elearningptit.remote.APICallSubmit;
 import com.example.elearningptit.remote.APICallUser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,6 +82,15 @@ public class ExcerciseFragment extends Fragment {
     FrameLayout testVu;
 
     private List<Exercise> listExercise;
+
+    private static final int PICKFILE_REQUEST_CODE = 1000;
+    private Uri fileUri;
+    private ProgressDialog progressDialog;
+
+    String title, ngayDang, hanNop, content;
+    Dialog dialog;
+
+    int TongBaiTap;
 
 
     private String creditClassId="";
@@ -109,6 +133,8 @@ public class ExcerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_excercise, container, false);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang Xử lý file....");
         addControl(view);
         setEvent();
         return view;
@@ -175,6 +201,7 @@ public class ExcerciseFragment extends Fragment {
                 {
                     CreditClassDetail ex = response.body();
                     listExercise = ex.getExcercises();
+                    TongBaiTap = listExercise.size();
                     for (Exercise exercise: listExercise) {
                         TableRow tbRow = new TableRow(getContext());
 
@@ -251,11 +278,11 @@ public class ExcerciseFragment extends Fragment {
     }
 
     private void setButtonExercise(){
-        btnAddExercise.setVisibility(View.INVISIBLE);
+        btnAddExercise.setVisibility(View.VISIBLE);
         btnAddExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog dialog = new Dialog(getContext());
+                dialog = new Dialog(getContext());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.verify_add_exercise_dialog);
 
@@ -281,7 +308,6 @@ public class ExcerciseFragment extends Fragment {
                 btnVerifyAddExercise.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String title, ngayDang, hanNop, content;
                         title = tvTitle.getText().toString();
                         ngayDang = edtNgayDang.getText().toString();
                         hanNop = edtHanNop.getText().toString();
@@ -319,7 +345,8 @@ public class ExcerciseFragment extends Fragment {
                             if(!ngdang.equals(null) && !hnop.equals(null))
                             {
                                 Log.e("Status: ",hnop.before(ngdang) + "");
-                                //Call api tạo bài tập ở đây nha !
+                                //Call api pick file tạo bài tập ở đây nha !
+                                pickFile();
                             }
                             else
                             {
@@ -452,6 +479,141 @@ public class ExcerciseFragment extends Fragment {
             Log.e("Status:", "Call exercise submit fail");
         }
     });
+    }
+
+    public void pickFile(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        startActivityForResult(Intent.createChooser(intent, "Select File"), PICKFILE_REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, @android.support.annotation.Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICKFILE_REQUEST_CODE) {
+            fileUri = data.getData();
+            if(data!=null){
+                createExercise();
+                Log.e("Status: ", "Pick file thanh cong");
+            }
+
+        }
+    }
+
+    private String getDriveFilePath(Uri uri) {
+        Uri returnUri = uri;
+        Cursor returnCursor = getContext().getContentResolver().query(returnUri, null, null, null, null);
+        /*
+         * Get the column indexes of the data in the Cursor,
+         *     * move to the first row in the Cursor, get the data,
+         *     * and display it.
+         * */
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        String name = (returnCursor.getString(nameIndex));
+        String size = (Long.toString(returnCursor.getLong(sizeIndex)));
+        File file = new File(getContext().getCacheDir(), name);
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            int read = 0;
+            int maxBufferSize = 1 * 1024 * 1024;
+            int bytesAvailable = inputStream.available();
+
+            //int bufferSize = 1024;
+            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+
+            final byte[] buffers = new byte[bufferSize];
+            while ((read = inputStream.read(buffers)) != -1) {
+                outputStream.write(buffers, 0, read);
+            }
+            Log.e("File Size", "Size " + file.length());
+            inputStream.close();
+            outputStream.close();
+            Log.e("File Path", "Path " + file.getPath());
+            Log.e("File Size", "Size " + file.length());
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
+        return file.getPath();
+    }
+
+    private String getDocMediaType(String name){
+        String fileType = name.substring(name.lastIndexOf('.') + 1);
+        if(fileType.equals("doc"))
+        {
+            return "application/msword";
+        }
+        else if(fileType.equals("docx")){
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        }
+        else if(fileType.equals("pdf"))
+        {
+            return "application/pdf";
+        }
+        else if(fileType.equals("xlsx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        }
+        else if (fileType.equals("pptx"))
+        {
+            return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        }
+        else {
+            return "text/plain";
+        }
+    }
+
+    private String convertDayToTimeStamp(String day)
+    {
+        String[] a = day.split("-");
+        return a[2] + '-' + a[1] + '-' + a[0] + " 00:00:00";
+    }
+
+    private void createExercise() {
+        progressDialog.show();
+        File file=new File(getDriveFilePath(fileUri));
+        MultipartBody.Part startTime = MultipartBody.Part.createFormData("startTime", convertDayToTimeStamp(ngayDang));
+        MultipartBody.Part endTime = MultipartBody.Part.createFormData("endTime", convertDayToTimeStamp(hanNop));
+        MultipartBody.Part tieude = MultipartBody.Part.createFormData("title", title);
+        MultipartBody.Part idLop = MultipartBody.Part.createFormData("creditClassId", creditClassId);
+        MultipartBody.Part excerciseContent = MultipartBody.Part.createFormData("excerciseContent", content);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("files", file.getName(),  RequestBody.create(MediaType.parse(getDocMediaType(file.getName())),file));
+
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(getResources().getString(R.string.REFNAME), 0);
+        String jwtToken = preferences.getString(getResources().getString(R.string.KEY_JWT_TOKEN),
+                "");
+
+        Call<CreateExerciseResponse> callCreateExercise = APICallExercise.apiCall.createNewExercise("Bearer " + jwtToken, startTime, endTime, tieude, idLop, excerciseContent, filePart);
+        callCreateExercise.enqueue(new Callback<CreateExerciseResponse>() {
+            @Override
+            public void onResponse(Call<CreateExerciseResponse> call, Response<CreateExerciseResponse> response) {
+                if (response.code() == 201 || response.code() == 200) {
+                    dialog.dismiss();
+                    tbBaiTap.removeViewsInLayout(1, TongBaiTap);
+                    getExercise();
+                    Toast.makeText(getContext(), "Tạo bài tập thành công", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 401) {
+                    Toast.makeText(getContext(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 403) {
+                    Toast.makeText(getContext(), "Forbidden", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                }
+                progressDialog.dismiss();
+            }
+
+
+            @Override
+            public void onFailure(Call<CreateExerciseResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.d("print",t.getMessage());
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
